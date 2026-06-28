@@ -1008,55 +1008,49 @@ function library:AddWindow(title, options)
 
 	end
 
-	do -- Rainbow Circle sa Toggle Button
+
+	do -- Rainbow Ring sa Toggle Button
 		local Bar = Window:FindFirstChild("Bar")
 		local Toggle = Bar:FindFirstChild("Toggle")
 
-		local SEGMENT_COUNT = 20
-		local SPEED = 0.004
-		local RADIUS = 14  -- radius ng circle sa paligid ng toggle
-		local THICKNESS = 3
+		-- Toggle center sa Bar: Position(0,5,0,-2) + Size(20,20)
+		-- Center X = 5 + 10 = 15, Center Y = -2 + 10 = 8
+		local RING_DIAMETER = 30  -- Laki ng ring (mas malaki = mas malayo sa icon)
+		local THICKNESS = 3       -- Kapal ng ring line
 
-		-- Toggle position sa Bar: Position = UDim2.new(0, 5, 0, -2), Size = 20x20
-		-- Kaya center ng Toggle sa Bar coordinates:
-		local TOGGLE_CENTER_X = 5 + 10   -- x offset + half width = 15
-		local TOGGLE_CENTER_Y = -2 + 10  -- y offset + half height = 8
+		-- Gawa ng circle frame na nakapaligid sa toggle
+		local ring = Instance.new("Frame")
+		ring.Name = "RainbowRing"
+		ring.Parent = Bar
+		ring.AnchorPoint = Vector2.new(0.5, 0.5)
+		ring.BackgroundTransparency = 1  -- Walang background, ring lang
+		ring.BorderSizePixel = 0
+		ring.Size = UDim2.new(0, RING_DIAMETER, 0, RING_DIAMETER)
+		ring.Position = UDim2.new(0, 15, 0, 8)  -- Center ng Toggle sa Bar
+		ring.ZIndex = Toggle.ZIndex + 5
 
-		local segments = {}
+		-- UICorner para maging circle
+		local corner = Instance.new("UICorner")
+		corner.CornerRadius = UDim.new(1, 0)  -- Full circle
+		corner.Parent = ring
 
-		for i = 1, SEGMENT_COUNT do
-			local angle = ((i - 1) / SEGMENT_COUNT) * math.pi * 2
+		-- UIStroke para sa ring line
+		local stroke = Instance.new("UIStroke")
+		stroke.Parent = ring
+		stroke.Thickness = THICKNESS
+		stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 
-			local seg = Instance.new("Frame")
-			seg.Parent = Bar
-			seg.BorderSizePixel = 0
-			seg.BackgroundColor3 = Color3.new(1, 0, 0)
-			seg.ZIndex = Toggle.ZIndex + 5
-			seg.AnchorPoint = Vector2.new(0.5, 0.5)
-			seg.Size = UDim2.new(0, THICKNESS, 0, THICKNESS + 2)
-
-			local px = TOGGLE_CENTER_X + math.cos(angle) * RADIUS
-			local py = TOGGLE_CENTER_Y + math.sin(angle) * RADIUS
-
-			seg.Position = UDim2.new(0, px, 0, py)
-			seg.Rotation = math.deg(angle)
-
-			table.insert(segments, seg)
-		end
-
-		local hueOffset = 0
+		-- Rainbow animation
+		local hue = 0
+		local SPEED = 0.005
 		spawn(function()
-			while Bar and Bar.Parent do
-				hueOffset = (hueOffset + SPEED) % 1
-				for i, seg in ipairs(segments) do
-					local hue = (hueOffset + (i / SEGMENT_COUNT)) % 1
-					seg.BackgroundColor3 = Color3.fromHSV(hue, 1, 1)
-				end
+			while ring and ring.Parent do
+				hue = (hue + SPEED) % 1
+				stroke.Color = Color3.fromHSV(hue, 1, 1)
 				RS.Heartbeat:Wait()
 			end
 		end)
 	end
-
 	
 
 	local Resizer = Window:WaitForChild("Resizer")
