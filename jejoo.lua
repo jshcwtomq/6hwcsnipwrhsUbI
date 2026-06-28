@@ -1008,57 +1008,49 @@ function library:AddWindow(title, options)
 
 	end
 
-	do 
-
- -- Rainbow Border sa Toggle Button
+	do -- Rainbow Circle sa Toggle Button
 		local Bar = Window:FindFirstChild("Bar")
 		local Toggle = Bar:FindFirstChild("Toggle")
 
-		-- Gawa ng circular rainbow na nakapaligid sa Toggle
-		-- I-parent sa Bar para hindi ma-clip
-		local RING_SIZE = 28  -- Laki ng ring (dapat mas malaki sa Toggle na 20x20)
-		local SEGMENT_COUNT = 16  -- Mas marami = mas smooth
+		local SEGMENT_COUNT = 20
 		local SPEED = 0.004
+		local RADIUS = 14  -- radius ng circle sa paligid ng toggle
+		local THICKNESS = 3
+
+		-- Toggle position sa Bar: Position = UDim2.new(0, 5, 0, -2), Size = 20x20
+		-- Kaya center ng Toggle sa Bar coordinates:
+		local TOGGLE_CENTER_X = 5 + 10   -- x offset + half width = 15
+		local TOGGLE_CENTER_Y = -2 + 10  -- y offset + half height = 8
 
 		local segments = {}
 
 		for i = 1, SEGMENT_COUNT do
+			local angle = ((i - 1) / SEGMENT_COUNT) * math.pi * 2
+
 			local seg = Instance.new("Frame")
-			seg.Parent = Bar  -- Parent sa Bar, hindi sa Toggle
+			seg.Parent = Bar
 			seg.BorderSizePixel = 0
 			seg.BackgroundColor3 = Color3.new(1, 0, 0)
 			seg.ZIndex = Toggle.ZIndex + 5
-
-			-- I-rotate ang bawat segment para maging circle shape
-			local angle = (i / SEGMENT_COUNT) * math.pi * 2
-			local radius = RING_SIZE / 2
-			local thickness = 3
-			local segLen = (math.pi * 2 * radius) / SEGMENT_COUNT + 1
-
-			seg.Size = UDim2.new(0, thickness, 0, segLen)
 			seg.AnchorPoint = Vector2.new(0.5, 0.5)
+			seg.Size = UDim2.new(0, THICKNESS, 0, THICKNESS + 2)
 
-			-- Position relative to Toggle center
-			-- Toggle position: x=5, y=-2, size=20x20 鈫� center = x=15, y=8
-			local cx = 15  -- Toggle center X sa Bar
-			local cy = 8   -- Toggle center Y sa Bar
-
-			local px = cx + math.cos(angle) * radius
-			local py = cy + math.sin(angle) * radius
+			local px = TOGGLE_CENTER_X + math.cos(angle) * RADIUS
+			local py = TOGGLE_CENTER_Y + math.sin(angle) * RADIUS
 
 			seg.Position = UDim2.new(0, px, 0, py)
-			seg.Rotation = math.deg(angle) + 90
+			seg.Rotation = math.deg(angle)
 
-			table.insert(segments, {frame = seg, angle = angle})
+			table.insert(segments, seg)
 		end
 
 		local hueOffset = 0
 		spawn(function()
 			while Bar and Bar.Parent do
 				hueOffset = (hueOffset + SPEED) % 1
-				for i, data in ipairs(segments) do
+				for i, seg in ipairs(segments) do
 					local hue = (hueOffset + (i / SEGMENT_COUNT)) % 1
-					data.frame.BackgroundColor3 = Color3.fromHSV(hue, 1, 1)
+					seg.BackgroundColor3 = Color3.fromHSV(hue, 1, 1)
 				end
 				RS.Heartbeat:Wait()
 			end
