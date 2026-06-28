@@ -1008,70 +1008,67 @@ function library:AddWindow(title, options)
 
 	end
 
-	do -- Rainbow Border sa Toggle Button
-		local Toggle = Window:FindFirstChild("Bar"):FindFirstChild("Toggle")
-		local SEGMENT_COUNT = 12
-		local BORDER_THICKNESS = 3
-		local SPEED = 0.003
-		local rainbowContainer = Instance.new("Frame")
-		rainbowContainer.Name = "RainbowBorder"
-		rainbowContainer.Parent = Toggle
-		rainbowContainer.BackgroundTransparency = 1
-		rainbowContainer.BorderSizePixel = 0
-		rainbowContainer.Size = UDim2.new(1, BORDER_THICKNESS * 2, 1, BORDER_THICKNESS * 2)
-		rainbowContainer.Position = UDim2.new(0, -BORDER_THICKNESS, 0, -BORDER_THICKNESS)
-		rainbowContainer.ZIndex = Toggle.ZIndex - 1
-		rainbowContainer.ClipsDescendants = false
+	do 
+
+
+
+
+    	do -- Rainbow Border sa Toggle Button
+		local Bar = Window:FindFirstChild("Bar")
+		local Toggle = Bar:FindFirstChild("Toggle")
+
+		-- Gawa ng circular rainbow na nakapaligid sa Toggle
+		-- I-parent sa Bar para hindi ma-clip
+		local RING_SIZE = 28  -- Laki ng ring (dapat mas malaki sa Toggle na 20x20)
+		local SEGMENT_COUNT = 16  -- Mas marami = mas smooth
+		local SPEED = 0.004
+
 		local segments = {}
+
 		for i = 1, SEGMENT_COUNT do
 			local seg = Instance.new("Frame")
-			seg.Parent = rainbowContainer
+			seg.Parent = Bar  -- Parent sa Bar, hindi sa Toggle
 			seg.BorderSizePixel = 0
-			seg.Size = UDim2.new(1 / SEGMENT_COUNT, 0, 0, BORDER_THICKNESS)
-			seg.Position = UDim2.new((i - 1) / SEGMENT_COUNT, 0, 0, 0)
-			seg.ZIndex = Toggle.ZIndex - 1
-			table.insert(segments, seg)
+			seg.BackgroundColor3 = Color3.new(1, 0, 0)
+			seg.ZIndex = Toggle.ZIndex + 5
+
+			-- I-rotate ang bawat segment para maging circle shape
+			local angle = (i / SEGMENT_COUNT) * math.pi * 2
+			local radius = RING_SIZE / 2
+			local thickness = 3
+			local segLen = (math.pi * 2 * radius) / SEGMENT_COUNT + 1
+
+			seg.Size = UDim2.new(0, thickness, 0, segLen)
+			seg.AnchorPoint = Vector2.new(0.5, 0.5)
+
+			-- Position relative to Toggle center
+			-- Toggle position: x=5, y=-2, size=20x20 鈫� center = x=15, y=8
+			local cx = 15  -- Toggle center X sa Bar
+			local cy = 8   -- Toggle center Y sa Bar
+
+			local px = cx + math.cos(angle) * radius
+			local py = cy + math.sin(angle) * radius
+
+			seg.Position = UDim2.new(0, px, 0, py)
+			seg.Rotation = math.deg(angle) + 90
+
+			table.insert(segments, {frame = seg, angle = angle})
 		end
-		for i = 1, SEGMENT_COUNT do
-			local seg = Instance.new("Frame")
-			seg.Parent = rainbowContainer
-			seg.BorderSizePixel = 0
-			seg.Size = UDim2.new(0, BORDER_THICKNESS, 1 / SEGMENT_COUNT, 0)
-			seg.Position = UDim2.new(1, -BORDER_THICKNESS, (i - 1) / SEGMENT_COUNT, 0)
-			seg.ZIndex = Toggle.ZIndex - 1
-			table.insert(segments, seg)
-		end
-		for i = 1, SEGMENT_COUNT do
-			local seg = Instance.new("Frame")
-			seg.Parent = rainbowContainer
-			seg.BorderSizePixel = 0
-			seg.Size = UDim2.new(1 / SEGMENT_COUNT, 0, 0, BORDER_THICKNESS)
-			seg.Position = UDim2.new(1 - (i / SEGMENT_COUNT), 0, 1, -BORDER_THICKNESS)
-			seg.ZIndex = Toggle.ZIndex - 1
-			table.insert(segments, seg)
-		end
-		for i = 1, SEGMENT_COUNT do
-			local seg = Instance.new("Frame")
-			seg.Parent = rainbowContainer
-			seg.BorderSizePixel = 0
-			seg.Size = UDim2.new(0, BORDER_THICKNESS, 1 / SEGMENT_COUNT, 0)
-			seg.Position = UDim2.new(0, 0, 1 - (i / SEGMENT_COUNT), 0)
-			seg.ZIndex = Toggle.ZIndex - 1
-			table.insert(segments, seg)
-		end
-		local totalSegments = #segments
+
 		local hueOffset = 0
 		spawn(function()
-			while rainbowContainer and rainbowContainer.Parent do
+			while Bar and Bar.Parent do
 				hueOffset = (hueOffset + SPEED) % 1
-				for i, seg in ipairs(segments) do
-					local hue = (hueOffset + (i / totalSegments)) % 1
-					seg.BackgroundColor3 = Color3.fromHSV(hue, 1, 1)
+				for i, data in ipairs(segments) do
+					local hue = (hueOffset + (i / SEGMENT_COUNT)) % 1
+					data.frame.BackgroundColor3 = Color3.fromHSV(hue, 1, 1)
 				end
 				RS.Heartbeat:Wait()
 			end
 		end)
 	end
+
+	
 
 	local Resizer = Window:WaitForChild("Resizer")
 
