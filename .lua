@@ -147,7 +147,7 @@ Toggle.Position = UDim2.new(0, 5, 0, -2)
 Toggle.Rotation = 90
 Toggle.Size = UDim2.new(0, 20, 0, 20)
 Toggle.ZIndex = 2
-Toggle.Image = "https://www.roblox.com/Thumbs/Asset.ashx?width=700&height=700&assetId=140690585213145"
+Toggle.Image = "https://www.roblox.com/Thumbs/Asset.ashx?width=700&height=700&assetId=118497220875560"
 
 Base.Name = "Base"
 Base.Parent = Bar
@@ -1008,51 +1008,6 @@ function library:AddWindow(title, options)
 
 	end
 
-
-	do -- Rainbow Ring sa Toggle Button
-		local Bar = Window:FindFirstChild("Bar")
-		local Toggle = Bar:FindFirstChild("Toggle")
-
-		-- Toggle center sa Bar: Position(0,5,0,-2) + Size(20,20)
-		-- Center X = 5 + 10 = 15, Center Y = -2 + 10 = 8
-		local RING_DIAMETER = 20  -- Laki ng ring (mas malaki = mas malayo sa icon)
-		local THICKNESS = 3       -- Kapal ng ring line
-
-		-- Gawa ng circle frame na nakapaligid sa toggle
-		local ring = Instance.new("Frame")
-		ring.Name = "RainbowRing"
-		ring.Parent = Bar
-		ring.AnchorPoint = Vector2.new(0.5, 0.5)
-		ring.BackgroundTransparency = 1  -- Walang background, ring lang
-		ring.BorderSizePixel = 0
-		ring.Size = UDim2.new(0, RING_DIAMETER, 0, RING_DIAMETER)
-		ring.Position = UDim2.new(0, 15, 0, 8)  -- Center ng Toggle sa Bar
-		ring.ZIndex = Toggle.ZIndex + 5
-
-		-- UICorner para maging circle
-		local corner = Instance.new("UICorner")
-		corner.CornerRadius = UDim.new(1, 0)  -- Full circle
-		corner.Parent = ring
-
-		-- UIStroke para sa ring line
-		local stroke = Instance.new("UIStroke")
-		stroke.Parent = ring
-		stroke.Thickness = THICKNESS
-		stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-
-		-- Rainbow animation
-		local hue = 0
-		local SPEED = 0.005
-		spawn(function()
-			while ring and ring.Parent do
-				hue = (hue + SPEED) % 1
-				stroke.Color = Color3.fromHSV(hue, 1, 1)
-				RS.Heartbeat:Wait()
-			end
-		end)
-	end
-	
-
 	local Resizer = Window:WaitForChild("Resizer")
 
 	local window_data = {}
@@ -1065,6 +1020,7 @@ function library:AddWindow(title, options)
 			Window.Draggable = false
 			if options.can_resize then
 				oldIcon = mouse.Icon
+				-- mouse.Icon = "http://www.roblox.com/asset?id=4745131330"
 			end
 			Entered = true
 		end)
@@ -1090,6 +1046,7 @@ function library:AddWindow(title, options)
 							local x = mouse_location.X - Window.AbsolutePosition.X
 							local y = mouse_location.Y - Window.AbsolutePosition.Y
 
+							--
 							if x >= options.min_size.X and y >= options.min_size.Y then
 								Resize(Window, {Size = UDim2.new(0, x, 0, y)}, options.tween_time)
 							elseif x >= options.min_size.X then
