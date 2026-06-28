@@ -1015,7 +1015,7 @@ function library:AddWindow(title, options)
 
 		-- Toggle center sa Bar: Position(0,5,0,-2) + Size(20,20)
 		-- Center X = 5 + 10 = 15, Center Y = -2 + 10 = 8
-		local RING_DIAMETER = 30  -- Laki ng ring (mas malaki = mas malayo sa icon)
+		local RING_DIAMETER = 20  -- Laki ng ring (mas malaki = mas malayo sa icon)
 		local THICKNESS = 3       -- Kapal ng ring line
 
 		-- Gawa ng circle frame na nakapaligid sa toggle
