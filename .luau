@@ -971,7 +971,7 @@ function NexusUI:CreateWindow(opts)
 
     -- ──────────────────────────────────────────────────────────────────────
     --  Minimise (MinBtn)
-    -- ─────────────────────────────────.��────────────────────────────────────
+    -- ──────────────────────────────────────────────────────────────────────
     local _minimised   = false
     local _storedH     = 0
     MinBtn.MouseButton1Click:Connect(function()
@@ -3587,3 +3587,1215 @@ NexusUI.Version = "2.0.0"
 -- ══════════════════════════════════════════════════════════════════════════
 --[[
 do
+    -- ── Create a window ──────────────────────────────────────────────────
+    local winData, win = NexusUI:CreateWindow({
+        title      = "NexusUI v2",
+        subtitle   = "Demo Script",
+        main_color = Color3.fromRGB(100, 155, 255),
+        size       = UDim2.new(0, 600, 0, 480),
+        toggle_key = Enum.KeyCode.RightShift,
+    })
+
+    -- ── Tab 1 — Controls ─────────────────────────────────────────────────
+    local t1 = winData:AddTab("Controls", "⚙")
+
+    t1:AddSection("Labels & Text")
+    local lbl = t1:AddLabel("This is a label with default color.")
+    t1:AddRichLabel("INFO ", "RichLabel supports a bold prefix in accent color.")
+    t1:AddDivider()
+
+    t1:AddSection("Buttons")
+    t1:AddButton("Primary Button", function()
+        winData:Notify("Button", "Primary button was clicked!", 2.5)
+    end)
+    t1:AddButton("Success Action", function() print("success") end)
+
+    local ha, _ = t1:AddHorizontalAlignment()
+    ha:AddButton("Left",   function() print("left")  end)
+    ha:AddButton("Right",  function() print("right") end)
+
+    t1:AddSection("Toggle Switches")
+    local sw1 = t1:AddSwitch("Enable Feature A", false, function(v)
+        print("Feature A:", v)
+    end)
+    local sw2 = t1:AddSwitch("Enable Feature B", true, function(v)
+        print("Feature B:", v)
+    end)
+
+    t1:AddSection("Text Inputs")
+    t1:AddTextBox("Enter username…", function(txt)
+        print("Username:", txt)
+    end, {clear = true})
+
+    t1:AddNumericBox("Walk Speed", function(v)
+        print("Speed set:", v)
+    end, {min = 0, max = 500, step = 1, default = 16, suffix = " stud/s"})
+
+    -- ── Tab 2 — Sliders ──────────────────────────────────────────────────
+    local t2 = winData:AddTab("Sliders", "◈")
+    t2:AddSection("Slider Controls")
+
+    local sl1 = t2:AddSlider("Walk Speed", function(v)
+        print("WalkSpeed:", v)
+    end, {min = 0, max = 250, default = 16, step = 1, suffix = " u/s"})
+
+    local sl2 = t2:AddSlider("Jump Power", function(v) print("Jump:", v) end,
+        {min = 0, max = 200, default = 50, step = 5, suffix = " N"})
+
+    local sl3 = t2:AddSlider("FOV", function(v) print("FOV:", v) end,
+        {min = 30, max = 120, default = 70, step = 1, suffix = "°"})
+
+    local sl4 = t2:AddSlider("Gravity", function(v) print("Grav:", v) end,
+        {min = 0, max = 196, default = 196, step = 4, suffix = " u/s²"})
+
+    t2:AddSection("Progress Bar")
+    local pb = t2:AddProgressBar("Loading…", 0, 100, true)
+    t2:AddButton("Animate Progress", function()
+        pb:Animate(0, 100, 2)
+    end)
+
+    -- ── Tab 3 — Dropdowns ────────────────────────────────────────────────
+    local t3 = winData:AddTab("Dropdowns", "▾")
+    t3:AddSection("Single Select")
+
+    t3:AddDropdown("Team", {"Red", "Blue", "Green", "Yellow", "Spectator"}, function(v, i)
+        print("Team:", v, i)
+    end)
+
+    t3:AddSection("Search Dropdown")
+    t3:AddSearchDropdown("Select Weapon", {
+        "Sword","Bow","Staff","Dagger","Hammer","Spear",
+        "Crossbow","Wand","Axe","Shield","Scythe","Flail",
+    }, function(v) print("Weapon:", v) end)
+
+    t3:AddSection("Multi Select")
+    t3:AddMultiDropdown("ESP Targets", {
+        "Players","NPCs","Items","Vehicles","Bosses","Pets",
+    }, function(sel)
+        print("ESP:", table.concat(sel, ", "))
+    end, 4)
+
+    -- ── Tab 4 — Appearance ───────────────────────────────────────────────
+    local t4 = winData:AddTab("Style", "◑")
+
+    t4:AddSection("Color Picker")
+    t4:AddColorPicker("Accent Color", Color3.fromRGB(100, 155, 255), function(col)
+        winData:SetAccentColor(col)
+    end)
+
+    t4:AddSection("Keybind")
+    t4:AddKeybind("Toggle UI", Enum.KeyCode.RightShift, function(k)
+        print("Keybind:", k)
+    end)
+
+    t4:AddSection("Image")
+    t4:AddImage("rbxassetid://7229442422", 100)
+
+    -- ── Tab 5 — Console ──────────────────────────────────────────────────
+    local t5 = winData:AddTab("Console", "»")
+
+    t5:AddSection("Lua Editor")
+    local con = t5:AddConsole(220, {source = "Lua"})
+    con:Set('-- NexusUI v2 Console\nprint("Hello from NexusUI!")\n\nfor i = 1, 5 do\n\tprint("Loop:", i)\nend')
+
+    t5:AddSection("Output Log")
+    local logs = t5:AddConsole(130, {source = "Logs", read_only = true})
+    logs:Log("Script loaded OK", "INFO")
+    logs:Log("Player: " .. LocalPlayer.Name, "GAME")
+    logs:Log("NexusUI version 2.0.0 active", "SYS")
+
+    t5:AddButton("Run Script", function()
+        con:Execute()
+    end)
+
+    -- ── Tab 6 — Folders ──────────────────────────────────────────────────
+    local t6 = winData:AddTab("Folders", "▸")
+
+    t6:AddSection("Collapsible Groups")
+
+    local f1, _ = t6:AddFolder("Combat")
+    f1:AddSwitch("Aimbot",       false, function(v) print("Aimbot:", v) end)
+    f1:AddSwitch("Silent Aim",   false)
+    f1:AddSwitch("Prediction",   true)
+    f1:AddSlider("FOV",          function(v) end, {min=1, max=360, default=90, suffix="°"})
+    f1:AddSlider("Smooth",       function(v) end, {min=1, max=20,  default=5})
+
+    local f2, _ = t6:AddFolder("Visuals")
+    f2:AddSwitch("ESP Players",  false)
+    f2:AddSwitch("ESP NPCs",     false)
+    f2:AddSwitch("Tracers",      false)
+    f2:AddColorPicker("ESP Color", Color3.fromRGB(255, 80, 80))
+
+    local f3, _ = t6:AddFolder("Movement")
+    f3:AddSwitch("Fly",          false)
+    f3:AddSwitch("NoClip",       false)
+    f3:AddSlider("Fly Speed",    function(v) end, {min=0, max=300, default=50, suffix=" u/s"})
+    f3:AddSlider("Jump Power",   function(v) end, {min=0, max=500, default=50})
+
+    -- ── Greeting toast ───────────────────────────────────────────────────
+    task.delay(0.6, function()
+        winData:Notify(
+            "NexusUI v2 Loaded",
+            "Modern UI library ready. Toggle with RightShift.",
+            4,
+            Color3.fromRGB(72, 208, 128)
+        )
+    end)
+end
+--]]
+
+-- ══════════════════════════════════════════════════════════════════════════
+--  LOADING SCREEN  utility
+--  Creates a full-screen overlay that plays a spinner animation and then
+--  fades out.  Useful for showing progress while a script initialises.
+--
+--  Usage:
+--    local ls = NexusUI:CreateLoadingScreen({
+--        title    = "Loading…",
+--        subtitle = "Please wait while the script sets up.",
+--        color    = Color3.fromRGB(100, 155, 255),
+--    })
+--    -- … do your initialisation …
+--    ls:SetProgress(50, "Halfway there!")
+--    task.wait(1)
+--    ls:SetProgress(100, "Done!")
+--    task.wait(0.5)
+--    ls:Dismiss()
+-- ══════════════════════════════════════════════════════════════════════════
+function NexusUI:CreateLoadingScreen(opts)
+    opts = opts or {}
+    local title    = tostring(opts.title    or "Loading…")
+    local subtitle = tostring(opts.subtitle or "Please wait")
+    local color    = opts.color             or THEME.ACCENT
+
+    -- Full-screen dark overlay
+    local overlay = New("Frame", {
+        Name             = "LoadingOverlay",
+        BackgroundColor3 = Color3.fromRGB(8, 9, 12),
+        BackgroundTransparency = 0,
+        BorderSizePixel  = 0,
+        Size             = UDim2.new(1, 0, 1, 0),
+        ZIndex           = 900,
+        Parent           = ScreenGui,
+    })
+
+    -- Central card
+    local card = New("Frame", {
+        BackgroundColor3 = THEME.BG_WINDOW,
+        BackgroundTransparency = 0,
+        BorderSizePixel  = 0,
+        AnchorPoint      = Vector2.new(0.5, 0.5),
+        Position         = UDim2.new(0.5, 0, 0.5, 0),
+        Size             = UDim2.new(0, 340, 0, 200),
+        ZIndex           = 901,
+        Parent           = overlay,
+    })
+    Corner(12, card)
+    Stroke(THEME.STROKE_FAINT, 1, card)
+    Shadow(card, 18, 0.35)
+
+    -- Accent top bar
+    local topBar = New("Frame", {
+        BackgroundColor3 = color,
+        BorderSizePixel  = 0,
+        Size             = UDim2.new(1, 0, 0, 3),
+        ZIndex           = 902,
+        Parent           = card,
+    })
+    Corner(3, topBar)
+    New("UIGradient", {
+        Color = ColorSequence.new({
+            ColorSequenceKeypoint.new(0, color),
+            ColorSequenceKeypoint.new(1, BrightenColor(color, 1.4)),
+        }),
+        Parent = topBar,
+    })
+
+    -- Spinner ring (rotates)
+    local spinnerRing = New("ImageLabel", {
+        BackgroundTransparency = 1,
+        AnchorPoint  = Vector2.new(0.5, 0),
+        Position     = UDim2.new(0.5, 0, 0, 24),
+        Size         = UDim2.new(0, 48, 0, 48),
+        Image        = "rbxassetid://4965945816",
+        ImageColor3  = color,
+        ZIndex       = 902,
+        Parent       = card,
+    })
+
+    -- Spinner inner dot
+    local spinnerDot = New("Frame", {
+        BackgroundColor3 = color,
+        BorderSizePixel  = 0,
+        AnchorPoint      = Vector2.new(0.5, 0.5),
+        Position         = UDim2.new(0.5, 0, 0, 48),
+        Size             = UDim2.new(0, 10, 0, 10),
+        ZIndex           = 902,
+        Parent           = card,
+    })
+    Corner(5, spinnerDot)
+    Glow(spinnerDot, color, 10, 0.55)
+
+    -- Title text
+    local titleLbl = New("TextLabel", {
+        BackgroundTransparency = 1,
+        AnchorPoint  = Vector2.new(0.5, 0),
+        Position     = UDim2.new(0.5, 0, 0, 88),
+        Size         = UDim2.new(1, -24, 0, 22),
+        Font         = Enum.Font.GothamBold,
+        Text         = title,
+        TextColor3   = THEME.TEXT_PRIMARY,
+        TextSize     = 16,
+        ZIndex       = 902,
+        Parent       = card,
+    })
+
+    -- Subtitle text
+    local subLbl = New("TextLabel", {
+        BackgroundTransparency = 1,
+        AnchorPoint  = Vector2.new(0.5, 0),
+        Position     = UDim2.new(0.5, 0, 0, 114),
+        Size         = UDim2.new(1, -32, 0, 16),
+        Font         = Enum.Font.Gotham,
+        Text         = subtitle,
+        TextColor3   = THEME.TEXT_SECONDARY,
+        TextSize     = 12,
+        ZIndex       = 902,
+        Parent       = card,
+    })
+
+    -- Progress bar (thin strip at bottom)
+    local progTrack = New("Frame", {
+        BackgroundColor3 = THEME.BG_ACTIVE,
+        BorderSizePixel  = 0,
+        AnchorPoint      = Vector2.new(0, 1),
+        Position         = UDim2.new(0, 0, 1, 0),
+        Size             = UDim2.new(1, 0, 0, 4),
+        ZIndex           = 902,
+        Parent           = card,
+    })
+    Corner(2, progTrack)
+
+    local progFill = New("Frame", {
+        BackgroundColor3 = color,
+        BorderSizePixel  = 0,
+        Size             = UDim2.new(0, 0, 1, 0),
+        ZIndex           = 903,
+        Parent           = progTrack,
+    })
+    Corner(2, progFill)
+    New("UIGradient", {
+        Color = ColorSequence.new({
+            ColorSequenceKeypoint.new(0, color),
+            ColorSequenceKeypoint.new(1, BrightenColor(color, 1.3)),
+        }),
+        Parent = progFill,
+    })
+
+    -- Progress percentage label
+    local pctLbl = New("TextLabel", {
+        BackgroundTransparency = 1,
+        AnchorPoint  = Vector2.new(1, 1),
+        Position     = UDim2.new(1, -8, 1, -10),
+        Size         = UDim2.new(0, 40, 0, 14),
+        Font         = Enum.Font.GothamBold,
+        Text         = "0%",
+        TextColor3   = color,
+        TextSize     = 10,
+        TextXAlignment = Enum.TextXAlignment.Right,
+        ZIndex       = 902,
+        Parent       = card,
+    })
+
+    -- Animate spinner rotation
+    local spinnerRunning = true
+    task.spawn(function()
+        local angle = 0
+        while spinnerRunning and spinnerRing and spinnerRing.Parent do
+            angle = (angle + 3) % 360
+            spinnerRing.Rotation = angle
+            RunService.Heartbeat:Wait()
+        end
+    end)
+
+    -- Pulse dot scale
+    task.spawn(function()
+        local t_ = 0
+        while spinnerRunning and spinnerDot and spinnerDot.Parent do
+            t_ = t_ + 0.06
+            local s  = 10 + math.sin(t_) * 3
+            spinnerDot.Size = UDim2.new(0, s, 0, s)
+            RunService.Heartbeat:Wait()
+        end
+    end)
+
+    local ls_api = {}
+
+    --- Update the loading progress.
+    -- @param percent   0–100
+    -- @param msg       Optional status message
+    function ls_api:SetProgress(percent, msg)
+        percent = Clamp(tonumber(percent) or 0, 0, 100)
+        Tween(progFill, {Size = UDim2.new(percent / 100, 0, 1, 0)}, TWEEN.MEDIUM)
+        pctLbl.Text = tostring(math.floor(percent)) .. "%"
+        if msg then subLbl.Text = tostring(msg) end
+    end
+
+    --- Update the main title.
+    function ls_api:SetTitle(t_) titleLbl.Text = tostring(t_) end
+
+    --- Dismiss the loading screen with a fade-out.
+    -- @param delay_s  Optional extra delay before fade (default 0)
+    function ls_api:Dismiss(delay_s)
+        delay_s = tonumber(delay_s) or 0
+        task.delay(delay_s, function()
+            spinnerRunning = false
+            Tween(overlay, {BackgroundTransparency = 1}, TWEEN.SLOW)
+            Tween(card,    {BackgroundTransparency = 1, Size = UDim2.new(0, 320, 0, 180)}, TWEEN.SLOW)
+            task.delay(0.4, function()
+                if overlay and overlay.Parent then overlay:Destroy() end
+            end)
+        end)
+    end
+
+    return ls_api
+end
+
+-- ══════════════════════════════════════════════════════════════════════════
+--  CONFIRM DIALOG  utility
+--  Shows a modal dialog asking the user to confirm or cancel an action.
+--  Blocks asynchronously; the callback receives true (confirm) or false
+--  (cancel).
+--
+--  Usage:
+--    NexusUI:Confirm({
+--        title   = "Are you sure?",
+--        message = "This will reset all your settings.",
+--        color   = Color3.fromRGB(235, 75, 75),
+--        confirm_text = "Yes, reset",
+--        cancel_text  = "Cancel",
+--    }, function(ok)
+--        if ok then resetSettings() end
+--    end)
+-- ══════════════════════════════════════════════════════════════════════════
+function NexusUI:Confirm(opts, callback)
+    opts     = opts     or {}
+    callback = type(callback) == "function" and callback or function() end
+
+    local title        = tostring(opts.title        or "Confirm")
+    local message      = tostring(opts.message      or "Are you sure?")
+    local color        = opts.color                 or THEME.ACCENT
+    local confirm_text = tostring(opts.confirm_text or "Confirm")
+    local cancel_text  = tostring(opts.cancel_text  or "Cancel")
+
+    -- Dimmed overlay
+    local dimOverlay = New("Frame", {
+        BackgroundColor3 = Color3.fromRGB(0, 0, 0),
+        BackgroundTransparency = 0.5,
+        BorderSizePixel  = 0,
+        Size             = UDim2.new(1, 0, 1, 0),
+        ZIndex           = 800,
+        Parent           = ScreenGui,
+    })
+    Tween(dimOverlay, {BackgroundTransparency = 0.4}, TWEEN.MEDIUM)
+
+    -- Dialog card
+    local dialog = New("Frame", {
+        BackgroundColor3 = THEME.BG_WINDOW,
+        BackgroundTransparency = 0,
+        BorderSizePixel  = 0,
+        AnchorPoint      = Vector2.new(0.5, 0.5),
+        Position         = UDim2.new(0.5, 0, 0.4, 0),
+        Size             = UDim2.new(0, 320, 0, 160),
+        ZIndex           = 801,
+        Parent           = ScreenGui,
+    })
+    Corner(12, dialog)
+    Stroke(color, 1.5, dialog)
+    Shadow(dialog, 20, 0.4)
+
+    -- Slide-in entrance
+    dialog.Position = UDim2.new(0.5, 0, 0.35, 0)
+    Tween(dialog, {Position = UDim2.new(0.5, 0, 0.4, 0)}, TWEEN.SPRING)
+
+    -- Top accent bar
+    local dBar = New("Frame", {
+        BackgroundColor3 = color,
+        BorderSizePixel  = 0,
+        Size             = UDim2.new(1, 0, 0, 3),
+        ZIndex           = 802,
+        Parent           = dialog,
+    })
+    Corner(2, dBar)
+
+    New("TextLabel", {
+        BackgroundTransparency = 1,
+        AnchorPoint  = Vector2.new(0.5, 0),
+        Position     = UDim2.new(0.5, 0, 0, 18),
+        Size         = UDim2.new(1, -24, 0, 22),
+        Font         = Enum.Font.GothamBold,
+        Text         = title,
+        TextColor3   = THEME.TEXT_PRIMARY,
+        TextSize     = 15,
+        ZIndex       = 802,
+        Parent       = dialog,
+    })
+
+    New("TextLabel", {
+        BackgroundTransparency = 1,
+        AnchorPoint  = Vector2.new(0.5, 0),
+        Position     = UDim2.new(0.5, 0, 0, 46),
+        Size         = UDim2.new(1, -32, 0, 48),
+        Font         = Enum.Font.Gotham,
+        Text         = message,
+        TextColor3   = THEME.TEXT_SECONDARY,
+        TextSize     = 13,
+        TextWrapped  = true,
+        ZIndex       = 802,
+        Parent       = dialog,
+    })
+
+    -- Button row
+    local btnRow = New("Frame", {
+        BackgroundTransparency = 1,
+        AnchorPoint  = Vector2.new(0.5, 1),
+        Position     = UDim2.new(0.5, 0, 1, -14),
+        Size         = UDim2.new(1, -24, 0, 32),
+        ZIndex       = 802,
+        Parent       = dialog,
+    })
+    List(Enum.FillDirection.Horizontal, 8, Enum.HorizontalAlignment.Right, btnRow)
+
+    -- Cancel button
+    local cancelBtn = New("TextButton", {
+        BackgroundColor3 = THEME.BG_ELEMENT,
+        BorderSizePixel  = 0,
+        Size             = UDim2.new(0, 110, 0, 30),
+        Font             = Enum.Font.GothamMedium,
+        Text             = cancel_text,
+        TextColor3       = THEME.TEXT_SECONDARY,
+        TextSize         = 13,
+        ZIndex           = 803,
+        Parent           = btnRow,
+    })
+    Corner(7, cancelBtn)
+    Stroke(THEME.STROKE_NORMAL, 1, cancelBtn)
+
+    -- Confirm button
+    local confirmBtn = New("TextButton", {
+        BackgroundColor3 = color,
+        BorderSizePixel  = 0,
+        Size             = UDim2.new(0, 120, 0, 30),
+        Font             = Enum.Font.GothamBold,
+        Text             = confirm_text,
+        TextColor3       = Color3.fromRGB(255, 255, 255),
+        TextSize         = 13,
+        ZIndex           = 803,
+        Parent           = btnRow,
+    })
+    Corner(7, confirmBtn)
+    Glow(confirmBtn, color, 10, 0.6)
+
+    cancelBtn.MouseEnter:Connect(function()
+        Tween(cancelBtn, {BackgroundColor3 = THEME.BG_HOVER}, TWEEN.FAST)
+    end)
+    cancelBtn.MouseLeave:Connect(function()
+        Tween(cancelBtn, {BackgroundColor3 = THEME.BG_ELEMENT}, TWEEN.FAST)
+    end)
+    confirmBtn.MouseEnter:Connect(function()
+        Tween(confirmBtn, {BackgroundColor3 = BrightenColor(color, 1.2)}, TWEEN.FAST)
+    end)
+    confirmBtn.MouseLeave:Connect(function()
+        Tween(confirmBtn, {BackgroundColor3 = color}, TWEEN.FAST)
+    end)
+
+    local function dismiss(result)
+        Tween(dialog,     {BackgroundTransparency = 1, Size = UDim2.new(0, 310, 0, 145)}, TWEEN.MEDIUM)
+        Tween(dimOverlay, {BackgroundTransparency = 1}, TWEEN.MEDIUM)
+        task.delay(0.25, function()
+            if dialog    and dialog.Parent    then dialog:Destroy()     end
+            if dimOverlay and dimOverlay.Parent then dimOverlay:Destroy() end
+        end)
+        pcall(callback, result)
+    end
+
+    cancelBtn.MouseButton1Click:Connect(function()  dismiss(false) end)
+    confirmBtn.MouseButton1Click:Connect(function() dismiss(true)  end)
+end
+
+-- ══════════════════════════════════════════════════════════════════════════
+--  CONTEXT MENU  utility
+--  Right-click (or programmatic) context menu.
+--
+--  Usage:
+--    NexusUI:ContextMenu(Mouse.X, Mouse.Y, {
+--        {label = "Copy",   icon = "📋", callback = function() end},
+--        {label = "Paste",  icon = "📄", callback = function() end},
+--        {separator = true},
+--        {label = "Delete", icon = "🗑", color = THEME.ERROR_C, callback = function() end},
+--    })
+-- ══════════════════════════════════════════════════════════════════════════
+function NexusUI:ContextMenu(x, y, items)
+    x     = tonumber(x) or 0
+    y     = tonumber(y) or 0
+    items = type(items) == "table" and items or {}
+
+    -- Destroy any existing context menu
+    local prev = ScreenGui:FindFirstChild("_ContextMenu")
+    if prev then prev:Destroy() end
+
+    local ITEM_H = 30
+    local SEP_H  = 8
+    local MENU_W = 180
+
+    -- Calculate total height
+    local totalH = 8
+    for _, item in ipairs(items) do
+        totalH = totalH + (item.separator and SEP_H or ITEM_H) + 3
+    end
+
+    local menu = New("Frame", {
+        Name             = "_ContextMenu",
+        BackgroundColor3 = THEME.BG_PANEL,
+        BorderSizePixel  = 0,
+        Position         = UDim2.new(0, math.min(x, 1200 - MENU_W), 0, y),
+        Size             = UDim2.new(0, MENU_W, 0, totalH),
+        ZIndex           = 600,
+        ClipsDescendants = true,
+        Parent           = ScreenGui,
+    })
+    Corner(8, menu)
+    Stroke(THEME.STROKE_NORMAL, 1, menu)
+    Shadow(menu, 10, 0.38)
+    Padding(4, 4, 4, 4, menu)
+    List(Enum.FillDirection.Vertical, 3, Enum.HorizontalAlignment.Left, menu)
+
+    -- Slide in from tiny
+    menu.Size = UDim2.new(0, MENU_W, 0, 0)
+    Tween(menu, {Size = UDim2.new(0, MENU_W, 0, totalH)}, TWEEN.SPRING)
+
+    for _, item in ipairs(items) do
+        if item.separator then
+            New("Frame", {
+                BackgroundColor3 = THEME.STROKE_FAINT,
+                BorderSizePixel  = 0,
+                Size             = UDim2.new(1, 0, 0, 1),
+                ZIndex           = 601,
+                Parent           = menu,
+            })
+        else
+            local label   = tostring(item.label    or "")
+            local icon    = tostring(item.icon     or "")
+            local cb      = type(item.callback) == "function" and item.callback or function() end
+            local itemClr = item.color or THEME.TEXT_PRIMARY
+
+            local itemBtn = New("TextButton", {
+                BackgroundColor3 = THEME.BG_PANEL,
+                BorderSizePixel  = 0,
+                Size             = UDim2.new(1, 0, 0, ITEM_H),
+                Text             = "",
+                ZIndex           = 602,
+                Parent           = menu,
+            })
+            Corner(5, itemBtn)
+
+            if #icon > 0 then
+                New("TextLabel", {
+                    BackgroundTransparency = 1,
+                    AnchorPoint  = Vector2.new(0, 0.5),
+                    Position     = UDim2.new(0, 8, 0.5, 0),
+                    Size         = UDim2.new(0, 18, 0, 18),
+                    Font         = Enum.Font.Gotham,
+                    Text         = icon,
+                    TextColor3   = itemClr,
+                    TextSize     = 13,
+                    ZIndex       = 603,
+                    Parent       = itemBtn,
+                })
+            end
+
+            New("TextLabel", {
+                BackgroundTransparency = 1,
+                AnchorPoint  = Vector2.new(0, 0.5),
+                Position     = UDim2.new(0, #icon > 0 and 30 or 10, 0.5, 0),
+                Size         = UDim2.new(1, -40, 0, 20),
+                Font         = Enum.Font.GothamMedium,
+                Text         = label,
+                TextColor3   = itemClr,
+                TextSize     = 13,
+                TextXAlignment = Enum.TextXAlignment.Left,
+                ZIndex       = 603,
+                Parent       = itemBtn,
+            })
+
+            itemBtn.MouseEnter:Connect(function()
+                Tween(itemBtn, {BackgroundColor3 = THEME.BG_HOVER}, TWEEN.FAST)
+            end)
+            itemBtn.MouseLeave:Connect(function()
+                Tween(itemBtn, {BackgroundColor3 = THEME.BG_PANEL}, TWEEN.FAST)
+            end)
+            itemBtn.MouseButton1Click:Connect(function()
+                Tween(menu, {Size = UDim2.new(0, MENU_W, 0, 0), BackgroundTransparency = 1}, TWEEN.FAST)
+                task.delay(0.15, function() if menu and menu.Parent then menu:Destroy() end end)
+                pcall(cb)
+            end)
+        end
+    end
+
+    -- Close on click-away
+    local closeConn
+    closeConn = UserInputService.InputBegan:Connect(function(inp)
+        if inp.UserInputType == Enum.UserInputType.MouseButton1 then
+            local mx, my = inp.Position.X, inp.Position.Y
+            local ax, ay = menu.AbsolutePosition.X, menu.AbsolutePosition.Y
+            local aw, ah = menu.AbsoluteSize.X,     menu.AbsoluteSize.Y
+            if mx < ax or mx > ax + aw or my < ay or my > ay + ah then
+                closeConn:Disconnect()
+                Tween(menu, {Size = UDim2.new(0, MENU_W, 0, 0)}, TWEEN.FAST)
+                task.delay(0.15, function() if menu and menu.Parent then menu:Destroy() end end)
+            end
+        end
+    end)
+end
+
+-- ══════════════════════════════════════════════════════════════════════════
+--  THEME PRESETS
+--  Ready-to-use colour schemes.  Pass the result as main_color.
+-- ══════════════════════════════════════════════════════════════════════════
+NexusUI.Presets = {
+    Blue      = Color3.fromRGB(100, 155, 255),
+    Cyan      = Color3.fromRGB(60,  200, 220),
+    Green     = Color3.fromRGB(72,  210, 128),
+    Emerald   = Color3.fromRGB(50,  185, 100),
+    Purple    = Color3.fromRGB(155, 100, 255),
+    Pink      = Color3.fromRGB(235,  90, 170),
+    Red       = Color3.fromRGB(235,  75,  75),
+    Orange    = Color3.fromRGB(245, 140,  50),
+    Yellow    = Color3.fromRGB(238, 182,  52),
+    White     = Color3.fromRGB(220, 220, 230),
+    Steel     = Color3.fromRGB(130, 145, 175),
+    Gold      = Color3.fromRGB(215, 175,  55),
+}
+
+-- ══════════════════════════════════════════════════════════════════════════
+--  CHANGELOG / RELEASE NOTES
+-- ══════════════════════════════════════════════════════════════════════════
+--[[
+  NexusUI  —  Changelog
+  ─────────────────────────────────────────────────────────────────────────
+
+  v2.0.0  (2025)
+  ──────────────────────────────────────────────────────────────────────────
+  BREAKING CHANGES
+  • Complete rewrite from scratch.  No API compatibility with v1.
+  • All elements now return (api_table, frame) instead of just frame.
+  • Options table replaces individual function arguments for all elements.
+
+  NEW ELEMENTS
+  • RichLabel        — multi-line label with bold prefix + body.
+  • NumericBox       — text box with − / + stepper buttons.
+  • SearchDropdown   — dropdown with built-in live search filter.
+  • ProgressBar      — animated progress bar with percentage badge.
+  • ImageLabel       — display any Roblox asset image with rounded corners.
+  • Divider          — thin horizontal rule.
+  • Spacer           — explicit vertical gap.
+
+  NEW UTILITIES
+  • NexusUI:CreateLoadingScreen()  — full-screen animated loading overlay.
+  • NexusUI:Confirm()              — modal confirmation dialog.
+  • NexusUI:ContextMenu()          — right-click context menu.
+  • NexusUI:Notify()               — standalone toast, no window required.
+  • NexusUI.Presets                — colour preset table for main_color.
+
+  VISUAL IMPROVEMENTS
+  • Glass-morphism dark theme (BG_WINDOW = RGB 15,16,21).
+  • UIGradient accent lines on title bars.
+  • Gradient fill on Slider track.
+  • Glow effect on Switch thumb and Slider handle.
+  • Drop-shadow (9-slice ImageLabel) on windows, dialogs, and toasts.
+  • Toast notification queue — multiple toasts stack vertically.
+  • Ripple click-feedback on all buttons and switch rows.
+  • UICorner (radius 8px) on every element card.
+  • UIStroke (1px, #263748) on all cards; brightens to accent on focus.
+  • Spring tween on minimise, confirm dialog entrance, and context menu.
+
+  INTERACTIONS
+  • Window drag (title bar), resize (bottom-right grip), minimise, close.
+  • Global toggle key (default RightShift) hides/shows window.
+  • Tab bar auto-scrolls horizontally when many tabs are added.
+  • ColorPicker supports SV square drag, hue bar drag, and hex input.
+  • Slider thumb grows on hover and supports mobile touch input.
+  • SearchDropdown live-filters items as you type.
+  • MultiDropdown shows item count badge and supports max_sel cap.
+  • Keybind badge shows "…press key…" and captures the next keypress.
+
+  DEVELOPER EXPERIENCE
+  • All element builders share the same buildElements() factory so Folder
+    and HorizontalAlignment automatically get every element type.
+  • window_data:SetAccentColor(col) updates all live accent references
+    on the next Heartbeat tick.
+  • console_api:Execute() calls loadstring() on the console content.
+  • tab_data:Show() programmatically switches to that tab.
+  • folder_data:AddXxx()  delegates to the same element factory as tabs.
+
+  PERFORMANCE
+  • Accent-colour sync uses RunService.Heartbeat (not task.wait(0)).
+  • Ripple frames are cleaned up by Debris:AddItem after 0.65s.
+  • TweenService instances are created per-call and not stored.
+  • Loading screen spinner uses a single Heartbeat loop per overlay.
+
+  ─────────────────────────────────────────────────────────────────────────
+  v1.x  (original, 2262 lines)
+  ──────────────────────────────────────────────────────────────────────────
+  • ImageLabel-based window with rbxassetid:// 9-slice backgrounds.
+  • UIListLayout-based tab system.
+  • Elements: Label, Button, Switch, TextBox, Slider, Dropdown,
+    MultiDropdown, Keybind, ColorPicker, Console, Folder,
+    HorizontalAlignment.
+  • Resize via corner drag.
+  • Toggle via Bar > Toggle ImageButton.
+  • Syntax highlighting via SpaceOut pattern-match overlay layers.
+--]]
+
+-- ══════════════════════════════════════════════════════════════════════════
+--  INTERNAL HELPERS  (advanced / expert usage)
+-- ══════════════════════════════════════════════════════════════════════════
+
+--- Returns the ScreenGui that hosts all NexusUI elements.
+-- Useful if you need to parent custom elements alongside NexusUI.
+-- @return ScreenGui
+function NexusUI:GetScreenGui()
+    return ScreenGui
+end
+
+--- Returns the WindowContainer frame.
+-- @return Frame
+function NexusUI:GetWindowContainer()
+    return WindowContainer
+end
+
+--- Destroy all active toast notifications.
+function NexusUI:ClearToasts()
+    for _, toast in ipairs(activeToasts) do
+        if toast and toast.Parent then toast:Destroy() end
+    end
+    activeToasts = {}
+end
+
+--- Force all windows to a specific position (useful for centering on resize).
+-- @param pos  UDim2 position applied to every window
+function NexusUI:SetAllWindowPositions(pos)
+    for _, child in pairs(WindowContainer:GetChildren()) do
+        if child:IsA("Frame") then
+            Tween(child, {Position = pos}, TWEEN.MEDIUM)
+        end
+    end
+end
+
+--- Count how many windows are currently active.
+-- @return integer
+function NexusUI:GetWindowCount()
+    local n = 0
+    for _, c in pairs(WindowContainer:GetChildren()) do
+        if c:IsA("Frame") then n = n + 1 end
+    end
+    return n
+end
+
+--- Apply a tint to the entire ScreenGui overlay (e.g. for accessibility).
+-- @param color  Tint Color3
+-- @param alpha  Transparency 0–1 (0 = fully visible tint, 1 = invisible)
+function NexusUI:SetGlobalTint(color, alpha)
+    local existing = ScreenGui:FindFirstChild("_GlobalTint")
+    if existing then existing:Destroy() end
+    if alpha and alpha >= 1 then return end
+    New("Frame", {
+        Name             = "_GlobalTint",
+        BackgroundColor3 = color or Color3.fromRGB(0, 0, 0),
+        BackgroundTransparency = alpha or 0.85,
+        BorderSizePixel  = 0,
+        Size             = UDim2.new(1, 0, 1, 0),
+        ZIndex           = 1,
+        Parent           = ScreenGui,
+    })
+end
+
+--- Remove any global tint overlay.
+function NexusUI:ClearGlobalTint()
+    local t = ScreenGui:FindFirstChild("_GlobalTint")
+    if t then t:Destroy() end
+end
+
+-- ══════════════════════════════════════════════════════════════════════════
+--  EXTENDED ELEMENT REFERENCE
+--  This section documents every public method returned by each element's
+--  api table.  It is purely documentary — no executable code.
+-- ══════════════════════════════════════════════════════════════════════════
+--[[
+
+  ELEMENT API REFERENCE
+  ─────────────────────────────────────────────────────────────────────────
+
+  AddSection(title_text)
+  ─────────────────────
+  Returns:  (Frame)
+  No api table; returns the separator frame directly.
+
+  AddSpacer(pixels)
+  ─────────────────────────────────────────────
+  Returns:  (Frame)
+  pixels:  Height in pixels (default 8).
+
+  AddDivider()
+  ─────────────────────────────────────────────
+  Returns:  (Frame)
+  1px horizontal rule.
+
+  AddLabel(label_text, color?)
+  ─────────────────────────────────────────────
+  Returns:  (label_api, TextLabel)
+  label_api methods:
+    :Set(text)      — update the label text
+    :SetColor(col)  — update the text colour
+    :SetSize(px)    — update the font size in pixels
+
+  AddRichLabel(prefix_text, body_text, prefix_color?)
+  ─────────────────────────────────────────────
+  Returns:  (api, Frame)
+  api methods:
+    :SetPrefix(text, color?) — update the bold prefix
+    :SetBody(text)           — update the body text
+
+  AddImage(asset_id, height?, aspect_ratio?)
+  ─────────────────────────────────────────────
+  Returns:  (api, Frame)
+  api methods:
+    :SetImage(asset_id) — change the displayed image asset
+    :SetHeight(px)      — resize the card height
+
+  AddProgressBar(label_text, initial, max, show_percent?)
+  ─────────────────────────────────────────────────────────
+  Returns:  (pb_api, Frame)
+  pb_api methods:
+    :Set(value)                    — jump to a value (fires no callback)
+    :Get()                         — returns current value
+    :Animate(from, to, duration)   — smoothly animate from→to over duration
+
+  AddButton(btn_text, callback)
+  ─────────────────────────────────────────────
+  Returns:  (api, TextButton)
+  api methods:
+    :SetText(text)      — update button label
+    :SetEnabled(bool)   — grey out if false
+    :SetColor(col)      — change the left accent stripe colour
+
+  AddSwitch(sw_text, default_val, callback)
+  ─────────────────────────────────────────────
+  Returns:  (sw_api, Frame)
+  callback  (bool) — called on every toggle
+  sw_api methods:
+    :Set(bool)      — set toggle state, fires callback
+    :Get()          — returns current toggled bool
+    :SetText(text)  — update the switch label
+
+  AddTextBox(placeholder, callback, opts?)
+  ─────────────────────────────────────────────
+  Returns:  (tb_api, Frame)
+  opts fields:
+    clear      (bool)  — clear on submit, default true
+    numeric    (bool)  — reject non-numeric input
+    max_chars  (int)   — character limit (0 = unlimited)
+  callback  (string) — called with typed text on Enter
+  tb_api methods:
+    :Set(val)              — set current text
+    :Get()                 — returns current text
+    :Clear()               — clear current text
+    :SetPlaceholder(text)  — update placeholder
+    :Focus()               — programmatically focus the box
+
+  AddNumericBox(label_text, callback, opts?)
+  ─────────────────────────────────────────────
+  Returns:  (api, Frame)
+  opts fields:
+    min, max, step, default, suffix
+  api methods:
+    :Set(val)  — set value, fires callback
+    :Get()     — returns current value
+
+  AddSlider(sl_text, callback, opts?)
+  ─────────────────────────────────────────────
+  Returns:  (sl_api, Frame)
+  opts fields:
+    min, max, default, step, suffix, readonly
+  callback  (number) — called on drag
+  sl_api methods:
+    :Set(val)          — set value, fires callback
+    :Get()             — returns current value
+    :SetText(text)     — update label
+    :SetMin(n)         — update minimum bound
+    :SetMax(n)         — update maximum bound
+
+  AddDropdown(dd_text, items, callback, opts?)
+  ─────────────────────────────────────────────
+  Returns:  (dd_api, Frame)
+  opts fields:
+    default (integer)  — index of initially selected item
+  callback  (string, integer) — called with (selected_text, index)
+  dd_api methods:
+    :Set(val)           — update displayed selection
+    :Get()              — returns current selection string
+    :Refresh(new_items) — replace item list
+
+  AddSearchDropdown(dd_text, items, callback)
+  ─────────────────────────────────────────────
+  Returns:  (api, Frame)
+  Same callback and api as AddDropdown but with live search filtering.
+  api methods:
+    :Get()              — returns current selection
+    :Set(val)           — update displayed selection
+    :Refresh(new_items) — replace item list and rebuild
+
+  AddMultiDropdown(dd_text, items, callback, max_sel?)
+  ─────────────────────────────────────────────────────
+  Returns:  (mdd_api, Frame)
+  callback  (table) — called with array of selected strings
+  mdd_api methods:
+    :GetSelected()  — returns table of selected strings
+    :Clear()        — deselect all items
+
+  AddKeybind(kb_text, default_key, callback)
+  ─────────────────────────────────────────────
+  Returns:  (kb_api, Frame)
+  callback  (KeyCode) — called both when key is bound AND when key is pressed
+  kb_api methods:
+    :GetKey()    — returns current KeyCode
+    :Set(key)    — programmatically bind a KeyCode
+
+  AddColorPicker(cp_text, default_color, callback)
+  ─────────────────────────────────────────────────
+  Returns:  (cp_api, Frame)
+  callback  (Color3) — called on every colour change
+  cp_api methods:
+    :Get()       — returns current Color3
+    :Set(col)    — programmatically set colour
+
+  AddConsole(height, opts?)
+  ─────────────────────────────────────────────
+  Returns:  (console_api, Frame)
+  opts fields:
+    source     ("Lua" | "Logs")  — syntax mode
+    read_only  (bool)            — disable editing
+    font_size  (integer)         — default 14
+  console_api methods:
+    :Set(code)       — replace entire content
+    :Get()           — return current text
+    :Clear()         — wipe content
+    :Log(msg, tag)   — append "[tag] msg\n", auto-scrolls
+    :Execute()       — run content through loadstring()
+
+  AddFolder(folder_name)
+  ─────────────────────────────────────────────
+  Returns:  (folder_data, Frame)
+  folder_data has the same methods as tab_data (all element builders).
+  Elements added to folder_data appear inside the collapsible section.
+  The folder auto-resizes when elements are added while open.
+
+  AddHorizontalAlignment()
+  ─────────────────────────────────────────────
+  Returns:  (ha_data, Frame)
+  ha_data methods:
+    :AddButton(...)   — add a button to the row
+    :AddSwitch(...)   — add a switch to the row
+    :AddKeybind(...)  — add a keybind to the row
+    :AddLabel(...)    — add a label to the row
+
+  ─────────────────────────────────────────────────────────────────────────
+  WINDOW API REFERENCE
+  ─────────────────────────────────────────────────────────────────────────
+
+  winData:AddTab(tab_name, icon_char?)
+    Returns tab_data table.  icon_char is an optional emoji/symbol prefix.
+
+  winData:Notify(title, message, duration?, color?)
+    Shows a toast notification in the bottom-right corner.
+
+  winData:SetAccentColor(col)
+    Immediately updates the accent colour variable.  All elements that
+    poll options.main_color will reflect the change within one Heartbeat.
+
+  winData:GetAccentColor()
+    Returns the current accent Color3.
+
+  winData:SetTitle(title)
+    Updates the window title text and icon letter.
+
+  winData:SetSubtitle(sub)
+    Updates the subtitle text beneath the title.
+
+  winData:SetVisible(bool)
+    Show (true) or hide (false) the window programmatically.
+
+  winData:IsVisible()
+    Returns true if the window is currently visible.
+
+  winData:Destroy()
+    Animate-out and destroy the window.
+
+  winData:Focus()
+    Raise this window above all others.
+
+  ─────────────────────────────────────────────────────────────────────────
+  GLOBAL API REFERENCE
+  ─────────────────────────────────────────────────────────────────────────
+
+  NexusUI:CreateWindow(opts)            → (winData, Window)
+  NexusUI:CreateLoadingScreen(opts)     → ls_api
+  NexusUI:Confirm(opts, callback)       → void
+  NexusUI:ContextMenu(x, y, items)      → void
+  NexusUI:Notify(title, msg, dur?, col?) → void
+  NexusUI:DestroyAll()                  → void
+  NexusUI:GetScreenGui()                → ScreenGui
+  NexusUI:GetWindowContainer()          → Frame
+  NexusUI:ClearToasts()                 → void
+  NexusUI:SetAllWindowPositions(pos)    → void
+  NexusUI:GetWindowCount()              → integer
+  NexusUI:SetGlobalTint(color, alpha)   → void
+  NexusUI:ClearGlobalTint()             → void
+  NexusUI.Version                       → "2.0.0"
+  NexusUI.Theme                         → THEME table
+  NexusUI.Presets                       → colour preset table
+
+--]]
+
+-- ══════════════════════════════════════════════════════════════════════════
+--  QUICK-START TEMPLATES
+--  Copy-paste-friendly boilerplate for the most common use-cases.
+-- ══════════════════════════════════════════════════════════════════════════
+--[[
+
+  ─── TEMPLATE 1 : Basic combat script UI ────────────────────────────────
+
+  local NexusUI = loadstring(game:HttpGet("..."))()
+  local W, _ = NexusUI:CreateWindow({
+      title      = "Combat Script",
+      subtitle   = "v1.0",
+      main_color = NexusUI.Presets.Red,
+  })
+  local tab = W:AddTab("Main")
+
+  tab:AddSection("Aimbot")
+  local aimEnabled = tab:AddSwitch("Enable Aimbot", false, function(v)
+      -- toggle aimbot
+  end)
+  tab:AddSlider("FOV", function(v)
+      -- update aimbot FOV
+  end, {min=1, max=360, default=90, suffix="°"})
+  tab:AddSlider("Smooth", function(v)
+      -- update smoothing
+  end, {min=1, max=50, default=10})
+
+  tab:AddSection("Aim Key")
+  tab:AddKeybind("Hold Key", Enum.KeyCode.E, function(k)
+      print("Aim key:", k)
+  end)
+
+  ─── TEMPLATE 2 : Visual / ESP script ───────────────────────────────────
+
+  local W2, _ = NexusUI:CreateWindow({
+      title      = "Visual Script",
+      main_color = NexusUI.Presets.Cyan,
+  })
+  local vTab = W2:AddTab("ESP")
+
+  vTab:AddSection("Players")
+  vTab:AddSwitch("Box ESP",     false, function(v) end)
+  vTab:AddSwitch("Name ESP",    false, function(v) end)
+  vTab:AddSwitch("Tracers",     false, function(v) end)
+  vTab:AddSwitch("Skeleton",    false, function(v) end)
+  vTab:AddColorPicker("ESP Color", Color3.fromRGB(255, 80, 80), function(col) end)
+
+  local sTab = W2:AddTab("Settings")
+  sTab:AddSlider("Max Distance", function(v) end, {min=0, max=2000, default=500, suffix=" studs"})
+
+  ─── TEMPLATE 3 : Loading screen then UI ────────────────────────────────
+
+  local ls = NexusUI:CreateLoadingScreen({
+      title    = "My Script",
+      subtitle = "Loading modules…",
+      color    = NexusUI.Presets.Green,
+  })
+
+  ls:SetProgress(25, "Loading player data…")
+  task.wait(0.8)
+  ls:SetProgress(60, "Patching functions…")
+  task.wait(0.6)
+  ls:SetProgress(100, "Done!")
+  task.wait(0.4)
+  ls:Dismiss()
+
+  -- Window appears after loading screen fades
+  task.wait(0.5)
+  local W3, _ = NexusUI:CreateWindow({title = "My Script"})
+  W3:Notify("Ready", "Script loaded successfully.", 3, NexusUI.Presets.Green)
+
+  ─── TEMPLATE 4 : Confirm before destructive action ─────────────────────
+
+  tab:AddButton("Reset Data", function()
+      NexusUI:Confirm({
+          title        = "Reset Data",
+          message      = "All saved settings will be lost. Continue?",
+          color        = NexusUI.Presets.Red,
+          confirm_text = "Yes, reset",
+          cancel_text  = "Cancel",
+      }, function(ok)
+          if ok then
+              -- perform reset
+              W:Notify("Reset", "Data has been reset.", 2)
+          end
+      end)
+  end)
+
+--]]
+
+-- ══════════════════════════════════════════════════════════════════════════
+--  DEPENDENCY / ENVIRONMENT NOTES
+-- ══════════════════════════════════════════════════════════════════════════
+--[[
+
+  NexusUI requires the following Roblox services to be accessible:
+    game:GetService("Players")            ✓ always available
+    game:GetService("RunService")         ✓ always available
+    game:GetService("TweenService")       ✓ always available
+    game:GetService("UserInputService")   ✓ always available
+    game:GetService("CoreGui")            ⚠ may be filtered in some executors
+    game:GetService("TextService")        ✓ always available
+
+  If CoreGui is inaccessible (filtered executor), NexusUI automatically falls
+  back to PlayerGui, which works in all environments but means the GUI is
+  visible in StarterGui replication.
+
+  Optional executor globals used (will silently no-op if unavailable):
+    setclipboard(text)   — used by Console "Copy" button
+    loadstring(code)     — used by console_api:Execute()
+    gethui()             — not used directly; CoreGui fallback handles this
+
+  Image assets used:
+    rbxassetid://6014261993   — 9-slice shadow (window, dialog, toast)
+    rbxassetid://5028857084   — radial glow  (thumb, slider handle)
+    rbxassetid://698052951    — SV gradient  (color picker saturation square)
+    rbxassetid://698053212    — hue rainbow  (color picker hue bar)
+    rbxassetid://4965945816   — spinner ring (loading screen)
+
+  All images are publicly accessible Roblox assets and do not require
+  any additional permissions or mesh/texture uploads.
+
+  Minimum tested Roblox version: January 2023 client
+  Minimum Lua version:           Luau (Roblox)
+  Minimum executor compatibility: any executor with CoreGui or PlayerGui access
+
+--]]
+
+-- ══════════════════════════════════════════════════════════════════════════
+--  END OF FILE
+-- ══════════════════════════════════════════════════════════════════════════
+return NexusUI
