@@ -147,7 +147,7 @@ Toggle.Position = UDim2.new(0, 5, 0, -2)
 Toggle.Rotation = 90
 Toggle.Size = UDim2.new(0, 20, 0, 20)
 Toggle.ZIndex = 2
-Toggle.Image = "https://www.roblox.com/Thumbs/Asset.ashx?width=700&height=700&assetId=109426518054433"
+Toggle.Image = "https://www.roblox.com/Thumbs/Asset.ashx?width=700&height=700&assetId=140690585213145"
 
 Base.Name = "Base"
 Base.Parent = Bar
