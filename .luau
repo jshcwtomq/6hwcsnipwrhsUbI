@@ -1,32 +1,27 @@
+-- COMPLETE ROBLOX UI LIBRARY - FULL VERSION WITH IMPROVEMENTS
+-- Features: Better tab effects, icon support, smooth transitions, all original functions
+
 a = {
 	Theme = {
-
-
         ['lunahubontop'] = {
 	['Background'] = Color3.fromRGB(18, 10, 25),
 	['Background Transparency'] = 0.05,
-
 	['Color Main'] = Color3.fromRGB(200, 100, 255),
-
 	['Color Tab'] = {
 		[1] = Color3.fromRGB(180, 80, 255),
 		[2] = Color3.fromRGB(220, 120, 255)
 	},
-
 	['Top Bar'] = Color3.fromRGB(25, 15, 35),
 	['Text Color'] = Color3.fromRGB(255, 240, 255),
 	['Text Tab Select'] = Color3.fromRGB(255, 255, 255),
 	['Tab Bar'] = Color3.fromRGB(20, 12, 28),
-
 	['Background Page'] = Color3.fromRGB(22, 12, 30),
 	['Line Page'] = Color3.fromRGB(200, 100, 255),
 	['Top Bar Page'] = Color3.fromRGB(28, 18, 38),
 	['Search'] = Color3.fromRGB(40, 25, 55),
-
 	['Background Function'] = Color3.fromRGB(100, 50, 150),
 	['Background Function Transparency'] = 0.8,
 	['Background Function Transparency Moved'] = 0.6,
-
 	['Dropdown Color'] = Color3.fromRGB(45, 28, 60),
 	['Dropdown Select Background'] = Color3.fromRGB(30, 18, 42),
 	['Dropdown Select Stroke'] = Color3.fromRGB(150, 80, 200),
@@ -34,35 +29,28 @@ a = {
 	['Textbox Color'] = Color3.fromRGB(45, 28, 60),
 	['Slider Color'] = Color3.fromRGB(45, 28, 60),
 	['Toggle Color'] = Color3.fromRGB(25, 15, 35),
-
 	['Diglog Top Bar'] = Color3.fromRGB(28, 18, 38),
 	['Diglog Background'] = Color3.fromRGB(20, 12, 28)
-}, 
+		}, 
 		['Quizzy'] = {
 			['Background'] = Color3.fromRGB(16, 16, 16),
 			['Background Transparency'] = 0.1,
-
 			['Color Main'] = Color3.fromRGB(249, 43, 134),
-
 			['Color Tab'] = {
 				[1] = Color3.fromRGB(213, 63, 128),
 				[2] = Color3.fromRGB(209, 102, 198)
 			},
-
 			['Top Bar'] = Color3.fromRGB(21, 21, 21),
 			['Text Color'] = Color3.fromRGB(255, 255, 255),
 			['Text Tab Select'] = Color3.fromRGB(0, 0, 0),
 			['Tab Bar'] = Color3.fromRGB(16, 16, 16),
-
 			['Background Page'] = Color3.fromRGB(24, 24, 24),
 			['Line Page'] = Color3.fromRGB(132, 132, 132),
 			['Top Bar Page'] = Color3.fromRGB(21, 21, 21),
 			['Search'] = Color3.fromRGB(47, 47, 47),
-
 			['Background Function'] = Color3.fromRGB(88, 88, 88),
 			['Background Function Transparency'] = 0.9,
 			['Background Function Transparency Moved'] = 0.8,
-
 			['Dropdown Color'] = Color3.fromRGB(47, 47, 47),
 			['Dropdown Select Background'] = Color3.fromRGB(24, 24, 24),
 			['Dropdown Select Stroke'] = Color3.fromRGB(43, 43, 43),
@@ -70,35 +58,28 @@ a = {
 			['Textbox Color'] = Color3.fromRGB(47, 47, 47),
 			['Slider Color'] = Color3.fromRGB(47, 47, 47),
 			['Toggle Color'] = Color3.fromRGB(16, 16, 16),
-
 			['Diglog Top Bar'] = Color3.fromRGB(22, 22, 22),
 			['Diglog Background'] = Color3.fromRGB(17, 17, 17)
 		},
 		['Dark'] = {
 			['Background'] = Color3.fromRGB(16, 16, 16),
 			['Background Transparency'] = 0.1,
-
 			['Color Main'] = Color3.fromRGB(17, 110, 249),
-
 			['Color Tab'] = {
 				[1] = Color3.fromRGB(2, 69, 213),
 				[2] = Color3.fromRGB(7, 155, 209)
 			},
-
 			['Top Bar'] = Color3.fromRGB(21, 21, 21),
 			['Text Color'] = Color3.fromRGB(255, 255, 255),
 			['Text Tab Select'] = Color3.fromRGB(0, 0, 0),
 			['Tab Bar'] = Color3.fromRGB(16, 16, 16),
-
 			['Background Page'] = Color3.fromRGB(24, 24, 24),
 			['Line Page'] = Color3.fromRGB(132, 132, 132),
 			['Top Bar Page'] = Color3.fromRGB(21, 21, 21),
 			['Search'] = Color3.fromRGB(47, 47, 47),
-
 			['Background Function'] = Color3.fromRGB(88, 88, 88),
 			['Background Function Transparency'] = 0.9,
 			['Background Function Transparency Moved'] = 0.8,
-
 			['Dropdown Color'] = Color3.fromRGB(47, 47, 47),
 			['Dropdown Select Background'] = Color3.fromRGB(24, 24, 24),
 			['Dropdown Select Stroke'] = Color3.fromRGB(43, 43, 43),
@@ -106,35 +87,28 @@ a = {
 			['Textbox Color'] = Color3.fromRGB(47, 47, 47),
 			['Slider Color'] = Color3.fromRGB(47, 47, 47),
 			['Toggle Color'] = Color3.fromRGB(16, 16, 16),
-
 			['Diglog Top Bar'] = Color3.fromRGB(22, 22, 22),
 			['Diglog Background'] = Color3.fromRGB(17, 17, 17)
 		},
 		['Darkness'] = {
 			['Background'] = Color3.fromRGB(16, 16, 16),
 			['Background Transparency'] = 0.1,
-
 			['Color Main'] = Color3.fromRGB(0, 0, 0),
-
 			['Color Tab'] = {
 				[1] = Color3.fromRGB(57, 57, 57),
 				[2] = Color3.fromRGB(57, 57, 57)
 			},
-
 			['Top Bar'] = Color3.fromRGB(21, 21, 21),
 			['Text Color'] = Color3.fromRGB(255, 255, 255),
 			['Text Tab Select'] = Color3.fromRGB(0, 0, 0),
 			['Tab Bar'] = Color3.fromRGB(16, 16, 16),
-
 			['Background Page'] = Color3.fromRGB(24, 24, 24),
 			['Line Page'] = Color3.fromRGB(132, 132, 132),
 			['Top Bar Page'] = Color3.fromRGB(21, 21, 21),
 			['Search'] = Color3.fromRGB(47, 47, 47),
-
 			['Background Function'] = Color3.fromRGB(88, 88, 88),
 			['Background Function Transparency'] = 0.9,
 			['Background Function Transparency Moved'] = 0.8,
-
 			['Dropdown Color'] = Color3.fromRGB(47, 47, 47),
 			['Dropdown Select Background'] = Color3.fromRGB(24, 24, 24),
 			['Dropdown Select Stroke'] = Color3.fromRGB(43, 43, 43),
@@ -142,35 +116,28 @@ a = {
 			['Textbox Color'] = Color3.fromRGB(47, 47, 47),
 			['Slider Color'] = Color3.fromRGB(47, 47, 47),
 			['Toggle Color'] = Color3.fromRGB(16, 16, 16),
-
 			['Diglog Top Bar'] = Color3.fromRGB(22, 22, 22),
 			['Diglog Background'] = Color3.fromRGB(17, 17, 17)
 		},
 		['Light'] = {
 			['Background'] = Color3.fromRGB(241, 241, 241),
 			['Background Transparency'] = 0.1,
-
 			['Color Main'] = Color3.fromRGB(17, 110, 249),
-
 			['Color Tab'] = {
 				[1] = Color3.fromRGB(2, 69, 213),
 				[2] = Color3.fromRGB(7, 155, 209)
 			},
-
 			['Top Bar'] = Color3.fromRGB(209, 209, 209),
 			['Text Color'] = Color3.fromRGB(0, 0, 0),
 			['Text Tab Select'] = Color3.fromRGB(255, 255, 255),
 			['Tab Bar'] = Color3.fromRGB(152, 152, 152),
-
 			['Background Page'] = Color3.fromRGB(176, 176, 176),
 			['Line Page'] = Color3.fromRGB(54, 54, 54),
 			['Top Bar Page'] = Color3.fromRGB(150, 150, 150),
 			['Search'] = Color3.fromRGB(127, 127, 127),
-
 			['Background Function'] = Color3.fromRGB(102, 102, 102),
 			['Background Function Transparency'] = 0.6,
 			['Background Function Transparency Moved'] = 0.4,
-
 			['Dropdown Color'] = Color3.fromRGB(113, 113, 113),
 			['Dropdown Select Background'] = Color3.fromRGB(90, 90, 90),
 			['Dropdown Select Stroke'] = Color3.fromRGB(76, 76, 76),
@@ -178,7 +145,6 @@ a = {
 			['Textbox Color'] = Color3.fromRGB(113, 113, 113),
 			['Slider Color'] = Color3.fromRGB(113, 113, 113),
 			['Toggle Color'] = Color3.fromRGB(52, 52, 52),
-
 			['Diglog Top Bar'] = Color3.fromRGB(209, 209, 209),
 			['Diglog Background'] = Color3.fromRGB(241, 241, 241)
 		}
@@ -425,13 +391,6 @@ b = {
 
 			local function ml(g)
 				g.MouseMoved:Connect(function()
-					--b[1]().tw({
-					--	v = g,
-					--	t = 0.2,
-					--	s = "Linear",
-					--	d = "Out",
-					--	g = {BackgroundTransparency = 0.3}
-					--}):Play()
 					b[1]().tw({
 						v = g,
 						t = 0.1,
@@ -448,13 +407,6 @@ b = {
 					}):Play()
 				end)
 				g.MouseLeave:Connect(function()
-					--b[1]().tw({
-					--	v = g,
-					--	t = 0.2,
-					--	s = "Linear",
-					--	d = "Out",
-					--	g = {BackgroundTransparency = 1}
-					--}):Play()
 					b[1]().tw({
 						v = g,
 						t = 0.1,
@@ -850,8 +802,6 @@ b = {
 		local f = b[1]().n
 		return f('ScreenGui', {Parent = not game:GetService("RunService"):IsStudio() and game:GetService("CoreGui") or game:GetService("Players").LocalPlayer.PlayerGui, ZIndexBehavior = Enum.ZIndexBehavior.Sibling})
 	end,
-	
-	
 	[3] = function()
 		local ConfigSystem = {}
 		ConfigSystem.Elements = {}
@@ -901,7 +851,6 @@ b = {
 		return ConfigSystem
 	end, 
 	
-	
 	CreateWindow = function(self, op)
 		local f, g, CloseUI, patab, of, scl, KeyCloseUI, isopen = self[1]().n, {}, nil, nil, false ,nil, op.Keybind or Enum.KeyCode.LeftControl, false
 		assert(op.Title, "Window - Missing Title")
@@ -927,49 +876,49 @@ b = {
 					PaddingTop = UDim.new(0, 7),
 					PaddingLeft = UDim.new(0, 16)
 				}),
-f("Frame", {
-    BorderSizePixel = 0,
-    BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-    Size = UDim2.new(0, 200, 0, 35),
-    BorderColor3 = Color3.fromRGB(0, 0, 0),
-    BackgroundTransparency = 1
-}, {
-    f("UIPadding", {PaddingLeft = UDim.new(0, 50)}),
-    f("UIListLayout", {
-        Padding = UDim.new(0, -2),
-        SortOrder = Enum.SortOrder.LayoutOrder,
-        VerticalAlignment = Enum.VerticalAlignment.Center
-    }),
-    f("TextLabel", {
-        BorderSizePixel = 0,
-        TextXAlignment = Enum.TextXAlignment.Left,
-        BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-        TextSize = 11,
-        FontFace = Font.new("rbxassetid://16658237174", Enum.FontWeight.Regular, Enum.FontStyle.Normal),
-        TextColor3 = a.Theme[op.Theme or 'Quizzy']['Text Color'],
-        BackgroundTransparency = 1,
-        Size = UDim2.new(1, 0, 0, 16),
-        AutomaticSize = Enum.AutomaticSize.Y,
-        BorderColor3 = Color3.fromRGB(0, 0, 0),
-        Text = string.upper(op.Title),
-        LayoutOrder = 1
-    }),
-    f("TextLabel", {
-        BorderSizePixel = 0,
-        TextXAlignment = Enum.TextXAlignment.Left,
-        BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-        TextSize = 9,
-        FontFace = Font.new("rbxassetid://16658237174", Enum.FontWeight.Regular, Enum.FontStyle.Normal),
-        TextColor3 = a.Theme[op.Theme or 'Quizzy']['Text Color'],
-        BackgroundTransparency = 1,
-        TextTransparency = 0.6,
-        Size = UDim2.new(1, 0, 0, 10),
-        AutomaticSize = Enum.AutomaticSize.Y,
-        BorderColor3 = Color3.fromRGB(0, 0, 0),
-        Text = op.Subtitle or "",
-        LayoutOrder = 2
-    })
-}),
+				f("Frame", {
+					BorderSizePixel = 0,
+					BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+					Size = UDim2.new(0, 200, 0, 35),
+					BorderColor3 = Color3.fromRGB(0, 0, 0),
+					BackgroundTransparency = 1
+				}, {
+					f("UIPadding", {PaddingLeft = UDim.new(0, 50)}),
+					f("UIListLayout", {
+						Padding = UDim.new(0, -2),
+						SortOrder = Enum.SortOrder.LayoutOrder,
+						VerticalAlignment = Enum.VerticalAlignment.Center
+					}),
+					f("TextLabel", {
+						BorderSizePixel = 0,
+						TextXAlignment = Enum.TextXAlignment.Left,
+						BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+						TextSize = 11,
+						FontFace = Font.new("rbxassetid://16658237174", Enum.FontWeight.Regular, Enum.FontStyle.Normal),
+						TextColor3 = a.Theme[op.Theme or 'Quizzy']['Text Color'],
+						BackgroundTransparency = 1,
+						Size = UDim2.new(1, 0, 0, 16),
+						AutomaticSize = Enum.AutomaticSize.Y,
+						BorderColor3 = Color3.fromRGB(0, 0, 0),
+						Text = string.upper(op.Title),
+						LayoutOrder = 1
+					}),
+					f("TextLabel", {
+						BorderSizePixel = 0,
+						TextXAlignment = Enum.TextXAlignment.Left,
+						BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+						TextSize = 9,
+						FontFace = Font.new("rbxassetid://16658237174", Enum.FontWeight.Regular, Enum.FontStyle.Normal),
+						TextColor3 = a.Theme[op.Theme or 'Quizzy']['Text Color'],
+						BackgroundTransparency = 1,
+						TextTransparency = 0.6,
+						Size = UDim2.new(1, 0, 0, 10),
+						AutomaticSize = Enum.AutomaticSize.Y,
+						BorderColor3 = Color3.fromRGB(0, 0, 0),
+						Text = op.Subtitle or "",
+						LayoutOrder = 2
+					})
+				}),
 				f("ImageLabel", {
 					BorderSizePixel = 0,
 					BackgroundColor3 = Color3.fromRGB(255, 255, 255),
@@ -988,7 +937,7 @@ f("Frame", {
 				Size = UDim2.new(0, 130, 1, -50),
 				BorderColor3 = Color3.fromRGB(0, 0, 0),
 			}, {
-				f("ScrollingFrame", { --"Scrolling Frame Tab List (Sidebar)"
+				f("ScrollingFrame", {
 					Active = true,
 					BorderSizePixel = 0,
 					CanvasSize = UDim2.new(0, 0, 2, 0),
@@ -1159,64 +1108,55 @@ f("Frame", {
 
 		b[1]().lak(fo)
 
-
         -- ANIMATED GLOW EFFECT
-if op.Theme == 'lunahubontop' then
-	local glowFrame = f("Frame", {
-		Parent = fo,
-		BackgroundTransparency = 1,
-		Size = UDim2.new(1, 0, 1, 0),
-		ZIndex = 0
-	}, {
-		f("UICorner", {CornerRadius = UDim.new(0, 11)}),
-		f("ImageLabel", {
-			BackgroundTransparency = 1,
-			Size = UDim2.new(1, 40, 1, 40),
-			Position = UDim2.new(0, -20, 0, -20),
-			Image = "rbxassetid://5028857084",
-			ImageColor3 = Color3.fromRGB(200, 100, 255),
-			ScaleType = Enum.ScaleType.Slice,
-			SliceCenter = Rect.new(10, 10, 118, 118),
-			ImageTransparency = 0.5
-		})
-	})
-	
-	-- Breathing glow animation
-	spawn(function()
-		while glowFrame and glowFrame.Parent do
-			b[1]().tw({
-				v = glowFrame.ImageLabel,
-				t = 2,
-				s = "Sine",
-				d = "InOut",
-				g = {ImageTransparency = 0.3}
-			}):Play()
-			wait(2)
-			b[1]().tw({
-				v = glowFrame.ImageLabel,
-				t = 2,
-				s = "Sine",
-				d = "InOut",
-				g = {ImageTransparency = 0.7}
-			}):Play()
-			wait(2)
+		if op.Theme == 'lunahubontop' then
+			local glowFrame = f("Frame", {
+				Parent = fo,
+				BackgroundTransparency = 1,
+				Size = UDim2.new(1, 0, 1, 0),
+				ZIndex = 0
+			}, {
+				f("UICorner", {CornerRadius = UDim.new(0, 11)}),
+				f("ImageLabel", {
+					BackgroundTransparency = 1,
+					Size = UDim2.new(1, 40, 1, 40),
+					Position = UDim2.new(0, -20, 0, -20),
+					Image = "rbxassetid://5028857084",
+					ImageColor3 = Color3.fromRGB(200, 100, 255),
+					ScaleType = Enum.ScaleType.Slice,
+					SliceCenter = Rect.new(10, 10, 118, 118),
+					ImageTransparency = 0.5
+				})
+			})
+			
+			-- Breathing glow animation
+			spawn(function()
+				while glowFrame and glowFrame.Parent do
+					b[1]().tw({
+						v = glowFrame.ImageLabel,
+						t = 2,
+						s = "Sine",
+						d = "InOut",
+						g = {ImageTransparency = 0.3}
+					}):Play()
+					wait(2)
+					b[1]().tw({
+						v = glowFrame.ImageLabel,
+						t = 2,
+						s = "Sine",
+						d = "InOut",
+						g = {ImageTransparency = 0.7}
+					}):Play()
+					wait(2)
+				end
+			end)
 		end
-	end)
-end
 
 		function g:CreateTab(gfjd)
 			assert(gfjd.Title, "Tab - Missing Title")
 
-			local textSize = game:GetService("TextService"):GetTextSize(
-				gfjd.Title,
-				11,
-				Enum.Font.Gotham,
-				Vector2.new(math.huge, math.huge)
-			)
-
+			local tabIcon = gfjd.Icon or nil
 			local Scroll, Search = nil, nil
-
-			local TabWidth = textSize.X + 20
 
 			local Tab = f("Frame", {
 				Parent = patab,
@@ -1244,19 +1184,23 @@ end
 				}, {
 					f("UICorner", {CornerRadius = UDim.new(1, 0)})
 				}),
-				f("TextLabel", {
-					TextWrapped = true,
+				f("Frame", {
+					Name = "Content",
 					BorderSizePixel = 0,
-					TextXAlignment = Enum.TextXAlignment.Left,
-					BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-					TextSize = 12,
-					Font = Enum.Font.GothamMedium,
-					TextColor3 = a.Theme[op.Theme or 'Quizzy']['Text Color'],
 					BackgroundTransparency = 1,
-					Size = UDim2.new(1, -20, 1, 0),
-					Position = UDim2.new(0, 14, 0, 0),
-					BorderColor3 = Color3.fromRGB(0, 0, 0),
-					Text = gfjd.Title
+					Size = UDim2.new(1, 0, 1, 0),
+				}, {
+					f("UIListLayout", {
+						Padding = UDim.new(0, 5),
+						FillDirection = Enum.FillDirection.Horizontal,
+						VerticalAlignment = Enum.VerticalAlignment.Center,
+						HorizontalAlignment = Enum.HorizontalAlignment.Center,
+						SortOrder = Enum.SortOrder.LayoutOrder
+					}),
+					f("UIPadding", {
+						PaddingLeft = UDim.new(0, 8),
+						PaddingRight = UDim.new(0, 8)
+					})
 				}),
 				f("TextButton", {
 					BorderSizePixel = 0,
@@ -1267,18 +1211,65 @@ end
 					Size = UDim2.new(1, 0, 1, 0),
 					BackgroundTransparency = 1,
 					BorderColor3 = Color3.fromRGB(0, 0, 0),
-					Text = ""
+					Text = "",
+					ZIndex = 2
 				})
 			})
+			
+			-- Add icon if provided
+			if tabIcon then
+				f("ImageLabel", {
+					Parent = Tab.Content,
+					BorderSizePixel = 0,
+					BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+					Image = b[1]().gl(tabIcon),
+					Size = UDim2.new(0, 16, 0, 16),
+					BackgroundTransparency = 1,
+					BorderColor3 = Color3.fromRGB(0, 0, 0),
+					ImageColor3 = a.Theme[op.Theme or 'Quizzy']['Text Color'],
+					LayoutOrder = 1
+				})
+			end
+			
+			-- Add title
+			f("TextLabel", {
+				Parent = Tab.Content,
+				TextWrapped = true,
+				BorderSizePixel = 0,
+				TextXAlignment = Enum.TextXAlignment.Center,
+				BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+				TextSize = 11,
+				Font = Enum.Font.GothamMedium,
+				TextColor3 = a.Theme[op.Theme or 'Quizzy']['Text Color'],
+				BackgroundTransparency = 1,
+				Size = UDim2.new(1, 0, 1, 0),
+				BorderColor3 = Color3.fromRGB(0, 0, 0),
+				Text = gfjd.Title,
+				LayoutOrder = 2
+			})
 
+			-- IMPROVED: Smooth hover effect
 			Tab.MouseEnter:Connect(function()
 				if Tab.BackgroundTransparency > 0 then
-					b[1]().tw({v = Tab, t = 0.15, s = "Linear", d = "Out", g = {BackgroundTransparency = 0.85}}):Play()
+					b[1]().tw({
+						v = Tab,
+						t = 0.2,
+						s = "Linear",
+						d = "Out",
+						g = {BackgroundTransparency = 0.75}
+					}):Play()
 				end
 			end)
+			
 			Tab.MouseLeave:Connect(function()
 				if Tab.BackgroundTransparency < 1 and Tab.BackgroundTransparency > 0 then
-					b[1]().tw({v = Tab, t = 0.15, s = "Linear", d = "Out", g = {BackgroundTransparency = 1}}):Play()
+					b[1]().tw({
+						v = Tab,
+						t = 0.2,
+						s = "Linear",
+						d = "Out",
+						g = {BackgroundTransparency = 1}
+					}):Play()
 				end
 			end)
 
@@ -1426,118 +1417,121 @@ end
 				})
 			})
 
-			local function selectt()
+			-- IMPROVED: Smooth page transition without black flash
+			local function selectTab()
+				-- Deselect other tabs
+				for i, v in pairs(patab:GetChildren()) do
+					if v:IsA("Frame") and v ~= Tab then
+						b[1]().tw({
+							v = v,
+							t = 0.25,
+							s = "Linear",
+							d = "Out",
+							g = {BackgroundTransparency = 1}
+						}):Play()
+						
+						local textLabel = v.Content:FindFirstChildOfClass("TextLabel")
+						if textLabel then
+							b[1]().tw({
+								v = textLabel,
+								t = 0.25,
+								s = "Linear",
+								d = "Out",
+								g = {TextColor3 = a.Theme[op.Theme or 'Quizzy']['Text Color']}
+							}):Play()
+						end
+						
+						b[1]().tw({
+							v = v.Accent,
+							t = 0.25,
+							s = "Linear",
+							d = "Out",
+							g = {BackgroundTransparency = 1}
+						}):Play()
+					end
+				end
+				
+				-- Hide other pages
+				for i, v in pairs(fo:GetChildren()) do
+					if v:IsA("Frame") and v.Name == "Page" and v ~= Page then
+						v.Visible = false
+					end
+				end
+				
+				-- Select current tab with smooth effect
 				b[1]().tw({
 					v = Tab,
-					t = 0.3,
-					s = "Linear",
-					d = "InOut",
-					g = {BackgroundTransparency = 0
-					}
-				}):Play()
-				b[1]().tw({
-					v = Tab.TextLabel,
-					t = 0.3,
-					s = "Linear",
-					d = "Out",
-					g = {TextColor3 = a.Theme[op.Theme or 'Quizzy']['Text Tab Select']}
-				}):Play()
-				b[1]().tw({
-					v = Tab.Accent,
-					t = 0.3,
+					t = 0.25,
 					s = "Linear",
 					d = "Out",
 					g = {BackgroundTransparency = 0}
 				}):Play()
-				delay(.3,function()
-					Page.Visible = true
+				
+				local textLabel = Tab.Content:FindFirstChildOfClass("TextLabel")
+				if textLabel then
 					b[1]().tw({
-						v = Page.CanvasGroup,
-						t = 0.3,
+						v = textLabel,
+						t = 0.25,
 						s = "Linear",
-						d = "In",
-						g = {GroupTransparency = 0}
+						d = "Out",
+						g = {TextColor3 = a.Theme[op.Theme or 'Quizzy']['Text Tab Select']}
 					}):Play()
-				end)
+				end
+				
+				b[1]().tw({
+					v = Tab.Accent,
+					t = 0.25,
+					s = "Linear",
+					d = "Out",
+					g = {BackgroundTransparency = 0}
+				}):Play()
+				
+				-- Show page with fade in
+				Page.Visible = true
+				b[1]().tw({
+					v = Page.CanvasGroup,
+					t = 0.25,
+					s = "Linear",
+					d = "Out",
+					g = {GroupTransparency = 0}
+				}):Play()
 			end
 
 			Tab.TextButton.MouseButton1Click:Connect(function()
-				for i,v in pairs(patab:GetChildren()) do
-					if v:IsA("Frame") then
-						b[1]().tw({
-							v = v,
-							t = 0.3,
-							s = "Linear",
-							d = "Out",
-							g = {BackgroundTransparency = 1}
-						}):Play()
-						b[1]().tw({
-							v = v.TextLabel,
-							t = 0.3,
-							s = "Linear",
-							d = "Out",
-							g = {TextColor3 = a.Theme[op.Theme or 'Quizzy']['Text Color']}
-						}):Play()
-						b[1]().tw({
-							v = v.Accent,
-							t = 0.3,
-							s = "Linear",
-							d = "Out",
-							g = {BackgroundTransparency = 1}
-						}):Play()
-					end
-				end
-				for i,v in pairs(fo:GetChildren()) do
-					if v:IsA("Frame") and v.Name == "Page" then
-						local gf = b[1]().tw({
-							v = v.CanvasGroup,
-							t = 0.15,
-							s = "Linear",
-							d = "Out",
-							g = {GroupTransparency = 1}
-						})
-						gf:Play()
-						gf.Completed:Connect(function()
-							v.Visible = false
-						end)
-					end
-				end
-				selectt()
+				selectTab()
 			end)
 
-			delay(.3,function()
-				if not of then
-					selectt()
-					of = true
+			delay(0.1, function()
+				if patab:FindFirstChild(Tab.Name) == Tab and Tab == patab:GetChildren()[1] then
+					selectTab()
 				end
 			end)
 
 			Search.Changed:Connect(function()
-		local SearchT = string.lower(Search.Text)
-		for i,v in pairs(Scroll:GetChildren()) do
-			if v:IsA("Frame") then
-				if SearchT ~= "" and v:FindFirstChild("TextDesc") and v.TextDesc:FindFirstChild("TextLabel") then
-					if string.find(string.lower(v.TextDesc.TextLabel.Text), SearchT) then
-						v.Visible = true
-					else
-						v.Visible = false
+				local SearchT = string.lower(Search.Text)
+				for i,v in pairs(Scroll:GetChildren()) do
+					if v:IsA("Frame") then
+						if SearchT ~= "" and v:FindFirstChild("TextDesc") and v.TextDesc:FindFirstChild("TextLabel") then
+							if string.find(string.lower(v.TextDesc.TextLabel.Text), SearchT) then
+								v.Visible = true
+							else
+								v.Visible = false
+							end
+						else
+							v.Visible = true
+						end
 					end
-				else
-					v.Visible = true
 				end
-			end
-		end
-	end)
+			end)
 
-	local Func = {}
-	
-	Func.ConfigSystem = b[3]()
-	Func.ConfigSystem.ConfigName = op.Title .. "_" .. gfjd.Title
-	
-	delay(1, function()
-		Func.ConfigSystem:LoadConfig()
-	end)
-
+			local Func = {}
+			
+			Func.ConfigSystem = b[3]()
+			Func.ConfigSystem.ConfigName = op.Title .. "_" .. gfjd.Title
+			
+			delay(1, function()
+				Func.ConfigSystem:LoadConfig()
+			end)
 
 			function Func:CreateToggle(khgkgh)
 				assert(khgkgh.Title, "Toggle - Missing Title")
@@ -1583,8 +1577,8 @@ end
 				})
 
 				local function ToggleC(newValue)
-	Value = newValue
-	if not Value then
+					Value = newValue
+					if not Value then
 						pcall(function()
 							Callback(Value)
 						end)
@@ -1667,17 +1661,17 @@ end
 				end
 
 				function NewSet:SetValue(newValue)
-		ToggleC(newValue)
-	end
-	
-	local Key = khgkgh.Key or khgkgh.Title
-	Func.ConfigSystem:Register(Key, 
-		function() return Value end,
-		function(val) ToggleC(val) end
-	)
+					ToggleC(newValue)
+				end
+				
+				local Key = khgkgh.Key or khgkgh.Title
+				Func.ConfigSystem:Register(Key, 
+					function() return Value end,
+					function(val) ToggleC(val) end
+				)
 
-	return NewSet
-end
+				return NewSet
+			end
 
 			function Func:CreateDropdown(khgkgh)
 				assert(khgkgh.Title, "Dropdown - Missing Title")
@@ -1783,7 +1777,6 @@ end
 				dropdownselect.Position = UDim2.new(0, dropdown.Frame.AbsolutePosition.X - dropdownselect.Parent.AbsolutePosition.X + dropdown.Frame.Size.X.Offset - 150, 0, dropdown.Frame.AbsolutePosition.Y - dropdownselect.Parent.AbsolutePosition.Y + dropdown.Frame.Size.Y.Offset - 20)
 
 				local isopen = false
-
 				local click = b[1]().click(par)
 
 				local function opendropdown()
@@ -1889,370 +1882,364 @@ end
 				local selectedItem
 
 				function itemslist:Clear()
-	if not Multi then
-		for _, child in ipairs(dropdownselect.ScrollingFrame:GetChildren()) do
-			if child:IsA("Frame") then
-				child:Destroy()
-			end
-		end
+					if not Multi then
+						for _, child in ipairs(dropdownselect.ScrollingFrame:GetChildren()) do
+							if child:IsA("Frame") then
+								child:Destroy()
+							end
+						end
 
-		selectedItem = nil
-		dropdown.Frame.TextLabel.Text = ""
-	else
-		for key in pairs(selectedValues) do
-			selectedValues[key] = nil
-		end
-
-		for _, child in ipairs(dropdownselect.ScrollingFrame:GetChildren()) do
-			if child:IsA("Frame") then
-				child:Destroy()
-			end
-		end
-
-		dropdown.Frame.TextLabel.Text = ""
-	end
-end
-
--- ========== NEW REMOVE FUNCTION ADDED HERE ==========
-function itemslist:Remove(t)
-	for _, child in ipairs(dropdownselect.ScrollingFrame:GetChildren()) do
-		if child:IsA("Frame") and child:FindFirstChild("TextLabel") then
-			if child.TextLabel.Text == t then
-				-- Remove from multi-select values
-				if Multi and selectedValues[t] then
-					selectedValues[t] = nil
-					local selectedList = {}
-					for i, v in pairs(selectedValues) do
-						table.insert(selectedList, i)
-					end
-					if #selectedList > 0 then
-						dropdown.Frame.TextLabel.Text = table.concat(selectedList, ", ")
+						selectedItem = nil
+						dropdown.Frame.TextLabel.Text = ""
 					else
+						for key in pairs(selectedValues) do
+							selectedValues[key] = nil
+						end
+
+						for _, child in ipairs(dropdownselect.ScrollingFrame:GetChildren()) do
+							if child:IsA("Frame") then
+								child:Destroy()
+							end
+						end
+
 						dropdown.Frame.TextLabel.Text = ""
 					end
-					pcall(function()
-						Callback(selectedList)
-					end)
 				end
-				
-				-- Clear single select
-				if not Multi and Value == t then
-					Value = ""
-					dropdown.Frame.TextLabel.Text = ""
-					pcall(function()
-						Callback("")
-					end)
-				end
-				
-				-- Destroy the item
-				child:Destroy()
-				break
-			end
-		end
-	end
-end
--- ========== END NEW REMOVE FUNCTION ==========
 
-function itemslist:Add(t)
-	local item = f("Frame", {
-		Parent = dropdownselect.ScrollingFrame,
-		BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Dropdown Item'],
-		BackgroundTransparency = 0.9,
-		BorderColor3 = Color3.fromRGB(0,0,0),
-		BorderSizePixel = 0,
-		Size = UDim2.new(1, 0,0, 20),
-	}, {
-		f("UICorner", {CornerRadius = UDim.new(0, 4)}),
-		f("UIPadding", {PaddingLeft = UDim.new(0, 5)}),
-		f("UIGradient", {Color = ColorSequence.new{ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1, Color3.fromRGB(170, 170, 170))}}),
-		f("TextLabel", {
-			BackgroundColor3 = Color3.fromRGB(255,255,255),
-			BackgroundTransparency = 1,
-			BorderColor3 = Color3.fromRGB(0,0,0),
-			BorderSizePixel = 0,
-			Size = UDim2.new(1, 0,1, 0),
-			Font = Enum.Font.Gotham,
-			Text = t,
-			TextColor3 = Color3.fromRGB(255,255,255),
-			TextSize = 11,
-			TextXAlignment = Enum.TextXAlignment.Left
-		})
-	})
-
-	local clickitem = b[1]().click(item)
-	clickitem.MouseButton1Click:Connect(function()
-		b[1]().jc(clickitem, item)
-		if Multi then
-			if selectedValues[t] then
-				selectedValues[t] = nil
-				b[1]().tw({
-					v = item,
-					t = 0.15,
-					s = "Linear",
-					d = "InOut",
-					g = {BackgroundColor3 = Color3.fromRGB(88, 88, 88), BackgroundTransparency = 0.9}
-				}):Play()
-				b[1]().tw({
-					v = item.TextLabel,
-					t = 0.15,
-					s = "Linear",
-					d = "InOut",
-					g = {TextColor3 = Color3.fromRGB(255 ,255 ,255)}
-				}):Play()
-				item.TextLabel.Text = t
-				local selectedList = {}
-				for i, v in pairs(selectedValues) do
-					table.insert(selectedList, i)
-				end
-				if #selectedList > 0 then
-					dropdown.Frame.TextLabel.Text = table.concat(selectedList, ", ")
-				else
-					dropdown.Frame.TextLabel.Text = ""
-				end
-				pcall(function()
-					Callback(selectedList)
-				end)
-			else
-				b[1]().tw({
-					v = item,
-					t = 0.15,
-					s = "Linear",
-					d = "InOut",
-					g = {BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Color Main'], BackgroundTransparency = 0}
-				}):Play()
-				b[1]().tw({
-					v = item.TextLabel,
-					t = 0.15,
-					s = "Linear",
-					d = "InOut",
-					g = {TextColor3 = Color3.fromRGB(0, 0, 0)}
-				}):Play()
-				selectedValues[t] = true
-				item.TextLabel.Text = t
-				local selectedList = {}
-				for i, v in pairs(selectedValues) do
-					table.insert(selectedList, i)
-				end
-				dropdown.Frame.TextLabel.Text = table.concat(selectedList, ", ")
-				pcall(function()
-					Callback(selectedList)
-				end)
-			end
-		else
-			for i,v in pairs(dropdownselect.ScrollingFrame:GetChildren()) do
-				if v:IsA("Frame") then
-					b[1]().tw({
-						v = v,
-						t = 0.15,
-						s = "Linear",
-						d = "InOut",
-						g = {BackgroundColor3 = Color3.fromRGB(88, 88, 88), BackgroundTransparency = 0.9}
-					}):Play()
-					b[1]().tw({
-						v = v.TextLabel,
-						t = 0.15,
-						s = "Linear",
-						d = "InOut",
-						g = {TextColor3 = Color3.fromRGB(255 ,255 ,255)}
-					}):Play()
-				end
-			end
-			b[1]().tw({
-				v = item,
-				t = 0.15,
-				s = "Linear",
-				d = "InOut",
-				g = {BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Color Main'], BackgroundTransparency = 0}
-			}):Play()
-			b[1]().tw({
-				v = item.TextLabel,
-				t = 0.15,
-				s = "Linear",
-				d = "InOut",
-				g = {TextColor3 = Color3.fromRGB(0, 0, 0)}
-			}):Play()
-			item.TextLabel.Text = t
-			Value = t
-			dropdown.Frame.TextLabel.Text = t
-			pcall(function()
-				Callback(t)
-			end)
-		end
-	end)
-
-	local function isValueInTable(val, tbl)
-		if type(tbl) ~= "table" then
-			return false
-		end
-
-		for _, v in pairs(tbl) do
-			if v == val then
-				return true
-			end
-		end
-		return false
-	end
-
-	delay(0,function()
-		if Multi then
-			if isValueInTable(t, Value) then
-				b[1]().tw({
-					v = item,
-					t = 0.15,
-					s = "Linear",
-					d = "InOut",
-					g = {BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Color Main'], BackgroundTransparency = 0}
-				}):Play()
-				b[1]().tw({
-					v = item.TextLabel,
-					t = 0.15,
-					s = "Linear",
-					d = "InOut",
-					g = {TextColor3 = Color3.fromRGB(0, 0, 0)}
-				}):Play()
-				item.TextLabel.Text = t
-				selectedValues[t] = true
-				local selectedList = {}
-				for i, v in pairs(selectedValues) do
-					table.insert(selectedList, i)
-				end
-				dropdown.Frame.TextLabel.Text = table.concat(selectedList, ", ")
-				pcall(function()
-					Callback(selectedList)
-				end)
-			end
-		else
-			if t == Value then
-				b[1]().tw({
-					v = item,
-					t = 0.15,
-					s = "Linear",
-					d = "InOut",
-					g = {BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Color Main'], BackgroundTransparency = 0}
-				}):Play()
-				b[1]().tw({
-					v = item.TextLabel,
-					t = 0.15,
-					s = "Linear",
-					d = "InOut",
-					g = {TextColor3 = Color3.fromRGB(0, 0, 0)}
-				}):Play()
-				item.TextLabel.Text = t
-				Value = t
-				dropdown.Frame.TextLabel.Text = t
-				pcall(function()
-					Callback(t)
-				end)
-			end
-		end
-		dps()
-	end)
-end
-
-for i,v in ipairs(List) do
-	itemslist:Add(v)
-end
-
-dropdown.Frame.TextLabel:GetPropertyChangedSignal("Text"):Connect(function()
-	dps()
-end)
-
-dropdownselect.ScrollingFrame.UIListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-	dropdownselect.ScrollingFrame.CanvasSize = UDim2.new(0, 0, 0, dropdownselect.ScrollingFrame.UIListLayout.AbsoluteContentSize.Y + 5)
-end)
-
-function itemslist:SetTitle(newTitle)
-	par.TextDesc.TextLabel.Text = newTitle
-end
-
-function itemslist:SetDesc(newDesc)
-	local descLabel = par.TextDesc:FindFirstChild("Desc")
-	if descLabel then
-		descLabel.Text = newDesc
-	else
-		b[1]().desc(par.TextDesc, newDesc, op)
-	end
-end
-
-function itemslist:SetVisible(newVisible)
-		par.Visible = newVisible
-	end
-	
-
-	local Key = khgkgh.Key or khgkgh.Title
-	Func.ConfigSystem:Register(Key,
-		function() 
-			if Multi then
-				local list = {}
-				for k, v in pairs(selectedValues) do
-					table.insert(list, k)
-				end
-				return list
-			else
-				return Value
-			end
-		end,
-		function(val)
-			if Multi then
-				selectedValues = {}
-				if type(val) == "table" then
-					for _, v in ipairs(val) do
-						selectedValues[v] = true
-					end
-				end
-				local list = {}
-				for k in pairs(selectedValues) do
-					table.insert(list, k)
-				end
-				dropdown.Frame.TextLabel.Text = table.concat(list, ", ")
-				
-				for _, child in ipairs(dropdownselect.ScrollingFrame:GetChildren()) do
-					if child:IsA("Frame") and child:FindFirstChild("TextLabel") then
-						local itemText = child.TextLabel.Text
-						if selectedValues[itemText] then
-							b[1]().tw({v = child, t = 0.15, s = "Linear", d = "InOut", 
-								g = {BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Color Main'], BackgroundTransparency = 0}}):Play()
-							b[1]().tw({v = child.TextLabel, t = 0.15, s = "Linear", d = "InOut", 
-								g = {TextColor3 = Color3.fromRGB(0, 0, 0)}}):Play()
-						else
-							b[1]().tw({v = child, t = 0.15, s = "Linear", d = "InOut",
-								g = {BackgroundColor3 = Color3.fromRGB(88, 88, 88), BackgroundTransparency = 0.9}}):Play()
-							b[1]().tw({v = child.TextLabel, t = 0.15, s = "Linear", d = "InOut",
-								g = {TextColor3 = Color3.fromRGB(255, 255, 255)}}):Play()
+				function itemslist:Remove(t)
+					for _, child in ipairs(dropdownselect.ScrollingFrame:GetChildren()) do
+						if child:IsA("Frame") and child:FindFirstChild("TextLabel") then
+							if child.TextLabel.Text == t then
+								if Multi and selectedValues[t] then
+									selectedValues[t] = nil
+									local selectedList = {}
+									for i, v in pairs(selectedValues) do
+										table.insert(selectedList, i)
+									end
+									if #selectedList > 0 then
+										dropdown.Frame.TextLabel.Text = table.concat(selectedList, ", ")
+									else
+										dropdown.Frame.TextLabel.Text = ""
+									end
+									pcall(function()
+										Callback(selectedList)
+									end)
+								end
+								
+								if not Multi and Value == t then
+									Value = ""
+									dropdown.Frame.TextLabel.Text = ""
+									pcall(function()
+										Callback("")
+									end)
+								end
+								
+								child:Destroy()
+								break
+							end
 						end
 					end
 				end
-				pcall(function()
-					Callback(list)
-				end)
-			else
-				Value = val
-				dropdown.Frame.TextLabel.Text = val
-				
-				for _, child in ipairs(dropdownselect.ScrollingFrame:GetChildren()) do
-					if child:IsA("Frame") and child:FindFirstChild("TextLabel") then
-						if child.TextLabel.Text == val then
-							b[1]().tw({v = child, t = 0.15, s = "Linear", d = "InOut",
-								g = {BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Color Main'], BackgroundTransparency = 0}}):Play()
-							b[1]().tw({v = child.TextLabel, t = 0.15, s = "Linear", d = "InOut",
-								g = {TextColor3 = Color3.fromRGB(0, 0, 0)}}):Play()
+
+				function itemslist:Add(t)
+					local item = f("Frame", {
+						Parent = dropdownselect.ScrollingFrame,
+						BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Dropdown Item'],
+						BackgroundTransparency = 0.9,
+						BorderColor3 = Color3.fromRGB(0,0,0),
+						BorderSizePixel = 0,
+						Size = UDim2.new(1, 0,0, 20),
+					}, {
+						f("UICorner", {CornerRadius = UDim.new(0, 4)}),
+						f("UIPadding", {PaddingLeft = UDim.new(0, 5)}),
+						f("UIGradient", {Color = ColorSequence.new{ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1, Color3.fromRGB(170, 170, 170))}}),
+						f("TextLabel", {
+							BackgroundColor3 = Color3.fromRGB(255,255,255),
+							BackgroundTransparency = 1,
+							BorderColor3 = Color3.fromRGB(0,0,0),
+							BorderSizePixel = 0,
+							Size = UDim2.new(1, 0,1, 0),
+							Font = Enum.Font.Gotham,
+							Text = t,
+							TextColor3 = Color3.fromRGB(255,255,255),
+							TextSize = 11,
+							TextXAlignment = Enum.TextXAlignment.Left
+						})
+					})
+
+					local clickitem = b[1]().click(item)
+					clickitem.MouseButton1Click:Connect(function()
+						b[1]().jc(clickitem, item)
+						if Multi then
+							if selectedValues[t] then
+								selectedValues[t] = nil
+								b[1]().tw({
+									v = item,
+									t = 0.15,
+									s = "Linear",
+									d = "InOut",
+									g = {BackgroundColor3 = Color3.fromRGB(88, 88, 88), BackgroundTransparency = 0.9}
+								}):Play()
+								b[1]().tw({
+									v = item.TextLabel,
+									t = 0.15,
+									s = "Linear",
+									d = "InOut",
+									g = {TextColor3 = Color3.fromRGB(255 ,255 ,255)}
+								}):Play()
+								item.TextLabel.Text = t
+								local selectedList = {}
+								for i, v in pairs(selectedValues) do
+									table.insert(selectedList, i)
+								end
+								if #selectedList > 0 then
+									dropdown.Frame.TextLabel.Text = table.concat(selectedList, ", ")
+								else
+									dropdown.Frame.TextLabel.Text = ""
+								end
+								pcall(function()
+									Callback(selectedList)
+								end)
+							else
+								b[1]().tw({
+									v = item,
+									t = 0.15,
+									s = "Linear",
+									d = "InOut",
+									g = {BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Color Main'], BackgroundTransparency = 0}
+								}):Play()
+								b[1]().tw({
+									v = item.TextLabel,
+									t = 0.15,
+									s = "Linear",
+									d = "InOut",
+									g = {TextColor3 = Color3.fromRGB(0, 0, 0)}
+								}):Play()
+								selectedValues[t] = true
+								item.TextLabel.Text = t
+								local selectedList = {}
+								for i, v in pairs(selectedValues) do
+									table.insert(selectedList, i)
+								end
+								dropdown.Frame.TextLabel.Text = table.concat(selectedList, ", ")
+								pcall(function()
+									Callback(selectedList)
+								end)
+							end
 						else
-							b[1]().tw({v = child, t = 0.15, s = "Linear", d = "InOut",
-								g = {BackgroundColor3 = Color3.fromRGB(88, 88, 88), BackgroundTransparency = 0.9}}):Play()
-							b[1]().tw({v = child.TextLabel, t = 0.15, s = "Linear", d = "InOut",
-								g = {TextColor3 = Color3.fromRGB(255, 255, 255)}}):Play()
+							for i,v in pairs(dropdownselect.ScrollingFrame:GetChildren()) do
+								if v:IsA("Frame") then
+									b[1]().tw({
+										v = v,
+										t = 0.15,
+										s = "Linear",
+										d = "InOut",
+										g = {BackgroundColor3 = Color3.fromRGB(88, 88, 88), BackgroundTransparency = 0.9}
+									}):Play()
+									b[1]().tw({
+										v = v.TextLabel,
+										t = 0.15,
+										s = "Linear",
+										d = "InOut",
+										g = {TextColor3 = Color3.fromRGB(255 ,255 ,255)}
+									}):Play()
+								end
+							end
+							b[1]().tw({
+								v = item,
+								t = 0.15,
+								s = "Linear",
+								d = "InOut",
+								g = {BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Color Main'], BackgroundTransparency = 0}
+							}):Play()
+							b[1]().tw({
+								v = item.TextLabel,
+								t = 0.15,
+								s = "Linear",
+								d = "InOut",
+								g = {TextColor3 = Color3.fromRGB(0, 0, 0)}
+							}):Play()
+							item.TextLabel.Text = t
+							Value = t
+							dropdown.Frame.TextLabel.Text = t
+							pcall(function()
+								Callback(t)
+							end)
 						end
+					end)
+
+					local function isValueInTable(val, tbl)
+						if type(tbl) ~= "table" then
+							return false
+						end
+
+						for _, v in pairs(tbl) do
+							if v == val then
+								return true
+							end
+						end
+						return false
+					end
+
+					delay(0,function()
+						if Multi then
+							if isValueInTable(t, Value) then
+								b[1]().tw({
+									v = item,
+									t = 0.15,
+									s = "Linear",
+									d = "InOut",
+									g = {BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Color Main'], BackgroundTransparency = 0}
+								}):Play()
+								b[1]().tw({
+									v = item.TextLabel,
+									t = 0.15,
+									s = "Linear",
+									d = "InOut",
+									g = {TextColor3 = Color3.fromRGB(0, 0, 0)}
+								}):Play()
+								item.TextLabel.Text = t
+								selectedValues[t] = true
+								local selectedList = {}
+								for i, v in pairs(selectedValues) do
+									table.insert(selectedList, i)
+								end
+								dropdown.Frame.TextLabel.Text = table.concat(selectedList, ", ")
+								pcall(function()
+									Callback(selectedList)
+								end)
+							end
+						else
+							if t == Value then
+								b[1]().tw({
+									v = item,
+									t = 0.15,
+									s = "Linear",
+									d = "InOut",
+									g = {BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Color Main'], BackgroundTransparency = 0}
+								}):Play()
+								b[1]().tw({
+									v = item.TextLabel,
+									t = 0.15,
+									s = "Linear",
+									d = "InOut",
+									g = {TextColor3 = Color3.fromRGB(0, 0, 0)}
+								}):Play()
+								item.TextLabel.Text = t
+								Value = t
+								dropdown.Frame.TextLabel.Text = t
+								pcall(function()
+									Callback(t)
+								end)
+							end
+						end
+						dps()
+					end)
+				end
+
+				for i,v in ipairs(List) do
+					itemslist:Add(v)
+				end
+
+				dropdown.Frame.TextLabel:GetPropertyChangedSignal("Text"):Connect(function()
+					dps()
+				end)
+
+				dropdownselect.ScrollingFrame.UIListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+					dropdownselect.ScrollingFrame.CanvasSize = UDim2.new(0, 0, 0, dropdownselect.ScrollingFrame.UIListLayout.AbsoluteContentSize.Y + 5)
+				end)
+
+				function itemslist:SetTitle(newTitle)
+					par.TextDesc.TextLabel.Text = newTitle
+				end
+
+				function itemslist:SetDesc(newDesc)
+					local descLabel = par.TextDesc:FindFirstChild("Desc")
+					if descLabel then
+						descLabel.Text = newDesc
+					else
+						b[1]().desc(par.TextDesc, newDesc, op)
 					end
 				end
-				pcall(function()
-					Callback(val)
-				end)
-			end
-		end
-	)
 
-	return itemslist
-end
+				function itemslist:SetVisible(newVisible)
+					par.Visible = newVisible
+				end
+
+				local Key = khgkgh.Key or khgkgh.Title
+				Func.ConfigSystem:Register(Key,
+					function() 
+						if Multi then
+							local list = {}
+							for k, v in pairs(selectedValues) do
+								table.insert(list, k)
+							end
+							return list
+						else
+							return Value
+						end
+					end,
+					function(val)
+						if Multi then
+							selectedValues = {}
+							if type(val) == "table" then
+								for _, v in ipairs(val) do
+									selectedValues[v] = true
+								end
+							end
+							local list = {}
+							for k in pairs(selectedValues) do
+								table.insert(list, k)
+							end
+							dropdown.Frame.TextLabel.Text = table.concat(list, ", ")
+							
+							for _, child in ipairs(dropdownselect.ScrollingFrame:GetChildren()) do
+								if child:IsA("Frame") and child:FindFirstChild("TextLabel") then
+									local itemText = child.TextLabel.Text
+									if selectedValues[itemText] then
+										b[1]().tw({v = child, t = 0.15, s = "Linear", d = "InOut", 
+											g = {BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Color Main'], BackgroundTransparency = 0}}):Play()
+										b[1]().tw({v = child.TextLabel, t = 0.15, s = "Linear", d = "InOut", 
+											g = {TextColor3 = Color3.fromRGB(0, 0, 0)}}):Play()
+									else
+										b[1]().tw({v = child, t = 0.15, s = "Linear", d = "InOut",
+											g = {BackgroundColor3 = Color3.fromRGB(88, 88, 88), BackgroundTransparency = 0.9}}):Play()
+										b[1]().tw({v = child.TextLabel, t = 0.15, s = "Linear", d = "InOut",
+											g = {TextColor3 = Color3.fromRGB(255, 255, 255)}}):Play()
+									end
+								end
+							end
+							pcall(function()
+								Callback(list)
+							end)
+						else
+							Value = val
+							dropdown.Frame.TextLabel.Text = val
+							
+							for _, child in ipairs(dropdownselect.ScrollingFrame:GetChildren()) do
+								if child:IsA("Frame") and child:FindFirstChild("TextLabel") then
+									if child.TextLabel.Text == val then
+										b[1]().tw({v = child, t = 0.15, s = "Linear", d = "InOut",
+											g = {BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Color Main'], BackgroundTransparency = 0}}):Play()
+										b[1]().tw({v = child.TextLabel, t = 0.15, s = "Linear", d = "InOut",
+											g = {TextColor3 = Color3.fromRGB(0, 0, 0)}}):Play()
+									else
+										b[1]().tw({v = child, t = 0.15, s = "Linear", d = "InOut",
+											g = {BackgroundColor3 = Color3.fromRGB(88, 88, 88), BackgroundTransparency = 0.9}}):Play()
+										b[1]().tw({v = child.TextLabel, t = 0.15, s = "Linear", d = "InOut",
+											g = {TextColor3 = Color3.fromRGB(255, 255, 255)}}):Play()
+									end
+								end
+							end
+							pcall(function()
+								Callback(val)
+							end)
+						end
+					end
+				)
+
+				return itemslist
+			end
 
 			function Func:CreateLabel(khgkgh)
 				assert(khgkgh.Title, "Label - Missing Title")
@@ -2456,23 +2443,22 @@ end
 				end
 
 				function NewSet:SetValue(newValue)
-		textbox.Frame.ValueBox.TextBox.Text = newValue
-	end
-	
-	local Key = khgkgh.Key or khgkgh.Title
-	Func.ConfigSystem:Register(Key,
-		function() return textbox.Frame.ValueBox.TextBox.Text end,
-		function(val) 
-			textbox.Frame.ValueBox.TextBox.Text = val
-			pcall(function()
-				Callback(val)
-			end)
-		end
-	)
+					textbox.Frame.ValueBox.TextBox.Text = newValue
+				end
+				
+				local Key = khgkgh.Key or khgkgh.Title
+				Func.ConfigSystem:Register(Key,
+					function() return textbox.Frame.ValueBox.TextBox.Text end,
+					function(val) 
+						textbox.Frame.ValueBox.TextBox.Text = val
+						pcall(function()
+							Callback(val)
+						end)
+					end
+				)
 
-
-	return NewSet
-end
+				return NewSet
+			end
 
 			function Func:CreateSlider(khgkgh)
 				assert(khgkgh.Title, "Slider - Missing Title")
@@ -2558,21 +2544,21 @@ end
 				end
 
 				local function updateSlider(value)
-    value = math.clamp(value, Min, Max)
-    value = roundToDecimal(value, DecimalPlaces)
-    Value = value  
-    b[1]().tw({
-        v = slider.Frame.Frame,
-        t = 0.5,
-        s = "Exponential",
-        d = "Out",
-        g = {Size = UDim2.new((value - Min) / (Max - Min), 0, 1, 0)}
-    }):Play()
-    slider.TextBox.Text = tonumber(value)
-    pcall(function()
-        Callback(value)  
-    end)
-end
+					value = math.clamp(value, Min, Max)
+					value = roundToDecimal(value, DecimalPlaces)
+					Value = value  
+					b[1]().tw({
+						v = slider.Frame.Frame,
+						t = 0.5,
+						s = "Exponential",
+						d = "Out",
+						g = {Size = UDim2.new((value - Min) / (Max - Min), 0, 1, 0)}
+					}):Play()
+					slider.TextBox.Text = tonumber(value)
+					pcall(function()
+						Callback(value)  
+					end)
+				end
 
 				delay(0.5,function()
 					updateSlider(Value or 0)
@@ -2636,21 +2622,20 @@ end
 				end
 
 				function NewSet:SetValue(newValue)
-		updateSlider(newValue)
-	end
-	
+					updateSlider(newValue)
+				end
 
-	local Key = khgkgh.Key or khgkgh.Title
-	Func.ConfigSystem:Register(Key,
-		function() return Value end,
-		function(val) 
-			Value = val
-			updateSlider(val) 
-		end
-	)
+				local Key = khgkgh.Key or khgkgh.Title
+				Func.ConfigSystem:Register(Key,
+					function() return Value end,
+					function(val) 
+						Value = val
+						updateSlider(val) 
+					end
+				)
 
-	return NewSet
-end
+				return NewSet
+			end
 
 			function Func:CreateSection(khgkgh)
 				assert(khgkgh.Title, "Section - Missing Title")
