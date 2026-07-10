@@ -1190,14 +1190,14 @@ b = {
 					BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Color Main'],
 					AnchorPoint = Vector2.new(0, 0.5),
 					Position = UDim2.new(0, 0, 0.5, 0),
-					Size = UDim2.new(0, 45, 1, 0),
+					Size = UDim2.new(0, 55, 1, 0),
 					BackgroundTransparency = 1,
 					ZIndex = 0
 				}, {
 					f("UICorner", {CornerRadius = UDim.new(0, 8)}),
 					f("UIGradient", {
 						Transparency = NumberSequence.new{
-							NumberSequenceKeypoint.new(0, 0.55),
+							NumberSequenceKeypoint.new(0, 0.35),
 							NumberSequenceKeypoint.new(1, 1)
 						}
 					})
@@ -1241,7 +1241,9 @@ b = {
 					BorderSizePixel = 0,
 					BackgroundColor3 = Color3.fromRGB(255, 255, 255),
 					Image = b[1]().gl(tabIcon),
-					Size = UDim2.new(0, 16, 0, 16),
+					AnchorPoint = Vector2.new(0, 0.5),
+					Position = UDim2.new(0, 0, 0.5, 0),
+					Size = UDim2.new(0, 14, 0, 14),
 					BackgroundTransparency = 1,
 					BorderColor3 = Color3.fromRGB(0, 0, 0),
 					ImageColor3 = a.Theme[op.Theme or 'Quizzy']['Text Color'],
@@ -1250,12 +1252,14 @@ b = {
 				})
 			end
 			
-			-- Add title
+			-- Add title (auto-sized so it sits right next to the icon instead of stretching full width)
 			f("TextLabel", {
 				Parent = Tab.Content,
-				TextWrapped = true,
+				TextWrapped = false,
 				BorderSizePixel = 0,
-				TextXAlignment = Enum.TextXAlignment.Center,
+				TextXAlignment = Enum.TextXAlignment.Left,
+				AnchorPoint = Vector2.new(0, 0.5),
+				Position = UDim2.new(0, 0, 0.5, 0),
 				BackgroundColor3 = Color3.fromRGB(255, 255, 255),
 				TextSize = 11,
 				Font = Enum.Font.GothamMedium,
@@ -1263,7 +1267,8 @@ b = {
 				TextStrokeTransparency = 0.85,
 				TextStrokeColor3 = Color3.fromRGB(255, 255, 255),
 				BackgroundTransparency = 1,
-				Size = UDim2.new(1, 0, 1, 0),
+				AutomaticSize = Enum.AutomaticSize.X,
+				Size = UDim2.new(0, 0, 1, 0),
 				BorderColor3 = Color3.fromRGB(0, 0, 0),
 				Text = gfjd.Title,
 				LayoutOrder = 2
@@ -1529,7 +1534,7 @@ b = {
 					t = 0.25,
 					s = "Linear",
 					d = "Out",
-					g = {BackgroundTransparency = 0.8}
+					g = {BackgroundTransparency = 0.65}
 				}):Play()
 				
 				-- Show page with fade in
