@@ -2737,12 +2737,14 @@ b = {
 							Parent = nil,
 							BackgroundTransparency = 1,
 							BorderSizePixel = 0,
-							Image = b[1]().gl(khgkgh.Icon or "rbxassetid://10734950309"),
+							-- Closed/collapsed folder icon.
+							Image = b[1]().gl((khgkgh.Open ~= false) and "134161790366779" or "134908902120212"),
 							ImageColor3 = a.Theme[op.Theme or 'Quizzy']['Color Main'],
 							Position = UDim2.new(0, 10, 0.5, -9),
 							Size = UDim2.new(0, 18, 0, 18),
 							ScaleType = Enum.ScaleType.Fit,
-							ZIndex = 3
+							ZIndex = 3,
+							Name = "FolderIcon"
 						}),
 						f("TextLabel", {
 							BackgroundTransparency = 1,
@@ -2811,6 +2813,9 @@ b = {
 						isOpen = value == true
 						folderScroll.Visible = isOpen
 						folderHeader.Arrow.Text = isOpen and "⌃" or "⌄"
+						folderHeader.FolderIcon.Image = b[1]().gl(
+							isOpen and "134161790366779" or "134908902120212"
+						)
 						updateFolderSize()
 					end
 
