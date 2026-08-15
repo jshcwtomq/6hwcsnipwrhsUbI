@@ -1441,109 +1441,38 @@ b = {
 
 			
 			local function selectTab()
-				
+				-- Apply selection immediately. Tweening the tab, text, ripple,
+				-- and page at the same time caused a delayed/ugly tap effect.
 				for i, v in pairs(patab:GetChildren()) do
-					if v:IsA("Frame") and v ~= Tab then
-						v:SetAttribute("Selected", false)
-						b[1]().tw({
-							v = v,
-							t = 0.25,
-							s = "Linear",
-							d = "Out",
-							g = {BackgroundTransparency = 1}
-						}):Play()
-						
+					if v:IsA("Frame") then
+						local isCurrent = v == Tab
+						v:SetAttribute("Selected", isCurrent)
+						-- Keep the same soft selected-tab look, but apply it
+						-- instantly so tapping does not lag or flash.
+						v.BackgroundTransparency = isCurrent and 0.72 or 1
+						v.Accent.BackgroundTransparency = isCurrent and 0 or 1
+						v.SideGlow.BackgroundTransparency = isCurrent and 0.65 or 1
+
 						local textLabel = v.Content:FindFirstChildOfClass("TextLabel")
 						if textLabel then
-							b[1]().tw({
-								v = textLabel,
-								t = 0.25,
-								s = "Linear",
-								d = "Out",
-								g = {TextColor3 = a.Theme[op.Theme or 'Quizzy']['Text Color']}
-							}):Play()
+							-- Keep the tab title stable and readable. Do not use
+							-- theme Text Tab Select values that can be black.
+							textLabel.TextColor3 = a.Theme[op.Theme or 'Quizzy']['Text Color']
 						end
-						
-						b[1]().tw({
-							v = v.Accent,
-							t = 0.25,
-							s = "Linear",
-							d = "Out",
-							g = {BackgroundTransparency = 1}
-						}):Play()
 
-						if v:FindFirstChild("SideGlow") then
-							b[1]().tw({
-								v = v.SideGlow,
-								t = 0.25,
-								s = "Linear",
-								d = "Out",
-								g = {BackgroundTransparency = 1}
-							}):Play()
+						local iconLabel = v.Content:FindFirstChildOfClass("ImageLabel")
+						if iconLabel then
+							iconLabel.ImageColor3 = a.Theme[op.Theme or 'Quizzy']['Text Color']
 						end
 					end
 				end
-				
-				
+
 				for i, v in pairs(fo:GetChildren()) do
-					if v:IsA("Frame") and v.Name == "Page" and v ~= Page then
-						v.Visible = false
+					if v:IsA("Frame") and v.Name == "Page" then
+						v.Visible = v == Page
+						v.CanvasGroup.GroupTransparency = v == Page and 0 or 1
 					end
 				end
-				
-				
-				Tab:SetAttribute("Selected", true)
-
-				b[1]().tw({
-					v = Tab,
-					t = 0.25,
-					s = "Linear",
-					d = "Out",
-					-- Keep the active tab translucent. The old value (0) made the
-					-- gradient render as a solid block after a fast tap.
-					g = {BackgroundTransparency = 0.72}
-				}):Play()
-				
-				local textLabel = Tab.Content:FindFirstChildOfClass("TextLabel")
-				if textLabel then
-					b[1]().tw({
-						v = textLabel,
-						t = 0.25,
-						s = "Linear",
-						d = "Out",
-						g = {TextColor3 = a.Theme[op.Theme or 'Quizzy']['Text Tab Select']}
-					}):Play()
-				end
-				
-				b[1]().tw({
-					v = Tab.Accent,
-					t = 0.25,
-					s = "Linear",
-					d = "Out",
-					g = {BackgroundTransparency = 0}
-				}):Play()
-
-				
-				b[1]().jc(Tab.TextButton, Tab)
-
-				
-				b[1]().tw({
-					v = Tab.SideGlow,
-					t = 0.25,
-					s = "Linear",
-					d = "Out",
-					g = {BackgroundTransparency = 0.65}
-				}):Play()
-				
-				
-				Page.Visible = true
-				b[1]().tw({
-					v = Page.CanvasGroup,
-					t = 0.25,
-					s = "Linear",
-					d = "Out",
-					g = {GroupTransparency = 0}
-				}):Play()
 			end
 
 			Tab.TextButton.MouseButton1Click:Connect(function()
@@ -2733,24 +2662,11 @@ b = {
 						ZIndex = 2
 					}, {
 						f("UICorner", {CornerRadius = UDim.new(0, 7)}),
-						f("ImageLabel", {
-							Parent = nil,
-							BackgroundTransparency = 1,
-							BorderSizePixel = 0,
-							-- Closed/collapsed folder icon.
-							Image = b[1]().gl((khgkgh.Open ~= false) and "134161790366779" or "134908902120212"),
-							ImageColor3 = a.Theme[op.Theme or 'Quizzy']['Color Main'],
-							Position = UDim2.new(0, 10, 0.5, -9),
-							Size = UDim2.new(0, 18, 0, 18),
-							ScaleType = Enum.ScaleType.Fit,
-							ZIndex = 3,
-							Name = "FolderIcon"
-						}),
 						f("TextLabel", {
 							BackgroundTransparency = 1,
 							BorderSizePixel = 0,
-							Position = UDim2.new(0, 36, 0, 0),
-							Size = UDim2.new(1, -90, 1, 0),
+							Position = UDim2.new(0, 14, 0, 0),
+							Size = UDim2.new(1, -62, 1, 0),
 							Font = Enum.Font.GothamMedium,
 							Text = khgkgh.Title,
 							TextColor3 = a.Theme[op.Theme or 'Quizzy']['Text Color'],
@@ -2759,19 +2675,30 @@ b = {
 							ZIndex = 3,
 							Name = "FolderTitle"
 						}),
-						f("TextLabel", {
-							BackgroundTransparency = 1,
+						-- The folder icon is the only icon in this compact box.
+						f("Frame", {
+							BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Color Main'],
+							BackgroundTransparency = 0.75,
 							BorderSizePixel = 0,
 							AnchorPoint = Vector2.new(1, 0.5),
-							Position = UDim2.new(1, -12, 0.5, 0),
-							Size = UDim2.new(0, 22, 0, 22),
-							Font = Enum.Font.GothamBold,
-							Text = "⌄",
-							TextColor3 = a.Theme[op.Theme or 'Quizzy']['Text Color'],
-							TextSize = 18,
-							TextXAlignment = Enum.TextXAlignment.Center,
+							Position = UDim2.new(1, -9, 0.5, 0),
+							Size = UDim2.new(0, 28, 0, 24),
 							ZIndex = 3,
-							Name = "Arrow"
+							Name = "FolderIconBox"
+						}, {
+							f("UICorner", {CornerRadius = UDim.new(0, 6)}),
+							f("ImageLabel", {
+								BackgroundTransparency = 1,
+								BorderSizePixel = 0,
+								AnchorPoint = Vector2.new(0.5, 0.5),
+								Position = UDim2.new(0.5, 0, 0.5, 0),
+								Size = UDim2.new(0, 17, 0, 17),
+								ScaleType = Enum.ScaleType.Fit,
+								Image = b[1]().gl((khgkgh.Open ~= false) and "134161790366779" or "134908902120212"),
+								ImageColor3 = a.Theme[op.Theme or 'Quizzy']['Color Main'],
+								ZIndex = 4,
+								Name = "FolderIcon"
+							})
 						})
 					})
 
@@ -2812,8 +2739,7 @@ b = {
 					local function setFolderOpen(value)
 						isOpen = value == true
 						folderScroll.Visible = isOpen
-						folderHeader.Arrow.Text = isOpen and "⌃" or "⌄"
-						folderHeader.FolderIcon.Image = b[1]().gl(
+						folderHeader.FolderIconBox.FolderIcon.Image = b[1]().gl(
 							isOpen and "134161790366779" or "134908902120212"
 						)
 						updateFolderSize()
