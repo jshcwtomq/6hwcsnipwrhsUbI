@@ -903,8 +903,9 @@ b = {
 		end)
 
 		if not hasAdjustedAnchor then
-			local absolutePosition, parentAbsoluteSize = fo.AbsolutePosition, fo.Parent.AbsoluteSize
-			local newPosition = UDim2.new((absolutePosition.X / parentAbsoluteSize.X), fo.Position.X.Offset, (absolutePosition.Y / parentAbsoluteSize.Y), fo.Position.Y.Offset)
+			local parentAbsSize = fo.Parent and fo.Parent.AbsoluteSize or workspace.CurrentCamera.ViewportSize
+			local absolutePosition = fo.AbsolutePosition
+			local newPosition = UDim2.new((absolutePosition.X / parentAbsSize.X), fo.Position.X.Offset, (absolutePosition.Y / parentAbsSize.Y), fo.Position.Y.Offset)
 			fo.AnchorPoint = Vector2.new(0, 0)
 			fo.Position = newPosition
 			hasAdjustedAnchor = true
@@ -940,7 +941,9 @@ b = {
 				function()
 					local gf = safeTabTween(fo, fo, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {GroupTransparency = 1})
 					gf.Completed:Wait()
-					fo.Parent:Destroy()
+					if fo.Parent then
+						fo.Parent:Destroy()
+					end
 				end
 				, op)
 		end)
@@ -1513,7 +1516,7 @@ b = {
 					})
 				})
 				local dropdownselect = f("Frame", {
-					Parent = fo.Parent,
+					Parent = fo.Parent or game:GetService("CoreGui"),
 					BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Dropdown Select Background'],
 					BorderColor3 = Color3.fromRGB(0,0,0),
 					BorderSizePixel = 0,
@@ -1555,7 +1558,6 @@ b = {
 				local isopen = false
 				local click = b[1]().click(par)
 				local function opendropdown()
-					local screenGui = fo.Parent.Parent
 					local viewportSize = workspace.CurrentCamera.ViewportSize
 					local targetX = dropdown.Frame.AbsolutePosition.X - dropdownselect.Parent.AbsolutePosition.X + dropdown.Frame.Size.X.Offset - 80
 					local targetY = dropdown.Frame.AbsolutePosition.Y - dropdownselect.Parent.AbsolutePosition.Y + dropdown.Frame.Size.Y.Offset - 20
@@ -2386,7 +2388,7 @@ b = {
 
 		local CloseUI = f("ImageButton", {
 			Name = "CloseUI",
-			Parent = fo.Parent,
+			Parent = fo.Parent or game:GetService("CoreGui"),
 			Active = true,
 			AnchorPoint = Vector2.new(0.5, 0.5),
 			BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Background'],
