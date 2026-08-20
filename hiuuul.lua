@@ -1554,13 +1554,14 @@ b = {
 						f("UIPadding", {PaddingLeft = UDim.new(0,3), PaddingRight = UDim.new(0,7)})
 					})
 				})
-				dropdownselect.Position = UDim2.new(0, dropdown.Frame.AbsolutePosition.X - dropdownselect.Parent.AbsolutePosition.X + dropdown.Frame.Size.X.Offset - 150, 0, dropdown.Frame.AbsolutePosition.Y - dropdownselect.Parent.AbsolutePosition.Y + dropdown.Frame.Size.Y.Offset - 20)
+				local dsParent = dropdownselect.Parent or game:GetService("CoreGui")
+				dropdownselect.Position = UDim2.new(0, dropdown.Frame.AbsolutePosition.X - dsParent.AbsolutePosition.X + dropdown.Frame.Size.X.Offset - 150, 0, dropdown.Frame.AbsolutePosition.Y - dsParent.AbsolutePosition.Y + dropdown.Frame.Size.Y.Offset - 20)
 				local isopen = false
 				local click = b[1]().click(par)
 				local function opendropdown()
 					local viewportSize = workspace.CurrentCamera.ViewportSize
-					local targetX = dropdown.Frame.AbsolutePosition.X - dropdownselect.Parent.AbsolutePosition.X + dropdown.Frame.Size.X.Offset - 80
-					local targetY = dropdown.Frame.AbsolutePosition.Y - dropdownselect.Parent.AbsolutePosition.Y + dropdown.Frame.Size.Y.Offset - 20
+					local targetX = dropdown.Frame.AbsolutePosition.X - dsParent.AbsolutePosition.X + dropdown.Frame.Size.X.Offset - 80
+					local targetY = dropdown.Frame.AbsolutePosition.Y - dsParent.AbsolutePosition.Y + dropdown.Frame.Size.Y.Offset - 20
 					if targetX < 0 then targetX = 0 end
 					if targetX + 150 > viewportSize.X then targetX = viewportSize.X - 150 end
 					if targetY < 0 then targetY = 0 end
