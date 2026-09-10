@@ -1009,7 +1009,7 @@ b = {
 			local Tab = f("Frame", {
 				Parent = patab,
 				BorderSizePixel = 0,
-				BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+				BackgroundColor3 = Color3.fromRGB(35, 35, 35),
 				Size = UDim2.new(1, 0, 0, 34),
 				BorderColor3 = Color3.fromRGB(0, 0, 0),
 				BackgroundTransparency = 1
@@ -1017,38 +1017,16 @@ b = {
 				f("UICorner", {
 					CornerRadius = UDim.new(0, 8)
 				}),
-				f("UIGradient", {
-					Rotation = 0,
-					Color = ColorSequence.new{ColorSequenceKeypoint.new(0.000, a.Theme[op.Theme or 'Dark']['Color Tab'][1]),ColorSequenceKeypoint.new(1.000, a.Theme[op.Theme or 'Dark']['Color Tab'][2])}
-				}),
 				f("Frame", {
 					Name = "Accent",
 					BorderSizePixel = 0,
-					BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+					BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Color Main'],
 					AnchorPoint = Vector2.new(0, 0.5),
 					Position = UDim2.new(0, 0, 0.5, 0),
 					Size = UDim2.new(0, 3, 0.55, 0),
 					BackgroundTransparency = 1
 				}, {
 					f("UICorner", {CornerRadius = UDim.new(1, 0)})
-				}),
-				f("Frame", {
-					Name = "SideGlow",
-					BorderSizePixel = 0,
-					BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Color Main'],
-					AnchorPoint = Vector2.new(0, 0.5),
-					Position = UDim2.new(0, 0, 0.5, 0),
-					Size = UDim2.new(0, 55, 1, 0),
-					BackgroundTransparency = 1,
-					ZIndex = 0
-				}, {
-					f("UICorner", {CornerRadius = UDim.new(0, 8)}),
-					f("UIGradient", {
-						Transparency = NumberSequence.new{
-							NumberSequenceKeypoint.new(0, 0.35),
-							NumberSequenceKeypoint.new(1, 1)
-						}
-					})
 				}),
 				f("Frame", {
 					Name = "Content",
@@ -1303,16 +1281,6 @@ b = {
 						d = "Out",
 						g = {BackgroundTransparency = 1}
 					}):Play()
-					local textLabel = previousTab.Content:FindFirstChildOfClass("TextLabel")
-					if textLabel then
-						b[1]().twSafe({
-							v = textLabel,
-							t = 0.25,
-							s = "Linear",
-							d = "Out",
-							g = {TextColor3 = a.Theme[op.Theme or 'Dark']['Text Color']}
-						}):Play()
-					end
 					b[1]().twSafe({
 						v = previousTab.Accent,
 						t = 0.25,
@@ -1320,15 +1288,6 @@ b = {
 						d = "Out",
 						g = {BackgroundTransparency = 1}
 					}):Play()
-					if previousTab:FindFirstChild("SideGlow") then
-						b[1]().twSafe({
-							v = previousTab.SideGlow,
-							t = 0.25,
-							s = "Linear",
-							d = "Out",
-							g = {BackgroundTransparency = 1}
-						}):Play()
-					end
 				end
 				-- Hide whichever page was visible before switching.
 				for i, v in pairs(fo:GetChildren()) do
@@ -1346,30 +1305,12 @@ b = {
 					g = {BackgroundTransparency = 0}
 				}):Play()
 
-				local textLabel = Tab.Content:FindFirstChildOfClass("TextLabel")
-				if textLabel then
-					b[1]().twSafe({
-						v = textLabel,
-						t = 0.25,
-						s = "Linear",
-						d = "Out",
-						g = {TextColor3 = a.Theme[op.Theme or 'Dark']['Text Color']}
-					}):Play()
-				end
-
 				b[1]().twSafe({
 					v = Tab.Accent,
 					t = 0.25,
 					s = "Linear",
 					d = "Out",
 					g = {BackgroundTransparency = 0}
-				}):Play()
-				b[1]().twSafe({
-					v = Tab.SideGlow,
-					t = 0.25,
-					s = "Linear",
-					d = "Out",
-					g = {BackgroundTransparency = 0.65}
 				}):Play()
 
 				-- Show page with fade in
