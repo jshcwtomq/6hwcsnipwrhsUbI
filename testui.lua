@@ -1623,7 +1623,7 @@ b = {
 						Name = "SearchBar"
 					}, {
 						f("UICorner", {CornerRadius = UDim.new(0, 4)}),
-						f("UIPadding", {PaddingLeft = UDim.new(0, 6), PaddingRight = UDim.new(0, 6)}),
+						f("UIPadding", {PaddingLeft = UDim.new(0, 6), PaddingRight = UDim.new(0, 18)}),
 						f("TextBox", {
 							TextColor3 = a.Theme[op.Theme or 'Dark']['Text Color'],
 							BorderSizePixel = 0,
@@ -1636,6 +1636,16 @@ b = {
 							Text = "",
 							ClearTextOnFocus = false,
 							Name = "Box"
+						}),
+						f("ImageLabel", {
+							BorderSizePixel = 0,
+							BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+							AnchorPoint = Vector2.new(1, 0.5),
+							Image = "rbxassetid://15197354452",
+							Size = UDim2.new(0, 10, 0, 10),
+							BorderColor3 = Color3.fromRGB(0, 0, 0),
+							BackgroundTransparency = 1,
+							Position = UDim2.new(1, 0, 0.5, 0)
 						})
 					}),
 					f("ScrollingFrame", {
@@ -1851,7 +1861,7 @@ b = {
 						Size = UDim2.new(1, 0,0, 20),
 					}, {
 						f("UICorner", {CornerRadius = UDim.new(0, 4)}),
-						f("UIPadding", {PaddingLeft = UDim.new(0, 5)}),
+						f("UIPadding", {PaddingLeft = UDim.new(0, 10)}),
 						f("Frame", {
 							Name = "Accent",
 							BorderSizePixel = 0,
@@ -1876,9 +1886,9 @@ b = {
 							f("UIGradient", {
 								Rotation = 0,
 								Transparency = NumberSequence.new{
-									NumberSequenceKeypoint.new(0, 0.65),
-									NumberSequenceKeypoint.new(0.22, 0.9),
-									NumberSequenceKeypoint.new(0.4, 1),
+									NumberSequenceKeypoint.new(0, 0.55),
+									NumberSequenceKeypoint.new(0.12, 0.85),
+									NumberSequenceKeypoint.new(0.22, 1),
 									NumberSequenceKeypoint.new(1, 1)
 								}
 							})
@@ -1888,7 +1898,9 @@ b = {
 							BackgroundTransparency = 1,
 							BorderColor3 = Color3.fromRGB(0,0,0),
 							BorderSizePixel = 0,
-							Size = UDim2.new(1, 0,1, 0),
+							AnchorPoint = Vector2.new(0, 0.5),
+							Position = UDim2.new(0, 6, 0.5, 0),
+							Size = UDim2.new(1, -6, 1, 0),
 							Font = Enum.Font.Gotham,
 							Text = t,
 							TextColor3 = Color3.fromRGB(255,255,255),
