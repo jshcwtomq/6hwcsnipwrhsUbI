@@ -1,43 +1,33 @@
 a = {
 	Theme = {
-		-- Professional dark palette: neutral slate base (instead of pure black/grey),
-		-- a refined indigo accent, and consistent, higher-contrast text/border tones
-		-- so the whole UI reads as one coherent design system rather than mixed greys.
 		['Dark'] = {
-			['Background'] = Color3.fromRGB(18, 19, 23),
-			['Background Transparency'] = 0.05,
-			['Color Main'] = Color3.fromRGB(88, 101, 242),
-			['Color Main Hover'] = Color3.fromRGB(114, 125, 245),
+			['Background'] = Color3.fromRGB(16, 16, 16),
+			['Background Transparency'] = 0.1,
+			['Color Main'] = Color3.fromRGB(17, 110, 249),
 			['Color Tab'] = {
-				[1] = Color3.fromRGB(88, 101, 242),
-				[2] = Color3.fromRGB(129, 140, 248)
+				[1] = Color3.fromRGB(2, 69, 213),
+				[2] = Color3.fromRGB(7, 155, 209)
 			},
-			['Top Bar'] = Color3.fromRGB(22, 23, 28),
-			['Text Color'] = Color3.fromRGB(237, 237, 240),
-			['Text Tab Select'] = Color3.fromRGB(255, 255, 255),
-			['Tab Bar'] = Color3.fromRGB(18, 19, 23),
-			['Background Page'] = Color3.fromRGB(26, 27, 33),
-			['Line Page'] = Color3.fromRGB(53, 54, 63),
-			['Top Bar Page'] = Color3.fromRGB(23, 24, 29),
-			['Search'] = Color3.fromRGB(35, 36, 43),
-			['Background Function'] = Color3.fromRGB(120, 122, 135),
+			['Top Bar'] = Color3.fromRGB(21, 21, 21),
+			['Text Color'] = Color3.fromRGB(255, 255, 255),
+			['Text Tab Select'] = Color3.fromRGB(0, 0, 0),
+			['Tab Bar'] = Color3.fromRGB(16, 16, 16),
+			['Background Page'] = Color3.fromRGB(24, 24, 24),
+			['Line Page'] = Color3.fromRGB(132, 132, 132),
+			['Top Bar Page'] = Color3.fromRGB(21, 21, 21),
+			['Search'] = Color3.fromRGB(47, 47, 47),
+			['Background Function'] = Color3.fromRGB(88, 88, 88),
 			['Background Function Transparency'] = 0.9,
 			['Background Function Transparency Moved'] = 0.8,
-			['Dropdown Color'] = Color3.fromRGB(35, 36, 43),
-			['Dropdown Select Background'] = Color3.fromRGB(26, 27, 33),
-			['Dropdown Select Stroke'] = Color3.fromRGB(48, 49, 58),
-			['Dropdown Item'] = Color3.fromRGB(120, 122, 135),
-			['Dropdown Item Hover'] = Color3.fromRGB(42, 43, 51),
-			['Textbox Color'] = Color3.fromRGB(35, 36, 43),
-			['Slider Color'] = Color3.fromRGB(35, 36, 43),
-			['Toggle Color'] = Color3.fromRGB(35, 36, 43),
-			['Diglog Top Bar'] = Color3.fromRGB(23, 24, 29),
-			['Diglog Background'] = Color3.fromRGB(20, 21, 26),
-			-- Popup confirmation (used by Buttons/Toggles when Confirm = true)
-			['Popup Confirm Color'] = Color3.fromRGB(88, 101, 242),
-			['Popup Cancel Color'] = Color3.fromRGB(237, 66, 69),
-			['Success Color'] = Color3.fromRGB(59, 165, 93),
-			['Danger Color'] = Color3.fromRGB(237, 66, 69)
+			['Dropdown Color'] = Color3.fromRGB(47, 47, 47),
+			['Dropdown Select Background'] = Color3.fromRGB(24, 24, 24),
+			['Dropdown Select Stroke'] = Color3.fromRGB(43, 43, 43),
+			['Dropdown Item'] = Color3.fromRGB(88, 88, 88),
+			['Textbox Color'] = Color3.fromRGB(47, 47, 47),
+			['Slider Color'] = Color3.fromRGB(47, 47, 47),
+			['Toggle Color'] = Color3.fromRGB(16, 16, 16),
+			['Diglog Top Bar'] = Color3.fromRGB(22, 22, 22),
+			['Diglog Background'] = Color3.fromRGB(17, 17, 17)
 		},
 	},
 }
@@ -393,186 +383,6 @@ b = {
 				tw:Create(cancel.TextLabel, TweenInfo.new(0.06, Enum.EasingStyle.Back, Enum.EasingDirection.Out, 0, true, 0), {Position = UDim2.new(0, 0, 0.1, 0)}):Play()
 				b[1]().tw({v = cancel, t = 0.1, s = "Back", d = "Out", g = {Size = UDim2.new(0, 115, 0, 30)}}):Play()
 				c()
-			end)
-		end
-		-- Lightweight confirm popup used by CreateButton / CreateToggle when
-		-- Confirm = true is passed. Unlike x.dialog (which is the "close UI"
-		-- style dialog attached to the whole window), this is meant to be
-		-- reusable per-element with its own title/desc, and simply calls
-		-- onConfirm() if the user presses Confirm, or does nothing on Cancel.
-		function x.confirm(p, title, desc, onConfirm, theme)
-			local f = b[1]().n
-			if p:FindFirstChild("ConfirmPopup") then
-				return
-			end
-			local confirmBtn, cancelBtn
-			local overlay = f("Frame", {
-				Parent = p,
-				BorderSizePixel = 0,
-				BackgroundColor3 = Color3.fromRGB(0, 0, 0),
-				Size = UDim2.new(1, 0, 1, 0),
-				BackgroundTransparency = 1,
-				ZIndex = 20,
-				Name = "ConfirmPopup"
-			}, {
-				f("CanvasGroup", {
-					BorderSizePixel = 0,
-					BackgroundColor3 = a.Theme[theme.Theme or 'Dark']['Diglog Background'],
-					AnchorPoint = Vector2.new(0.5, 0.5),
-					Size = UDim2.new(0, 280, 0, 0),
-					Position = UDim2.new(0.5, 0, 0.5, 0),
-					GroupTransparency = 1,
-					ZIndex = 21,
-					Name = "Card"
-				}, {
-					f("UICorner", {CornerRadius = UDim.new(0, 10)}),
-					f("UIStroke", {Color = a.Theme[theme.Theme or 'Dark']['Dropdown Select Stroke'], Thickness = 1}),
-					f("TextLabel", {
-						BorderSizePixel = 0,
-						BackgroundTransparency = 1,
-						TextSize = 15,
-						FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal),
-						TextColor3 = a.Theme[theme.Theme or 'Dark']['Text Color'],
-						RichText = true,
-						TextWrapped = true,
-						TextXAlignment = Enum.TextXAlignment.Left,
-						Size = UDim2.new(1, -32, 0, 20),
-						Position = UDim2.new(0, 16, 0, 16),
-						Text = title or "Are you sure?",
-						ZIndex = 22,
-						Name = "Title"
-					}),
-					f("TextLabel", {
-						BorderSizePixel = 0,
-						BackgroundTransparency = 1,
-						TextSize = 11,
-						Font = Enum.Font.Gotham,
-						TextColor3 = a.Theme[theme.Theme or 'Dark']['Text Color'],
-						TextTransparency = 0.35,
-						RichText = true,
-						TextWrapped = true,
-						TextXAlignment = Enum.TextXAlignment.Left,
-						TextYAlignment = Enum.TextYAlignment.Top,
-						Size = UDim2.new(1, -32, 0, 0),
-						AutomaticSize = Enum.AutomaticSize.Y,
-						Position = UDim2.new(0, 16, 0, 42),
-						Text = desc or "",
-						Visible = desc ~= nil and desc ~= "",
-						ZIndex = 22,
-						Name = "Desc"
-					}),
-					f("Frame", {
-						BorderSizePixel = 0,
-						BackgroundTransparency = 1,
-						AnchorPoint = Vector2.new(0.5, 1),
-						Position = UDim2.new(0.5, 0, 1, -14),
-						Size = UDim2.new(1, -32, 0, 30),
-						ZIndex = 22,
-						Name = "Buttons"
-					}, {
-						f("UIListLayout", {
-							FillDirection = Enum.FillDirection.Horizontal,
-							HorizontalAlignment = Enum.HorizontalAlignment.Right,
-							VerticalAlignment = Enum.VerticalAlignment.Center,
-							Padding = UDim.new(0, 8),
-							SortOrder = Enum.SortOrder.LayoutOrder
-						}),
-						f("Frame", {
-							BorderSizePixel = 0,
-							BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-							BackgroundTransparency = 1,
-							Size = UDim2.new(0, 78, 1, 0),
-							ZIndex = 22
-						}, {
-							f("UICorner", {CornerRadius = UDim.new(0, 6)}),
-							f("UIStroke", {Color = a.Theme[theme.Theme or 'Dark']['Dropdown Select Stroke'], Thickness = 1}),
-							f("TextLabel", {
-								BorderSizePixel = 0,
-								BackgroundTransparency = 1,
-								TextSize = 12,
-								Font = Enum.Font.GothamMedium,
-								TextColor3 = a.Theme[theme.Theme or 'Dark']['Text Color'],
-								Size = UDim2.new(1, 0, 1, 0),
-								Text = "Cancel",
-								ZIndex = 22
-							}),
-							f("TextButton", {
-								BorderSizePixel = 0,
-								BackgroundTransparency = 1,
-								Size = UDim2.new(1, 0, 1, 0),
-								Text = "",
-								ZIndex = 23
-							}, nil, function(a) cancelBtn = a end)
-						}),
-						f("Frame", {
-							BorderSizePixel = 0,
-							BackgroundColor3 = a.Theme[theme.Theme or 'Dark']['Popup Confirm Color'],
-							Size = UDim2.new(0, 78, 1, 0),
-							ZIndex = 22
-						}, {
-							f("UICorner", {CornerRadius = UDim.new(0, 6)}),
-							f("TextLabel", {
-								BorderSizePixel = 0,
-								BackgroundTransparency = 1,
-								TextSize = 12,
-								Font = Enum.Font.GothamMedium,
-								TextColor3 = Color3.fromRGB(255, 255, 255),
-								Size = UDim2.new(1, 0, 1, 0),
-								Text = "Confirm",
-								ZIndex = 22
-							}),
-							f("TextButton", {
-								BorderSizePixel = 0,
-								BackgroundTransparency = 1,
-								Size = UDim2.new(1, 0, 1, 0),
-								Text = "",
-								ZIndex = 23
-							}, nil, function(a) confirmBtn = a end)
-						})
-					})
-				})
-			})
-			local card = overlay.Card
-			local descVisible = desc ~= nil and desc ~= ""
-			local cardHeight = descVisible and (card.Desc.AbsoluteSize.Y > 0 and (70 + card.Desc.AbsoluteSize.Y) or 100) or 76
-			local isClosed = false
-			local function close()
-				if isClosed then return end
-				isClosed = true
-				b[1]().tw({v = overlay, t = 0.15, s = "Linear", d = "Out", g = {BackgroundTransparency = 1}}):Play()
-				local gf = b[1]().tw({v = card, t = 0.15, s = "Linear", d = "Out", g = {GroupTransparency = 1}})
-				gf:Play()
-				gf.Completed:Connect(function()
-					overlay:Destroy()
-				end)
-			end
-			card.Size = UDim2.new(0, 280, 0, 0)
-			task.defer(function()
-				card:GetPropertyChangedSignal("AbsoluteSize"):Wait()
-				local h = 76
-				if descVisible then
-					h = 58 + card.Desc.AbsoluteSize.Y + 44
-				end
-				b[1]().tw({v = card, t = 0.18, s = "Back", d = "Out", g = {Size = UDim2.new(0, 280, 0, h)}}):Play()
-			end)
-			b[1]().tw({v = overlay, t = 0.15, s = "Linear", d = "Out", g = {BackgroundTransparency = 0.45}}):Play()
-			b[1]().tw({v = card, t = 0.15, s = "Linear", d = "Out", g = {GroupTransparency = 0}}):Play()
-			confirmBtn.MouseButton1Click:Connect(function()
-				close()
-				pcall(onConfirm)
-			end)
-			cancelBtn.MouseButton1Click:Connect(function()
-				close()
-			end)
-			Services.UserInputService.InputBegan:Connect(function(A)
-				if isClosed then return end
-				if A.UserInputType == Enum.UserInputType.MouseButton1 or A.UserInputType == Enum.UserInputType.Touch then
-					local B, C = card.AbsolutePosition, card.AbsoluteSize
-					local M = LocalPlayer:GetMouse()
-					if M.X < B.X or M.X > B.X + C.X or M.Y < B.Y or M.Y > B.Y + C.Y then
-						close()
-					end
-				end
 			end)
 		end
 		function x.desc(p, t, theme)
@@ -947,6 +757,7 @@ b = {
 	CreateWindow = function(self, op)
 		local f, g, CloseUI, patab, of, scl, KeyCloseUI, isopen = self[1]().n, {}, nil, nil, false ,nil, op.Keybind or Enum.KeyCode.LeftControl, false
 		local currentSelectedTab = nil
+		local SubtitleLabel = nil
 		assert(op.Title, "Window - Missing Title")
 		assert(op.Icon, "Window - Missing Icon")
 		local fo = f("CanvasGroup", {
@@ -1011,7 +822,9 @@ b = {
 						BorderColor3 = Color3.fromRGB(0, 0, 0),
 						Text = op.Subtitle or "",
 						LayoutOrder = 2
-					})
+					}, nil, function(a)
+						SubtitleLabel = a
+					end)
 				}),
 				f("ImageLabel", {
 					BorderSizePixel = 0,
@@ -1128,6 +941,17 @@ b = {
 				ZIndex = 2
 			})
 		})
+		if SubtitleLabel then
+			task.spawn(function()
+				local MarketplaceService = game:GetService("MarketplaceService")
+				local ok, info = pcall(function()
+					return MarketplaceService:GetProductInfo(game.GameId, Enum.InfoType.Universe)
+				end)
+				if ok and info and info.Name and SubtitleLabel and SubtitleLabel.Parent then
+					SubtitleLabel.Text = info.Name
+				end
+			end)
+		end
 		local isfoui = b[1]().init(fo)
 		local isResizing = false
 		local hasAdjustedAnchor = false
@@ -1687,28 +1511,11 @@ b = {
 				delay(0.5,function()
 					ToggleC(Value)
 				end)
-				local ConfirmEnabled = khgkgh.Confirm or false
-				local ConfirmTitle = khgkgh.ConfirmTitle
-				local ConfirmDesc = khgkgh.ConfirmDesc
-				local function confirmTitleFor(pendingValue)
-					if ConfirmTitle then
-						return ConfirmTitle
-					end
-					return (pendingValue and ("Enable \"" .. khgkgh.Title .. "\"?")) or ("Disable \"" .. khgkgh.Title .. "\"?")
-				end
 				click.MouseButton1Click:Connect(function()
+					Value = not Value
 					b[1]().jc(click, par)
 					b[1]().flash(par, "BackgroundTransparency", a.Theme[op.Theme or 'Dark']['Background Function Transparency Moved'], 0.1)
-					local pendingValue = not Value
-					if ConfirmEnabled then
-						b[1]().confirm(fo, confirmTitleFor(pendingValue), ConfirmDesc, function()
-							ToggleC(pendingValue)
-						end, op)
-						-- Cancel simply does nothing: Value/visuals stay as they were,
-						-- since ToggleC (and the visible flip) never runs.
-					else
-						ToggleC(pendingValue)
-					end
+					ToggleC(Value)
 				end)
 				local NewSet = {}
 				function NewSet:SetTitle(newTitle)
@@ -1727,12 +1534,6 @@ b = {
 				end
 				function NewSet:SetValue(newValue)
 					ToggleC(newValue)
-				end
-				-- Toggle/reconfigure the confirmation popup after creation.
-				function NewSet:SetConfirm(enabled, title, desc)
-					ConfirmEnabled = enabled
-					if title then ConfirmTitle = title end
-					if desc ~= nil then ConfirmDesc = desc end
 				end
 
 				local Key = khgkgh.Key or khgkgh.Title
@@ -1817,33 +1618,12 @@ b = {
 					f("Frame", {
 						BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Search'],
 						BorderSizePixel = 0,
-						Size = UDim2.new(1, -3, 0, 20),
+						Size = UDim2.new(1, -3, 0, 18),
 						Position = UDim2.new(0, 0, 0, 0),
 						Name = "SearchBar"
 					}, {
-						f("UICorner", {CornerRadius = UDim.new(0, 5)}),
-						f("UIStroke", {
-							Color = a.Theme[op.Theme or 'Dark']['Color Main'],
-							Thickness = 1,
-							Transparency = 1,
-							Name = "FocusStroke"
-						}),
+						f("UICorner", {CornerRadius = UDim.new(0, 4)}),
 						f("UIPadding", {PaddingLeft = UDim.new(0, 6), PaddingRight = UDim.new(0, 6)}),
-						f("UIListLayout", {
-							FillDirection = Enum.FillDirection.Horizontal,
-							VerticalAlignment = Enum.VerticalAlignment.Center,
-							Padding = UDim.new(0, 4),
-							SortOrder = Enum.SortOrder.LayoutOrder
-						}),
-						f("ImageLabel", {
-							BackgroundTransparency = 1,
-							Image = "rbxassetid://15197354452",
-							ImageColor3 = a.Theme[op.Theme or 'Dark']['Text Color'],
-							ImageTransparency = 0.45,
-							Size = UDim2.new(0, 9, 0, 9),
-							LayoutOrder = 1,
-							Name = "Icon"
-						}),
 						f("TextBox", {
 							TextColor3 = a.Theme[op.Theme or 'Dark']['Text Color'],
 							BorderSizePixel = 0,
@@ -1851,12 +1631,10 @@ b = {
 							TextSize = 10,
 							Font = Enum.Font.Gotham,
 							BackgroundTransparency = 1,
-							PlaceholderText = "Search...",
-							PlaceholderColor3 = Color3.fromRGB(150, 150, 158),
-							Size = UDim2.new(1, -13, 1, 0),
+							PlaceholderText = "search...",
+							Size = UDim2.new(1, 0, 1, 0),
 							Text = "",
 							ClearTextOnFocus = false,
-							LayoutOrder = 2,
 							Name = "Box"
 						})
 					}),
@@ -1866,8 +1644,8 @@ b = {
 						BackgroundTransparency = 1,
 						BorderColor3 = Color3.fromRGB(0,0,0),
 						BorderSizePixel = 0,
-						Size = UDim2.new(1, 0,1, -23),
-						Position = UDim2.new(0, 0, 0, 23),
+						Size = UDim2.new(1, 0,1, -21),
+						Position = UDim2.new(0, 0, 0, 21),
 						ClipsDescendants = true,
 						AutomaticCanvasSize = Enum.AutomaticSize.None,
 						BottomImage = "rbxasset://textures/ui/Scroll/scroll-bottom.png",
@@ -1886,62 +1664,19 @@ b = {
 					}, {
 						f("UIListLayout", {Padding = UDim.new(0,3), SortOrder = Enum.SortOrder.LayoutOrder}),
 						f("UIPadding", {PaddingLeft = UDim.new(0,3), PaddingRight = UDim.new(0,7)})
-					}),
-					f("TextLabel", {
-						BackgroundTransparency = 1,
-						BorderSizePixel = 0,
-						TextColor3 = a.Theme[op.Theme or 'Dark']['Text Color'],
-						TextTransparency = 0.5,
-						TextSize = 10,
-						Font = Enum.Font.Gotham,
-						Text = "No results found",
-						Position = UDim2.new(0, 0, 0, 23),
-						Size = UDim2.new(1, 0, 0, 24),
-						Visible = false,
-						Name = "NoResults"
 					})
 				})
-				-- Focus/blur visuals for the search bar (border highlight, like a
-				-- modern search input rather than a flat unstyled box).
-				dropdownselect.SearchBar.Box.Focused:Connect(function()
-					b[1]().tw({v = dropdownselect.SearchBar.FocusStroke, t = 0.12, s = "Linear", d = "Out", g = {Transparency = 0.3}}):Play()
-				end)
-				dropdownselect.SearchBar.Box.FocusLost:Connect(function()
-					b[1]().tw({v = dropdownselect.SearchBar.FocusStroke, t = 0.12, s = "Linear", d = "Out", g = {Transparency = 1}}):Play()
-				end)
-				-- Professional filtering: exact/starts-with matches are ranked
-				-- above plain "contains" matches instead of relying purely on
-				-- creation order, and an empty-state label shows when nothing
-				-- matches so the dropdown never just looks broken/empty.
 				dropdownselect.SearchBar.Box:GetPropertyChangedSignal("Text"):Connect(function()
 					local q = string.lower(dropdownselect.SearchBar.Box.Text)
-					local anyVisible = false
-					local children = dropdownselect.ItemList:GetChildren()
-					for _, child in ipairs(children) do
+					for _, child in ipairs(dropdownselect.ItemList:GetChildren()) do
 						if child:IsA("Frame") and child:FindFirstChild("TextLabel") then
-							local label = string.lower(child.TextLabel.Text)
-							if q == "" then
+							if q == "" or string.find(string.lower(child.TextLabel.Text), q, 1, true) then
 								child.Visible = true
-								child.LayoutOrder = child:GetAttribute("BaseOrder") or 0
-								anyVisible = true
-							elseif label == q then
-								child.Visible = true
-								child.LayoutOrder = -2
-								anyVisible = true
-							elseif string.find(label, q, 1, true) == 1 then
-								child.Visible = true
-								child.LayoutOrder = -1
-								anyVisible = true
-							elseif string.find(label, q, 1, true) then
-								child.Visible = true
-								child.LayoutOrder = child:GetAttribute("BaseOrder") or 0
-								anyVisible = true
 							else
 								child.Visible = false
 							end
 						end
 					end
-					dropdownselect.NoResults.Visible = (not anyVisible) and q ~= ""
 					dropdownselect.ItemList.CanvasSize = UDim2.new(0,0,0, dropdownselect.ItemList.UIListLayout.AbsoluteContentSize.Y + 5)
 				end)
 				dropdownselect.Position = UDim2.new(0, dropdown.Frame.AbsolutePosition.X - dropdownselect.Parent.AbsolutePosition.X + dropdown.Frame.Size.X.Offset - 150, 0, dropdown.Frame.AbsolutePosition.Y - dropdownselect.Parent.AbsolutePosition.Y + dropdown.Frame.Size.Y.Offset - 20)
@@ -2047,9 +1782,7 @@ b = {
 				local itemslist = {}
 				local selectedValues = {}
 				local selectedItem
-				local itemOrderCounter = 0
 				function itemslist:Clear()
-					itemOrderCounter = 0
 					if not Multi then
 						for _, child in ipairs(dropdownselect.ItemList:GetChildren()) do
 							if child:IsA("Frame") then
@@ -2108,8 +1841,6 @@ b = {
 					dropdownselect.ItemList.CanvasSize = UDim2.new(0,0,0, dropdownselect.ItemList.UIListLayout.AbsoluteContentSize.Y + 5)
 				end
 				function itemslist:Add(t)
-					itemOrderCounter = itemOrderCounter + 1
-					local thisOrder = itemOrderCounter
 					local item = f("Frame", {
 						Parent = dropdownselect.ItemList,
 						BackgroundColor3 = Color3.fromRGB(35, 35, 35),
@@ -2117,7 +1848,6 @@ b = {
 						BorderColor3 = Color3.fromRGB(0,0,0),
 						BorderSizePixel = 0,
 						ClipsDescendants = true,
-						LayoutOrder = thisOrder,
 						Size = UDim2.new(1, 0,0, 20),
 					}, {
 						f("UICorner", {CornerRadius = UDim.new(0, 4)}),
@@ -2166,7 +1896,6 @@ b = {
 							TextXAlignment = Enum.TextXAlignment.Left
 						})
 					})
-					item:SetAttribute("BaseOrder", thisOrder)
 					local clickitem = b[1]().click(item)
 					clickitem.MouseButton1Click:Connect(function()
 						b[1]().jc(clickitem, item)
@@ -2604,23 +2333,12 @@ b = {
 					})
 				})
 				local click = b[1]().click(par)
-				local ConfirmEnabled = khgkgh.Confirm or false
-				local ConfirmTitle = khgkgh.ConfirmTitle or ("Run \"" .. khgkgh.Title .. "\"?")
-				local ConfirmDesc = khgkgh.ConfirmDesc
 				click.MouseButton1Click:Connect(function()
 					b[1]().jc(click, par)
 					b[1]().flash(par, "BackgroundTransparency", a.Theme[op.Theme or 'Dark']['Background Function Transparency Moved'], 0.1)
-					if ConfirmEnabled then
-						b[1]().confirm(fo, ConfirmTitle, ConfirmDesc, function()
-							pcall(function()
-								Callback()
-							end)
-						end, op)
-					else
-						pcall(function()
-							Callback()
-						end)
-					end
+					pcall(function()
+						Callback()
+					end)
 				end)
 				local NewSet = {}
 				function NewSet:SetTitle(newTitle)
@@ -2636,12 +2354,6 @@ b = {
 				end
 				function NewSet:SetVisible(newVisible)
 					par.Visible = newVisible
-				end
-				-- Toggle/reconfigure the confirmation popup after creation.
-				function NewSet:SetConfirm(enabled, title, desc)
-					ConfirmEnabled = enabled
-					if title then ConfirmTitle = title end
-					if desc ~= nil then ConfirmDesc = desc end
 				end
 				return NewSet
 			end
