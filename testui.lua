@@ -28,7 +28,7 @@ a = {
 			['Toggle Color'] = Color3.fromRGB(16, 16, 16),
 			['Diglog Top Bar'] = Color3.fromRGB(22, 22, 22),
 			['Diglog Background'] = Color3.fromRGB(17, 17, 17)
-		}
+		},
 	},
 }
 local Services = {
@@ -82,6 +82,35 @@ b = {
 			end
 			return Services.TweenService:Create(info.v, ti, info.g)
 		end
+		-- Tracks the currently running tween per (instance, property) pair so a
+		-- new tween on the same property can cancel the old one instead of the
+		-- two racing and snapping the value instantly.
+		local activeTweens = setmetatable({}, {__mode = "k"})
+		function x.twSafe(info)
+			local inst = info.v
+			activeTweens[inst] = activeTweens[inst] or {}
+			for prop in pairs(info.g) do
+				local running = activeTweens[inst][prop]
+				if running then
+					running:Cancel()
+				end
+			end
+			local tween = x.tw(info)
+			for prop in pairs(info.g) do
+				activeTweens[inst][prop] = tween
+			end
+			tween.Completed:Connect(function()
+				for prop in pairs(info.g) do
+					if activeTweens[inst][prop] == tween then
+						activeTweens[inst][prop] = nil
+					end
+				end
+			end)
+			return tween
+		end
+		-- Generic "flash" click effect: briefly tweens a color property to `color`
+		-- then back to its original value. Used to give every clickable element
+		-- (tabs, toggles, buttons, dropdown items) a consistent color pulse on press.
 		function x.flash(inst, prop, color, dur)
 			if not inst or not inst:IsDescendantOf(game) and not inst.Parent then return end
 			local ok, original = pcall(function() return inst[prop] end)
@@ -501,7 +530,7 @@ b = {
 			expandTween.Completed:Connect(function()
 				ClickButtonCircle:Destroy()
 			end)
-			expandTween.Play()
+			expandTween:Play()
 		end
 		function x.init(gf)
 			local binds = {}
@@ -680,38 +709,38 @@ b = {
 		local ConfigSystem = {}
 		ConfigSystem.Elements = {}
 		ConfigSystem.ConfigName = "DefaultConfig"
-		
+
 		function ConfigSystem:Register(key, getValue, setValue)
 			self.Elements[key] = {
 				GetValue = getValue,
 				SetValue = setValue
 			}
 		end
-		
+
 		function ConfigSystem:SaveConfig()
 			local HttpService = game:GetService("HttpService")
 			local config = {}
-			
+
 			for key, data in pairs(self.Elements) do
 				config[key] = data.GetValue()
 			end
-			
+
 			local json = HttpService:JSONEncode(config)
-			
+
 			if writefile then
 				writefile(self.ConfigName .. ".json", json)
 				return true
 			end
 			return false
 		end
-		
+
 		function ConfigSystem:LoadConfig()
 			local HttpService = game:GetService("HttpService")
-			
+
 			if readfile and isfile and isfile(self.ConfigName .. ".json") then
 				local json = readfile(self.ConfigName .. ".json")
 				local config = HttpService:JSONDecode(json)
-				
+
 				for key, value in pairs(config) do
 					if self.Elements[key] then
 						self.Elements[key].SetValue(value)
@@ -721,10 +750,10 @@ b = {
 			end
 			return false
 		end
-		
+
 		return ConfigSystem
 	end,
-	
+
 	CreateWindow = function(self, op)
 		local f, g, CloseUI, patab, of, scl, KeyCloseUI, isopen = self[1]().n, {}, nil, nil, false ,nil, op.Keybind or Enum.KeyCode.LeftControl, false
 		local currentSelectedTab = nil
@@ -1052,8 +1081,8 @@ b = {
 					ZIndex = 2
 				})
 			})
-			
-			
+
+
 			if tabIcon then
 				f("ImageLabel", {
 					Parent = Tab.Content,
@@ -1068,8 +1097,8 @@ b = {
 					LayoutOrder = 1
 				})
 			end
-			
-			
+
+
 			f("TextLabel", {
 				Parent = Tab.Content,
 				TextWrapped = false,
@@ -1088,10 +1117,11 @@ b = {
 				Text = gfjd.Title,
 				LayoutOrder = 2
 			})
-			
+
 			Tab.MouseEnter:Connect(function()
-				if Tab.BackgroundTransparency > 0 and not Tab:GetAttribute("Selected") then
-					b[1]().tw({
+				if Tab:GetAttribute("Selected") then return end
+				if Tab.BackgroundTransparency > 0 then
+					b[1]().twSafe({
 						v = Tab,
 						t = 0.2,
 						s = "Linear",
@@ -1100,10 +1130,11 @@ b = {
 					}):Play()
 				end
 			end)
-			
+
 			Tab.MouseLeave:Connect(function()
-				if Tab.BackgroundTransparency < 1 and Tab.BackgroundTransparency > 0 and not Tab:GetAttribute("Selected") then
-					b[1]().tw({
+				if Tab:GetAttribute("Selected") then return end
+				if Tab.BackgroundTransparency < 1 then
+					b[1]().twSafe({
 						v = Tab,
 						t = 0.2,
 						s = "Linear",
@@ -1125,10 +1156,10 @@ b = {
 				Visible = false
 			}, {
 				f("UIPadding", {
-					PaddingTop = UDim2.new(0, 58),
-					PaddingRight = UDim2.new(0, 12),
-					PaddingLeft = UDim2.new(0, 142),
-					PaddingBottom = UDim2.new(0, 12)
+					PaddingTop = UDim.new(0, 58),
+					PaddingRight = UDim.new(0, 12),
+					PaddingLeft = UDim.new(0, 142),
+					PaddingBottom = UDim.new(0, 12)
 				}),
 				f("CanvasGroup", {
 					BorderSizePixel = 0,
@@ -1228,7 +1259,7 @@ b = {
 						BorderColor3 = Color3.fromRGB(0, 0, 0),
 						BackgroundTransparency = 1
 					}, {
-						f("UIPadding", {PaddingTop = UDim2.new(0, 42)}),
+						f("UIPadding", {PaddingTop = UDim.new(0, 42)}),
 						f("ScrollingFrame", {
 							Active = true,
 							BorderSizePixel = 0,
@@ -1255,15 +1286,17 @@ b = {
 					})
 				})
 			})
-			
+
 			local function selectTab()
+				-- Guard: skip entirely if this tab is already selected (prevents
+				-- restarting tweens on every other tab on re-click).
 				if currentSelectedTab == Tab then
 					return
 				end
 				local previousTab = currentSelectedTab
 				if previousTab and previousTab.Parent then
 					previousTab:SetAttribute("Selected", false)
-					b[1]().tw({
+					b[1]().twSafe({
 						v = previousTab,
 						t = 0.25,
 						s = "Linear",
@@ -1272,7 +1305,7 @@ b = {
 					}):Play()
 					local textLabel = previousTab.Content:FindFirstChildOfClass("TextLabel")
 					if textLabel then
-						b[1]().tw({
+						b[1]().twSafe({
 							v = textLabel,
 							t = 0.25,
 							s = "Linear",
@@ -1280,7 +1313,7 @@ b = {
 							g = {TextColor3 = a.Theme[op.Theme or 'Dark']['Text Color']}
 						}):Play()
 					end
-					b[1]().tw({
+					b[1]().twSafe({
 						v = previousTab.Accent,
 						t = 0.25,
 						s = "Linear",
@@ -1288,7 +1321,7 @@ b = {
 						g = {BackgroundTransparency = 1}
 					}):Play()
 					if previousTab:FindFirstChild("SideGlow") then
-						b[1]().tw({
+						b[1]().twSafe({
 							v = previousTab.SideGlow,
 							t = 0.25,
 							s = "Linear",
@@ -1297,6 +1330,7 @@ b = {
 						}):Play()
 					end
 				end
+				-- Hide whichever page was visible before switching.
 				for i, v in pairs(fo:GetChildren()) do
 					if v:IsA("Frame") and v.Name == "Page" and v ~= Page and v.Visible then
 						v.Visible = false
@@ -1304,42 +1338,43 @@ b = {
 				end
 				currentSelectedTab = Tab
 				Tab:SetAttribute("Selected", true)
-				b[1]().tw({
+				b[1]().twSafe({
 					v = Tab,
 					t = 0.25,
 					s = "Linear",
 					d = "Out",
 					g = {BackgroundTransparency = 0}
 				}):Play()
-				
+
 				local textLabel = Tab.Content:FindFirstChildOfClass("TextLabel")
 				if textLabel then
-					b[1]().tw({
+					b[1]().twSafe({
 						v = textLabel,
 						t = 0.25,
 						s = "Linear",
 						d = "Out",
-						g = {TextColor3 = a.Theme[op.Theme or 'Dark']['Text Tab Select']}
+						g = {TextColor3 = a.Theme[op.Theme or 'Dark']['Text Color']}
 					}):Play()
 				end
-				
-				b[1]().tw({
+
+				b[1]().twSafe({
 					v = Tab.Accent,
 					t = 0.25,
 					s = "Linear",
 					d = "Out",
 					g = {BackgroundTransparency = 0}
 				}):Play()
-				b[1]().tw({
+				b[1]().twSafe({
 					v = Tab.SideGlow,
 					t = 0.25,
 					s = "Linear",
 					d = "Out",
 					g = {BackgroundTransparency = 0.65}
 				}):Play()
-				
+
+				-- Show page with fade in
 				Page.Visible = true
-				b[1]().tw({
+				b[1]().twSafe({
 					v = Page.CanvasGroup,
 					t = 0.25,
 					s = "Linear",
@@ -1347,19 +1382,21 @@ b = {
 					g = {GroupTransparency = 0}
 				}):Play()
 			end
+			-- Debounce: ignore rapid-fire clicks on the same tab while its own
+			-- select tween is still settling in, preventing the "solid color
+			-- snap" caused by overlapping tweens on the same property.
+			local lastClickTime = 0
 			Tab.TextButton.MouseButton1Click:Connect(function()
+				local now = os.clock()
+				if now - lastClickTime < 0.05 then
+					return
+				end
+				lastClickTime = now
 				b[1]().jc(Tab.TextButton, Tab)
 				selectTab()
 			end)
 			delay(0.1, function()
-				local firstTab = nil
-				for _, child in ipairs(patab:GetChildren()) do
-					if child:IsA("Frame") then
-						firstTab = child
-						break
-					end
-				end
-				if Tab == firstTab then
+				if patab:FindFirstChild(Tab.Name) == Tab and Tab == patab:GetChildren()[1] then
 					selectTab()
 				end
 			end)
@@ -1380,10 +1417,10 @@ b = {
 				end
 			end)
 			local Func = {}
-			
+
 			Func.ConfigSystem = b[3]()
 			Func.ConfigSystem.ConfigName = op.Title .. "_" .. gfjd.Title
-			
+
 			delay(1, function()
 				Func.ConfigSystem:LoadConfig()
 			end)
@@ -1509,7 +1546,7 @@ b = {
 				function NewSet:SetValue(newValue)
 					ToggleC(newValue)
 				end
-				
+
 				local Key = khgkgh.Key or khgkgh.Title
 				Func.ConfigSystem:Register(Key,
 					function() return Value end,
@@ -1798,7 +1835,7 @@ b = {
 										Callback(selectedList)
 									end)
 								end
-								
+
 								if not Multi and Value == t then
 									Value = ""
 									dropdown.Frame.SelectedText.Text = ""
@@ -1806,7 +1843,7 @@ b = {
 										Callback("")
 									end)
 								end
-								
+
 								child:Destroy()
 								break
 							end
@@ -2344,7 +2381,7 @@ b = {
 				function NewSet:SetValue(newValue)
 					textbox.Frame.ValueBox.TextBox.Text = newValue
 				end
-				
+
 				local Key = khgkgh.Key or khgkgh.Title
 				Func.ConfigSystem:Register(Key,
 					function() return textbox.Frame.ValueBox.TextBox.Text end,
@@ -2419,7 +2456,7 @@ b = {
 							f("UIPadding", {PaddingRight = UDim.new(0,1)}),
 							f("ImageLabel", {
 								AnchorPoint = Vector2.new(1, 0.5),
-								BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+								BackgroundColor3 = Color3.fromRGB(255,255,255),
 								BackgroundTransparency = 1,
 								BorderColor3 = Color3.fromRGB(0,0,0),
 								BorderSizePixel = 0,
@@ -2488,7 +2525,7 @@ b = {
 				function NewSet:SetDesc(newDesc)
 					local descLabel = par.TextDesc:FindFirstChild("Desc")
 					if descLabel then
-											descLabel.Text = newDesc
+						descLabel.Text = newDesc
 					else
 						b[1]().desc(par.TextDesc, newDesc, op)
 					end
@@ -2634,4 +2671,3 @@ b = {
 		return g
 	end,
 }
-
