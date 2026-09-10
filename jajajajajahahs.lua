@@ -1,64 +1,5 @@
-
 a = {
 	Theme = {
-        ['lunahubontop'] = {
-	['Background'] = Color3.fromRGB(18, 10, 25),
-	['Background Transparency'] = 0.05,
-	['Color Main'] = Color3.fromRGB(200, 100, 255),
-	['Color Tab'] = {
-		[1] = Color3.fromRGB(180, 80, 255),
-		[2] = Color3.fromRGB(220, 120, 255)
-	},
-	['Top Bar'] = Color3.fromRGB(25, 15, 35),
-	['Text Color'] = Color3.fromRGB(255, 240, 255),
-	['Text Tab Select'] = Color3.fromRGB(255, 255, 255),
-	['Tab Bar'] = Color3.fromRGB(20, 12, 28),
-	['Background Page'] = Color3.fromRGB(22, 12, 30),
-	['Line Page'] = Color3.fromRGB(200, 100, 255),
-	['Top Bar Page'] = Color3.fromRGB(28, 18, 38),
-	['Search'] = Color3.fromRGB(40, 25, 55),
-	['Background Function'] = Color3.fromRGB(100, 50, 150),
-	['Background Function Transparency'] = 0.8,
-	['Background Function Transparency Moved'] = 0.6,
-	['Dropdown Color'] = Color3.fromRGB(45, 28, 60),
-	['Dropdown Select Background'] = Color3.fromRGB(30, 18, 42),
-	['Dropdown Select Stroke'] = Color3.fromRGB(150, 80, 200),
-	['Dropdown Item'] = Color3.fromRGB(80, 45, 120),
-	['Textbox Color'] = Color3.fromRGB(45, 28, 60),
-	['Slider Color'] = Color3.fromRGB(45, 28, 60),
-	['Toggle Color'] = Color3.fromRGB(25, 15, 35),
-	['Diglog Top Bar'] = Color3.fromRGB(28, 18, 38),
-	['Diglog Background'] = Color3.fromRGB(20, 12, 28)
-		}, 
-		['Quizzy'] = {
-			['Background'] = Color3.fromRGB(16, 16, 16),
-			['Background Transparency'] = 0.1,
-			['Color Main'] = Color3.fromRGB(249, 43, 134),
-			['Color Tab'] = {
-				[1] = Color3.fromRGB(213, 63, 128),
-				[2] = Color3.fromRGB(209, 102, 198)
-			},
-			['Top Bar'] = Color3.fromRGB(21, 21, 21),
-			['Text Color'] = Color3.fromRGB(255, 255, 255),
-			['Text Tab Select'] = Color3.fromRGB(0, 0, 0),
-			['Tab Bar'] = Color3.fromRGB(16, 16, 16),
-			['Background Page'] = Color3.fromRGB(24, 24, 24),
-			['Line Page'] = Color3.fromRGB(132, 132, 132),
-			['Top Bar Page'] = Color3.fromRGB(21, 21, 21),
-			['Search'] = Color3.fromRGB(47, 47, 47),
-			['Background Function'] = Color3.fromRGB(88, 88, 88),
-			['Background Function Transparency'] = 0.9,
-			['Background Function Transparency Moved'] = 0.8,
-			['Dropdown Color'] = Color3.fromRGB(47, 47, 47),
-			['Dropdown Select Background'] = Color3.fromRGB(24, 24, 24),
-			['Dropdown Select Stroke'] = Color3.fromRGB(43, 43, 43),
-			['Dropdown Item'] = Color3.fromRGB(88, 88, 88),
-			['Textbox Color'] = Color3.fromRGB(47, 47, 47),
-			['Slider Color'] = Color3.fromRGB(47, 47, 47),
-			['Toggle Color'] = Color3.fromRGB(16, 16, 16),
-			['Diglog Top Bar'] = Color3.fromRGB(22, 22, 22),
-			['Diglog Background'] = Color3.fromRGB(17, 17, 17)
-		},
 		['Dark'] = {
 			['Background'] = Color3.fromRGB(16, 16, 16),
 			['Background Transparency'] = 0.1,
@@ -88,67 +29,8 @@ a = {
 			['Diglog Top Bar'] = Color3.fromRGB(22, 22, 22),
 			['Diglog Background'] = Color3.fromRGB(17, 17, 17)
 		},
-		['Darkness'] = {
-			['Background'] = Color3.fromRGB(16, 16, 16),
-			['Background Transparency'] = 0.1,
-			['Color Main'] = Color3.fromRGB(0, 0, 0),
-			['Color Tab'] = {
-				[1] = Color3.fromRGB(57, 57, 57),
-				[2] = Color3.fromRGB(57, 57, 57)
-			},
-			['Top Bar'] = Color3.fromRGB(21, 21, 21),
-			['Text Color'] = Color3.fromRGB(255, 255, 255),
-			['Text Tab Select'] = Color3.fromRGB(0, 0, 0),
-			['Tab Bar'] = Color3.fromRGB(16, 16, 16),
-			['Background Page'] = Color3.fromRGB(24, 24, 24),
-			['Line Page'] = Color3.fromRGB(132, 132, 132),
-			['Top Bar Page'] = Color3.fromRGB(21, 21, 21),
-			['Search'] = Color3.fromRGB(47, 47, 47),
-			['Background Function'] = Color3.fromRGB(88, 88, 88),
-			['Background Function Transparency'] = 0.9,
-			['Background Function Transparency Moved'] = 0.8,
-			['Dropdown Color'] = Color3.fromRGB(47, 47, 47),
-			['Dropdown Select Background'] = Color3.fromRGB(24, 24, 24),
-			['Dropdown Select Stroke'] = Color3.fromRGB(43, 43, 43),
-			['Dropdown Item'] = Color3.fromRGB(88, 88, 88),
-			['Textbox Color'] = Color3.fromRGB(47, 47, 47),
-			['Slider Color'] = Color3.fromRGB(47, 47, 47),
-			['Toggle Color'] = Color3.fromRGB(16, 16, 16),
-			['Diglog Top Bar'] = Color3.fromRGB(22, 22, 22),
-			['Diglog Background'] = Color3.fromRGB(17, 17, 17)
-		},
-		['Light'] = {
-			['Background'] = Color3.fromRGB(241, 241, 241),
-			['Background Transparency'] = 0.1,
-			['Color Main'] = Color3.fromRGB(17, 110, 249),
-			['Color Tab'] = {
-				[1] = Color3.fromRGB(2, 69, 213),
-				[2] = Color3.fromRGB(7, 155, 209)
-			},
-			['Top Bar'] = Color3.fromRGB(209, 209, 209),
-			['Text Color'] = Color3.fromRGB(0, 0, 0),
-			['Text Tab Select'] = Color3.fromRGB(255, 255, 255),
-			['Tab Bar'] = Color3.fromRGB(152, 152, 152),
-			['Background Page'] = Color3.fromRGB(176, 176, 176),
-			['Line Page'] = Color3.fromRGB(54, 54, 54),
-			['Top Bar Page'] = Color3.fromRGB(150, 150, 150),
-			['Search'] = Color3.fromRGB(127, 127, 127),
-			['Background Function'] = Color3.fromRGB(102, 102, 102),
-			['Background Function Transparency'] = 0.6,
-			['Background Function Transparency Moved'] = 0.4,
-			['Dropdown Color'] = Color3.fromRGB(113, 113, 113),
-			['Dropdown Select Background'] = Color3.fromRGB(90, 90, 90),
-			['Dropdown Select Stroke'] = Color3.fromRGB(76, 76, 76),
-			['Dropdown Item'] = Color3.fromRGB(116, 116, 116),
-			['Textbox Color'] = Color3.fromRGB(113, 113, 113),
-			['Slider Color'] = Color3.fromRGB(113, 113, 113),
-			['Toggle Color'] = Color3.fromRGB(52, 52, 52),
-			['Diglog Top Bar'] = Color3.fromRGB(209, 209, 209),
-			['Diglog Background'] = Color3.fromRGB(241, 241, 241)
-		}
 	},
 }
-
 local Services = {
 	TweenService = game:GetService("TweenService"),
 	UserInputService = game:GetService("UserInputService"),
@@ -157,7 +39,6 @@ local Services = {
 	Lighting = game:GetService("Lighting"),
 }
 local LocalPlayer = Services.Players.LocalPlayer
-
 local cachedHelpers = nil
 b = {
 	[1] = function()
@@ -200,6 +81,32 @@ b = {
 				tweenInfoCache[key] = ti
 			end
 			return Services.TweenService:Create(info.v, ti, info.g)
+		end
+		-- Tracks the currently running tween per (instance, property) pair so a
+		-- new tween on the same property can cancel the old one instead of the
+		-- two racing and snapping the value instantly.
+		local activeTweens = setmetatable({}, {__mode = "k"})
+		function x.twSafe(info)
+			local inst = info.v
+			activeTweens[inst] = activeTweens[inst] or {}
+			for prop in pairs(info.g) do
+				local running = activeTweens[inst][prop]
+				if running then
+					running:Cancel()
+				end
+			end
+			local tween = x.tw(info)
+			for prop in pairs(info.g) do
+				activeTweens[inst][prop] = tween
+			end
+			tween.Completed:Connect(function()
+				for prop in pairs(info.g) do
+					if activeTweens[inst][prop] == tween then
+						activeTweens[inst][prop] = nil
+					end
+				end
+			end)
+			return tween
 		end
 		-- Generic "flash" click effect: briefly tweens a color property to `color`
 		-- then back to its original value. Used to give every clickable element
@@ -244,7 +151,7 @@ b = {
 			}, {
 				f("CanvasGroup", {
 					BorderSizePixel = 0,
-					BackgroundColor3 = a.Theme[theme.Theme or 'Quizzy']['Diglog Background'],
+					BackgroundColor3 = a.Theme[theme.Theme or 'Dark']['Diglog Background'],
 					AnchorPoint = Vector2.new(0.5, 0.5),
 					Size = UDim2.new(0, 300, 0, 0),
 					Position = UDim2.new(0.5, 0, 0.5, 0),
@@ -254,7 +161,7 @@ b = {
 					f("UICorner", {CornerRadius = UDim.new(0, 11)}),
 					f("Frame", {
 						BorderSizePixel = 0,
-						BackgroundColor3 = a.Theme[theme.Theme or 'Quizzy']['Diglog Top Bar'],
+						BackgroundColor3 = a.Theme[theme.Theme or 'Dark']['Diglog Top Bar'],
 						Size = UDim2.new(1, 0, 0, 50),
 						BorderColor3 = Color3.fromRGB(0, 0, 0),
 					}, {
@@ -263,7 +170,7 @@ b = {
 							BackgroundColor3 = Color3.fromRGB(255, 255, 255),
 							TextSize = 20,
 							FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal),
-							TextColor3 = a.Theme[theme.Theme or 'Quizzy']['Text Color'],
+							TextColor3 = a.Theme[theme.Theme or 'Dark']['Text Color'],
 							BackgroundTransparency = 1,
 							RichText = true,
 							AnchorPoint = Vector2.new(0.5, 0.5),
@@ -307,7 +214,7 @@ b = {
 								BackgroundColor3 = Color3.fromRGB(255, 255, 255),
 								TextSize = 18,
 								FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal),
-								TextColor3 = a.Theme[theme.Theme or 'Quizzy']['Text Color'],
+								TextColor3 = a.Theme[theme.Theme or 'Dark']['Text Color'],
 								BackgroundTransparency = 1,
 								Size = UDim2.new(1, 0, 1, 0),
 								BorderColor3 = Color3.fromRGB(0, 0, 0),
@@ -345,7 +252,7 @@ b = {
 								BackgroundColor3 = Color3.fromRGB(255, 255, 255),
 								TextSize = 18,
 								FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal),
-								TextColor3 = a.Theme[theme.Theme or 'Quizzy']['Text Color'],
+								TextColor3 = a.Theme[theme.Theme or 'Dark']['Text Color'],
 								BackgroundTransparency = 1,
 								Size = UDim2.new(1, 0, 1, 0),
 								BorderColor3 = Color3.fromRGB(0, 0, 0),
@@ -369,7 +276,6 @@ b = {
 					}),
 				})
 			})
-
 			if d ~= nil then
 				local gfdgd = f("TextLabel", {
 					Parent = hf.CanvasGroup,
@@ -381,7 +287,7 @@ b = {
 					BackgroundColor3 = Color3.fromRGB(255, 255, 255),
 					TextSize = 10,
 					FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal),
-					TextColor3 = a.Theme[theme.Theme or 'Quizzy']['Text Color'],
+					TextColor3 = a.Theme[theme.Theme or 'Dark']['Text Color'],
 					BackgroundTransparency = 1,
 					RichText = true,
 					Size = UDim2.new(0, 245, 0, 68),
@@ -399,9 +305,7 @@ b = {
 			else
 				hf.CanvasGroup.Size = UDim2.new(0, 300, 0, 120)
 			end
-
 			local isDestroyed = false
-
 			local function c()
 				isDestroyed = true
 				b[1]().tw({
@@ -422,7 +326,6 @@ b = {
 				gf.Completed:Wait()
 				hf:Destroy()
 			end
-
 			local function ml(g)
 				g.MouseMoved:Connect(function()
 					b[1]().tw({
@@ -457,13 +360,10 @@ b = {
 					}):Play()
 				end)
 			end
-
 			ml(confirm)
 			ml(cancel)
-
 			b[1]().tw({v = hf, t = 0.2, s = "Linear", d = "Out", g = {BackgroundTransparency = 0.4}}):Play()
 			b[1]().tw({v = hf.CanvasGroup, t = 0.2, s = "Linear", d = "Out", g = {GroupTransparency = 0}}):Play()
-
 			Services.UserInputService.InputBegan:Connect(function(A)
 				if not isDestroyed and A.UserInputType == Enum.UserInputType.MouseButton1 or A.UserInputType == Enum.UserInputType.Touch then
 					local B, C = hf.CanvasGroup.AbsolutePosition, hf.CanvasGroup.AbsoluteSize
@@ -473,14 +373,12 @@ b = {
 					end
 				end
 			end)
-
 			confirm.TextButton.MouseButton1Click:Connect(function()
 				tw:Create(confirm.TextLabel, TweenInfo.new(0.06, Enum.EasingStyle.Back, Enum.EasingDirection.Out, 0, true, 0), {Position = UDim2.new(0, 0, 0.1, 0)}):Play()
 				b[1]().tw({v = confirm, t = 0.1, s = "Back", d = "Out", g = {Size = UDim2.new(0, 115, 0, 30)}}):Play()
 				c()
 				call()
 			end)
-
 			cancel.TextButton.MouseButton1Click:Connect(function()
 				tw:Create(cancel.TextLabel, TweenInfo.new(0.06, Enum.EasingStyle.Back, Enum.EasingDirection.Out, 0, true, 0), {Position = UDim2.new(0, 0, 0.1, 0)}):Play()
 				b[1]().tw({v = cancel, t = 0.1, s = "Back", d = "Out", g = {Size = UDim2.new(0, 115, 0, 30)}}):Play()
@@ -497,7 +395,7 @@ b = {
 				BackgroundColor3 = Color3.fromRGB(255, 255, 255),
 				TextSize = 9,
 				Font = Enum.Font.Gotham,
-				TextColor3 = a.Theme[theme.Theme or 'Quizzy']['Text Color'],
+				TextColor3 = a.Theme[theme.Theme or 'Dark']['Text Color'],
 				BackgroundTransparency = 1,
 				RichText = true,
 				Size = UDim2.new(1, 0, 0, math.floor(16)),
@@ -510,14 +408,13 @@ b = {
 		end
 		function x.background(parent, text, desc, ghfd, theme)
 			local f = b[1]().n
-
 			local hg = f("Frame", {
 				Parent = parent,
 				BorderSizePixel = 0,
-				BackgroundColor3 = a.Theme[theme.Theme or 'Quizzy']['Background Function'],
+				BackgroundColor3 = a.Theme[theme.Theme or 'Dark']['Background Function'],
 				Size = UDim2.new(1, 0, 0, 40),
 				BorderColor3 = Color3.fromRGB(0, 0, 0),
-				BackgroundTransparency = a.Theme[theme.Theme or 'Quizzy']['Background Function Transparency'],
+				BackgroundTransparency = a.Theme[theme.Theme or 'Dark']['Background Function Transparency'],
 				ClipsDescendants = true
 			}, {
 				f("UICorner", {CornerRadius = UDim.new(0, 4)}),
@@ -544,7 +441,7 @@ b = {
 						BackgroundColor3 = Color3.fromRGB(255, 255, 255),
 						TextSize = 12,
 						Font = Enum.Font.Gotham,
-						TextColor3 = a.Theme[theme.Theme or 'Quizzy']['Text Color'],
+						TextColor3 = a.Theme[theme.Theme or 'Dark']['Text Color'],
 						BackgroundTransparency = 1,
 						RichText = true,
 						Size = UDim2.new(1, 0, 0, math.floor(16)),
@@ -554,11 +451,9 @@ b = {
 					})
 				}),
 			})
-
 			if desc and desc ~= "" then
 				b[1]().desc(hg.TextDesc, desc, theme)
 			end
-
 			if not ghfd then
 				hg.MouseMoved:Connect(function()
 					b[1]().tw({
@@ -566,7 +461,7 @@ b = {
 						t = 0.15,
 						s = "Linear",
 						d = "InOut",
-						g = {BackgroundTransparency = a.Theme[theme.Theme or 'Quizzy']['Background Function Transparency Moved']}
+						g = {BackgroundTransparency = a.Theme[theme.Theme or 'Dark']['Background Function Transparency Moved']}
 					}):Play()
 				end)
 				hg.MouseLeave:Connect(function()
@@ -575,16 +470,14 @@ b = {
 						t = 0.15,
 						s = "Linear",
 						d = "InOut",
-						g = {BackgroundTransparency = a.Theme[theme.Theme or 'Quizzy']['Background Function Transparency']}
+						g = {BackgroundTransparency = a.Theme[theme.Theme or 'Dark']['Background Function Transparency']}
 					}):Play()
 				end)
 			end
-
 			hg.TextDesc.UIListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
 				hg.TextDesc.Size = UDim2.new(1, 0, 0, hg.TextDesc.UIListLayout.AbsoluteContentSize.Y + 15)
 				hg.Size = UDim2.new(1, 0, 0, hg.TextDesc.UIListLayout.AbsoluteContentSize.Y + 15)
 			end)
-
 			return hg
 		end
 		function x.click(i)
@@ -609,14 +502,11 @@ b = {
 				cachedMouse = LocalPlayer:GetMouse()
 			end
 			local Mouse = cachedMouse
-
 			local relativeX = Mouse.X - c.AbsolutePosition.X
 			local relativeY = Mouse.Y - c.AbsolutePosition.Y
-
 			if relativeX < 0 or relativeY < 0 or relativeX > c.AbsoluteSize.X or relativeY > c.AbsoluteSize.Y then
 				return
 			end
-
 			local ClickButtonCircle = b[1]().n("ImageLabel", {
 				Parent = p,
 				BackgroundColor3 = Color3.fromRGB(255, 255, 255),
@@ -630,26 +520,21 @@ b = {
 				ImageColor3 = Color3.fromRGB(126, 126, 126),
 				ZIndex = 10
 			})
-
 			local UICorner = Instance.new("UICorner")
 			UICorner.CornerRadius = UDim.new(1, 0)
 			UICorner.Parent = ClickButtonCircle
-
 			local expandTween = game:GetService("TweenService"):Create(ClickButtonCircle, TweenInfo.new(1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
 				Size = UDim2.new(0, c.AbsoluteSize.X * 1.5, 0, c.AbsoluteSize.X * 1.5),
 				ImageTransparency = 1
 			})
-
 			expandTween.Completed:Connect(function()
 				ClickButtonCircle:Destroy()
 			end)
-
 			expandTween:Play()
 		end
 		function x.init(gf)
 			local binds = {}
 			local root = b[1]().n('Folder', {Parent = workspace.CurrentCamera})
-
 			local DepthOfField = b[1]().n('DepthOfFieldEffect', {
 				Parent = game:GetService('Lighting'),
 				FarIntensity = 0,
@@ -657,7 +542,6 @@ b = {
 				InFocusRadius = 50,
 				NearIntensity = 1,
 			})
-
 			local frame = b[1]().n('Frame', {
 				Parent = gf,
 				Size = UDim2.new(0.95, 0, 0.95, 0),
@@ -665,7 +549,6 @@ b = {
 				AnchorPoint = Vector2.new(0.5, 0.5),
 				BackgroundTransparency = 1
 			})
-
 			local GenUid; do
 				local id = 0
 				function GenUid()
@@ -673,7 +556,6 @@ b = {
 					return 'neon::'..tostring(id)
 				end
 			end
-
 			do
 				local function IsNotNaN(x)
 					return x == x
@@ -684,11 +566,9 @@ b = {
 					continue = IsNotNaN(workspace.CurrentCamera:ScreenPointToRay(0,0).Origin.x)
 				end
 			end
-
 			local DrawQuad; do
 				local acos, max, pi, sqrt = math.acos, math.max, math.pi, math.sqrt
 				local sz = 0.2
-
 				local function DrawTriangle(v1, v2, v3, p0, p1)
 					local s1 = (v1 - v2).magnitude
 					local s2 = (v2 - v3).magnitude
@@ -702,35 +582,27 @@ b = {
 					elseif s3 == smax then
 						A, B, C = v3, v1, v2
 					end
-
 					local para = ( (B-A).x*(C-A).x + (B-A).y*(C-A).y + (B-A).z*(C-A).z ) / (A-B).magnitude
 					local perp = sqrt((C-A).magnitude^2 - para*para)
 					local dif_para = (A - B).magnitude - para
-
 					local st = CFrame.new(B, A)
 					local za = CFrame.Angles(pi/2,0,0)
-
 					local cf0 = st
-
 					local Top_Look = (cf0 * za).lookVector
 					local Mid_Point = A + CFrame.new(A, B).lookVector * para
 					local Needed_Look = CFrame.new(Mid_Point, C).lookVector
 					local dot = Top_Look.x*Needed_Look.x + Top_Look.y*Needed_Look.y + Top_Look.z*Needed_Look.z
-
 					local ac = CFrame.Angles(0, 0, acos(dot))
-
 					cf0 = cf0 * ac
 					if ((cf0 * za).lookVector - Needed_Look).magnitude > 0.01 then
 						cf0 = cf0 * CFrame.Angles(0, 0, -2*acos(dot))
 					end
 					cf0 = cf0 * CFrame.new(0, perp/2, -(dif_para + para/2))
-
 					local cf1 = st * ac * CFrame.Angles(0, pi, 0)
 					if ((cf1 * za).lookVector - Needed_Look).magnitude > 0.01 then
 						cf1 = cf1 * CFrame.Angles(0, 0, 2*acos(dot))
 					end
 					cf1 = cf1 * CFrame.new(0, perp/2, dif_para/2)
-
 					if not p0 then
 						p0 = b[1]().n('Part', {
 							FormFactor = 'Custom',
@@ -750,30 +622,24 @@ b = {
 					end
 					p0.WedgeMesh.Scale = Vector3.new(0, perp/sz, para/sz)
 					p0.CFrame = cf0
-
 					if not p1 then
 						p1 = p0:clone()
 					end
 					p1.WedgeMesh.Scale = Vector3.new(0, perp/sz, dif_para/sz)
 					p1.CFrame = cf1
-
 					return p0, p1
 				end
-
 				function DrawQuad(v1, v2, v3, v4, parts)
 					parts[1], parts[2] = DrawTriangle(v1, v2, v3, parts[1], parts[2])
 					parts[3], parts[4] = DrawTriangle(v3, v2, v4, parts[3], parts[4])
 				end
 			end
-
 			if binds[frame] then
 				return binds[frame].parts
 			end
-
 			local uid = GenUid()
 			local parts = {}
 			local f = b[1]().n('Folder', {Parent = root, Name = frame.Name})
-
 			local parents = {}
 			do
 				local function add(child)
@@ -784,14 +650,12 @@ b = {
 				end
 				add(frame)
 			end
-
 			local function UpdateOrientation(fetchProps)
 				local properties = {
 					Transparency = 0.98;
 					BrickColor = BrickColor.new('Institutional white');
 				}
 				local zIndex = 1 - 0.05 * frame.ZIndex
-
 				local tl, br = frame.AbsolutePosition, frame.AbsolutePosition + frame.AbsoluteSize
 				local tr, bl = Vector2.new(br.x, tl.y), Vector2.new(tl.x, br.y)
 				do
@@ -810,10 +674,10 @@ b = {
 					end
 				end
 				DrawQuad(
-					workspace.CurrentCamera:ScreenPointToRay(tl.x, tl.y, zIndex).Origin, 
-					workspace.CurrentCamera:ScreenPointToRay(tr.x, tr.y, zIndex).Origin, 
-					workspace.CurrentCamera:ScreenPointToRay(bl.x, bl.y, zIndex).Origin, 
-					workspace.CurrentCamera:ScreenPointToRay(br.x, br.y, zIndex).Origin, 
+					workspace.CurrentCamera:ScreenPointToRay(tl.x, tl.y, zIndex).Origin,
+					workspace.CurrentCamera:ScreenPointToRay(tr.x, tr.y, zIndex).Origin,
+					workspace.CurrentCamera:ScreenPointToRay(bl.x, bl.y, zIndex).Origin,
+					workspace.CurrentCamera:ScreenPointToRay(br.x, br.y, zIndex).Origin,
 					parts
 				)
 				if fetchProps then
@@ -827,7 +691,6 @@ b = {
 					end
 				end
 			end
-
 			UpdateOrientation(true)
 			game:GetService('RunService'):BindToRenderStep(uid, 2000, UpdateOrientation)
 			return {
@@ -846,38 +709,38 @@ b = {
 		local ConfigSystem = {}
 		ConfigSystem.Elements = {}
 		ConfigSystem.ConfigName = "DefaultConfig"
-		
+
 		function ConfigSystem:Register(key, getValue, setValue)
 			self.Elements[key] = {
 				GetValue = getValue,
 				SetValue = setValue
 			}
 		end
-		
+
 		function ConfigSystem:SaveConfig()
 			local HttpService = game:GetService("HttpService")
 			local config = {}
-			
+
 			for key, data in pairs(self.Elements) do
 				config[key] = data.GetValue()
 			end
-			
+
 			local json = HttpService:JSONEncode(config)
-			
+
 			if writefile then
 				writefile(self.ConfigName .. ".json", json)
 				return true
 			end
 			return false
 		end
-		
+
 		function ConfigSystem:LoadConfig()
 			local HttpService = game:GetService("HttpService")
-			
+
 			if readfile and isfile and isfile(self.ConfigName .. ".json") then
 				local json = readfile(self.ConfigName .. ".json")
 				local config = HttpService:JSONDecode(json)
-				
+
 				for key, value in pairs(config) do
 					if self.Elements[key] then
 						self.Elements[key].SetValue(value)
@@ -887,10 +750,10 @@ b = {
 			end
 			return false
 		end
-		
+
 		return ConfigSystem
-	end, 
-	
+	end,
+
 	CreateWindow = function(self, op)
 		local f, g, CloseUI, patab, of, scl, KeyCloseUI, isopen = self[1]().n, {}, nil, nil, false ,nil, op.Keybind or Enum.KeyCode.LeftControl, false
 		local currentSelectedTab = nil
@@ -899,17 +762,17 @@ b = {
 		local fo = f("CanvasGroup", {
 			Parent = b[2](),
 			BorderSizePixel = 0,
-			BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Background'],
+			BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Background'],
 			AnchorPoint = Vector2.new(0.5, 0.5),
 			Size = UDim2.new(0, 510, 0, 300),
 			Position = UDim2.new(0.5, 0, 0.5, 0),
 			BorderColor3 = Color3.fromRGB(0, 0, 0),
-			GroupTransparency = a.Theme[op.Theme or 'Quizzy']['Background Transparency'],
+			GroupTransparency = a.Theme[op.Theme or 'Dark']['Background Transparency'],
 		}, {
 			f("UICorner", {CornerRadius = UDim.new(0, 11)}),
 			f("Frame", {
 				BorderSizePixel = 0,
-				BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Top Bar'],
+				BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Top Bar'],
 				Size = UDim2.new(1, 0, 0, 50),
 				BorderColor3 = Color3.fromRGB(0, 0, 0)
 			}, {
@@ -936,7 +799,7 @@ b = {
 						BackgroundColor3 = Color3.fromRGB(255, 255, 255),
 						TextSize = 11,
 						FontFace = Font.new("rbxassetid://16658237174", Enum.FontWeight.Regular, Enum.FontStyle.Normal),
-						TextColor3 = a.Theme[op.Theme or 'Quizzy']['Text Color'],
+						TextColor3 = a.Theme[op.Theme or 'Dark']['Text Color'],
 						BackgroundTransparency = 1,
 						Size = UDim2.new(1, 0, 0, 16),
 						AutomaticSize = Enum.AutomaticSize.Y,
@@ -950,7 +813,7 @@ b = {
 						BackgroundColor3 = Color3.fromRGB(255, 255, 255),
 						TextSize = 9,
 						FontFace = Font.new("rbxassetid://16658237174", Enum.FontWeight.Regular, Enum.FontStyle.Normal),
-						TextColor3 = a.Theme[op.Theme or 'Quizzy']['Text Color'],
+						TextColor3 = a.Theme[op.Theme or 'Dark']['Text Color'],
 						BackgroundTransparency = 1,
 						TextTransparency = 0.6,
 						Size = UDim2.new(1, 0, 0, 10),
@@ -972,7 +835,7 @@ b = {
 			}),
 			f("Frame", {
 				BorderSizePixel = 0,
-				BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Tab Bar'],
+				BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Tab Bar'],
 				AnchorPoint = Vector2.new(0, 0),
 				Position = UDim2.new(0, 0, 0, 50),
 				Size = UDim2.new(0, 130, 1, -50),
@@ -985,7 +848,7 @@ b = {
 					BackgroundColor3 = Color3.fromRGB(255, 255, 255),
 					AnchorPoint = Vector2.new(0, 0),
 					Size = UDim2.new(1, 0, 1, 0),
-					ScrollBarImageColor3 = a.Theme[op.Theme or 'Quizzy']['Color Main'],
+					ScrollBarImageColor3 = a.Theme[op.Theme or 'Dark']['Color Main'],
 					Position = UDim2.new(0, 0, 0, 0),
 					BorderColor3 = Color3.fromRGB(0, 0, 0),
 					ScrollBarThickness = 2,
@@ -1028,10 +891,10 @@ b = {
 				BackgroundTransparency = 1,
 			}, {
 				f("ImageLabel", {
-					Active =  false,
+					Active = false,
 					BorderSizePixel = 0,
 					BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-					ImageColor3 = a.Theme[op.Theme or 'Quizzy']['Color Main'],
+					ImageColor3 = a.Theme[op.Theme or 'Dark']['Color Main'],
 					Selectable = false,
 					Image = "rbxassetid://105506802034513",
 					Size = UDim2.new(0, 20, 0, 20),
@@ -1049,7 +912,7 @@ b = {
 						Position = UDim2.new(0.5, 0,0.5, 0),
 						Size = UDim2.new(0.91, 0,0.91, 0),
 						Image = "rbxassetid://15196662130",
-						ImageColor3 = a.Theme[op.Theme or 'Quizzy']['Color Main']
+						ImageColor3 = a.Theme[op.Theme or 'Dark']['Color Main']
 					}),
 					f("UIGradient", {
 						Rotation = 90,
@@ -1075,16 +938,12 @@ b = {
 				ZIndex = 2
 			})
 		})
-
 		local isfoui = b[1]().init(fo)
-
 		local isResizing = false
 		local hasAdjustedAnchor = false
-
 		fo.TextButton.MouseButton1Down:Connect(function()
 			isResizing = true
 		end)
-
 		if not hasAdjustedAnchor then
 			local absolutePosition, parentAbsoluteSize = fo.AbsolutePosition, fo.Parent.AbsoluteSize
 			local newPosition = UDim2.new((absolutePosition.X / parentAbsoluteSize.X), fo.Position.X.Offset, (absolutePosition.Y / parentAbsoluteSize.Y), fo.Position.Y.Offset)
@@ -1092,13 +951,11 @@ b = {
 			fo.Position = newPosition
 			hasAdjustedAnchor = true
 		end
-
 		Services.UserInputService.InputEnded:Connect(function(input)
 			if input.UserInputType == Enum.UserInputType.MouseButton1 then
 				isResizing = false
 			end
 		end)
-
 		local resizeTweenInfo = TweenInfo.new(0.15)
 		Services.UserInputService.InputChanged:Connect(function(input)
 			if isResizing and input.UserInputType == Enum.UserInputType.MouseMovement then
@@ -1108,7 +965,6 @@ b = {
 				Services.TweenService:Create(fo, resizeTweenInfo, {Size = newSize}):Play()
 			end
 		end)
-
 		CloseUI.MouseMoved:Connect(function()
 			b[1]().tw({
 				v = CloseUI,
@@ -1118,7 +974,6 @@ b = {
 				g = {ImageTransparency = 0.5}
 			}):Play()
 		end)
-
 		CloseUI.MouseLeave:Connect(function()
 			b[1]().tw({
 				v = CloseUI,
@@ -1128,7 +983,6 @@ b = {
 				g = {ImageTransparency = 1}
 			}):Play()
 		end)
-
 		CloseUI.ImageButton.MouseButton1Click:Connect(function()
 			b[1]().dialog(fo ,
 				'Do you want to <font color="#ff0000"><b>close?</b></font>',
@@ -1147,64 +1001,15 @@ b = {
 				end
 				, op)
 		end)
-
 		b[1]().lak(fo)
-
-        
-        
-		if op.Theme == 'lunahubontop' then
-			local glowFrame = f("Frame", {
-				Parent = fo,
-				BackgroundTransparency = 1,
-				Size = UDim2.new(1, 0, 1, 0),
-				ZIndex = 0
-			}, {
-				f("UICorner", {CornerRadius = UDim.new(0, 11)}),
-				f("ImageLabel", {
-					BackgroundTransparency = 1,
-					Size = UDim2.new(1, 40, 1, 40),
-					Position = UDim2.new(0, -20, 0, -20),
-					Image = "rbxassetid://5028857084",
-					ImageColor3 = Color3.fromRGB(200, 100, 255),
-					ScaleType = Enum.ScaleType.Slice,
-					SliceCenter = Rect.new(10, 10, 118, 118),
-					ImageTransparency = 0.5
-				})
-			})
-			
-			
-			spawn(function()
-				while glowFrame and glowFrame.Parent do
-					b[1]().tw({
-						v = glowFrame.ImageLabel,
-						t = 2,
-						s = "Sine",
-						d = "InOut",
-						g = {ImageTransparency = 0.3}
-					}):Play()
-					wait(2)
-					b[1]().tw({
-						v = glowFrame.ImageLabel,
-						t = 2,
-						s = "Sine",
-						d = "InOut",
-						g = {ImageTransparency = 0.7}
-					}):Play()
-					wait(2)
-				end
-			end)
-		end
-
 		function g:CreateTab(gfjd)
 			assert(gfjd.Title, "Tab - Missing Title")
-
 			local tabIcon = gfjd.Icon or nil
 			local Scroll, Search = nil, nil
-
 			local Tab = f("Frame", {
 				Parent = patab,
 				BorderSizePixel = 0,
-				BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+				BackgroundColor3 = Color3.fromRGB(35, 35, 35),
 				Size = UDim2.new(1, 0, 0, 34),
 				BorderColor3 = Color3.fromRGB(0, 0, 0),
 				BackgroundTransparency = 1
@@ -1212,14 +1017,10 @@ b = {
 				f("UICorner", {
 					CornerRadius = UDim.new(0, 8)
 				}),
-				f("UIGradient", {
-					Rotation = 0,
-					Color = ColorSequence.new{ColorSequenceKeypoint.new(0.000, a.Theme[op.Theme or 'Quizzy']['Color Tab'][1]),ColorSequenceKeypoint.new(1.000, a.Theme[op.Theme or 'Quizzy']['Color Tab'][2])}
-				}),
 				f("Frame", {
 					Name = "Accent",
 					BorderSizePixel = 0,
-					BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+					BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Color Main'],
 					AnchorPoint = Vector2.new(0, 0.5),
 					Position = UDim2.new(0, 0, 0.5, 0),
 					Size = UDim2.new(0, 3, 0.55, 0),
@@ -1228,19 +1029,21 @@ b = {
 					f("UICorner", {CornerRadius = UDim.new(1, 0)})
 				}),
 				f("Frame", {
-					Name = "SideGlow",
+					Name = "Tint",
 					BorderSizePixel = 0,
-					BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Color Main'],
-					AnchorPoint = Vector2.new(0, 0.5),
-					Position = UDim2.new(0, 0, 0.5, 0),
-					Size = UDim2.new(0, 55, 1, 0),
+					BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Color Main'],
+					ClipsDescendants = true,
+					Size = UDim2.new(1, 0, 1, 0),
 					BackgroundTransparency = 1,
 					ZIndex = 0
 				}, {
 					f("UICorner", {CornerRadius = UDim.new(0, 8)}),
 					f("UIGradient", {
+						Rotation = 0,
 						Transparency = NumberSequence.new{
-							NumberSequenceKeypoint.new(0, 0.35),
+							NumberSequenceKeypoint.new(0, 0.65),
+							NumberSequenceKeypoint.new(0.22, 0.9),
+							NumberSequenceKeypoint.new(0.4, 1),
 							NumberSequenceKeypoint.new(1, 1)
 						}
 					})
@@ -1276,8 +1079,8 @@ b = {
 					ZIndex = 2
 				})
 			})
-			
-			
+
+
 			if tabIcon then
 				f("ImageLabel", {
 					Parent = Tab.Content,
@@ -1287,13 +1090,13 @@ b = {
 					Size = UDim2.new(0, 20, 0, 20),
 					BackgroundTransparency = 1,
 					BorderColor3 = Color3.fromRGB(0, 0, 0),
-					ImageColor3 = a.Theme[op.Theme or 'Quizzy']['Text Color'],
+					ImageColor3 = a.Theme[op.Theme or 'Dark']['Text Color'],
 					ScaleType = Enum.ScaleType.Fit,
 					LayoutOrder = 1
 				})
 			end
-			
-			
+
+
 			f("TextLabel", {
 				Parent = Tab.Content,
 				TextWrapped = false,
@@ -1302,7 +1105,7 @@ b = {
 				BackgroundColor3 = Color3.fromRGB(255, 255, 255),
 				TextSize = 11,
 				Font = Enum.Font.GothamMedium,
-				TextColor3 = a.Theme[op.Theme or 'Quizzy']['Text Color'],
+				TextColor3 = a.Theme[op.Theme or 'Dark']['Text Color'],
 				TextStrokeTransparency = 0.85,
 				TextStrokeColor3 = Color3.fromRGB(255, 255, 255),
 				BackgroundTransparency = 1,
@@ -1313,10 +1116,10 @@ b = {
 				LayoutOrder = 2
 			})
 
-			
 			Tab.MouseEnter:Connect(function()
+				if Tab:GetAttribute("Selected") then return end
 				if Tab.BackgroundTransparency > 0 then
-					b[1]().tw({
+					b[1]().twSafe({
 						v = Tab,
 						t = 0.2,
 						s = "Linear",
@@ -1325,10 +1128,11 @@ b = {
 					}):Play()
 				end
 			end)
-			
+
 			Tab.MouseLeave:Connect(function()
-				if Tab.BackgroundTransparency < 1 and Tab.BackgroundTransparency > 0 then
-					b[1]().tw({
+				if Tab:GetAttribute("Selected") then return end
+				if Tab.BackgroundTransparency < 1 then
+					b[1]().twSafe({
 						v = Tab,
 						t = 0.2,
 						s = "Linear",
@@ -1337,7 +1141,6 @@ b = {
 					}):Play()
 				end
 			end)
-
 			local Page = f("Frame", {
 				Parent = fo,
 				BorderSizePixel = 0,
@@ -1358,14 +1161,14 @@ b = {
 				}),
 				f("CanvasGroup", {
 					BorderSizePixel = 0,
-					BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Background Page'],
+					BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Background Page'],
 					Size = UDim2.new(1, 0, 1, 0),
 					BorderColor3 = Color3.fromRGB(0, 0, 0)
 				}, {
 					f("UICorner", {CornerRadius = UDim.new(0, 6)}),
 					f("Frame", {
 						BorderSizePixel = 0,
-						BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Top Bar Page'],
+						BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Top Bar Page'],
 						Size = UDim2.new(1, 0, 0, 35),
 						BorderColor3 = Color3.fromRGB(0, 0, 0)
 					}, {
@@ -1383,7 +1186,7 @@ b = {
 							BackgroundColor3 = Color3.fromRGB(255, 255, 255),
 							TextSize = 12,
 							FontFace = Font.new("rbxassetid://16658237174", Enum.FontWeight.Regular, Enum.FontStyle.Normal),
-							TextColor3 = a.Theme[op.Theme or 'Quizzy']['Text Color'],
+							TextColor3 = a.Theme[op.Theme or 'Dark']['Text Color'],
 							BackgroundTransparency = 1,
 							AnchorPoint = Vector2.new(0.5, 0.5),
 							Size = UDim2.new(1, 0, 1, 0),
@@ -1408,7 +1211,7 @@ b = {
 							f("UIPadding", {PaddingRight = UDim.new(0, 19), PaddingLeft = UDim.new(0, 200)}),
 							f("Frame", {
 								BorderSizePixel = 0,
-								BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Search'],
+								BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Search'],
 								AnchorPoint = Vector2.new(1, 0.5),
 								Size = UDim2.new(1, 0, 0, 20),
 								Position = UDim2.new(1, 0, 0.5, 0),
@@ -1417,7 +1220,7 @@ b = {
 								f("UIPadding", {PaddingRight = UDim.new(0, 12), PaddingLeft = UDim.new(0, 12)}),
 								f("UICorner", {CornerRadius = UDim.new(1, 0)}),
 								f("TextBox", {
-									TextColor3 = a.Theme[op.Theme or 'Quizzy']['Text Color'],
+									TextColor3 = a.Theme[op.Theme or 'Dark']['Text Color'],
 									BorderSizePixel = 0,
 									TextXAlignment = Enum.TextXAlignment.Left,
 									TextSize = 11,
@@ -1461,7 +1264,7 @@ b = {
 							BackgroundColor3 = Color3.fromRGB(255, 255, 255),
 							AnchorPoint = Vector2.new(0.5, 1),
 							Size = UDim2.new(0.98, 0, 1, 0),
-							ScrollBarImageColor3 = a.Theme[op.Theme or 'Quizzy']['Color Main'],
+							ScrollBarImageColor3 = a.Theme[op.Theme or 'Dark']['Color Main'],
 							Position = UDim2.new(0.5, 0, 1, 0),
 							BorderColor3 = Color3.fromRGB(0, 0, 0),
 							ScrollBarThickness = 3,
@@ -1482,104 +1285,71 @@ b = {
 				})
 			})
 
-			
 			local function selectTab()
-				-- Bug fix: re-clicking the already-active tab used to restart every
-				-- tween on every other tab (visible flicker/lag). Skip entirely if
-				-- this tab is already the selected one.
+				-- Guard: skip entirely if this tab is already selected (prevents
+				-- restarting tweens on every other tab on re-click).
 				if currentSelectedTab == Tab then
 					return
 				end
-
 				local previousTab = currentSelectedTab
 				if previousTab and previousTab.Parent then
 					previousTab:SetAttribute("Selected", false)
-					b[1]().tw({
+					b[1]().twSafe({
 						v = previousTab,
 						t = 0.25,
 						s = "Linear",
 						d = "Out",
 						g = {BackgroundTransparency = 1}
 					}):Play()
-
-					local textLabel = previousTab.Content:FindFirstChildOfClass("TextLabel")
-					if textLabel then
-						b[1]().tw({
-							v = textLabel,
-							t = 0.25,
-							s = "Linear",
-							d = "Out",
-							g = {TextColor3 = a.Theme[op.Theme or 'Quizzy']['Text Color']}
-						}):Play()
-					end
-
-					b[1]().tw({
+					b[1]().twSafe({
 						v = previousTab.Accent,
 						t = 0.25,
 						s = "Linear",
 						d = "Out",
 						g = {BackgroundTransparency = 1}
 					}):Play()
-
-					if previousTab:FindFirstChild("SideGlow") then
-						b[1]().tw({
-							v = previousTab.SideGlow,
-							t = 0.25,
-							s = "Linear",
-							d = "Out",
-							g = {BackgroundTransparency = 1}
-						}):Play()
-					end
+					b[1]().twSafe({
+						v = previousTab.Tint,
+						t = 0.25,
+						s = "Linear",
+						d = "Out",
+						g = {BackgroundTransparency = 1}
+					}):Play()
 				end
-
 				-- Hide whichever page was visible before switching.
 				for i, v in pairs(fo:GetChildren()) do
 					if v:IsA("Frame") and v.Name == "Page" and v ~= Page and v.Visible then
 						v.Visible = false
 					end
 				end
-
 				currentSelectedTab = Tab
 				Tab:SetAttribute("Selected", true)
-
-				b[1]().tw({
+				b[1]().twSafe({
 					v = Tab,
 					t = 0.25,
 					s = "Linear",
 					d = "Out",
 					g = {BackgroundTransparency = 0}
 				}):Play()
-				
-				local textLabel = Tab.Content:FindFirstChildOfClass("TextLabel")
-				if textLabel then
-					b[1]().tw({
-						v = textLabel,
-						t = 0.25,
-						s = "Linear",
-						d = "Out",
-						g = {TextColor3 = a.Theme[op.Theme or 'Quizzy']['Text Color']}
-					}):Play()
-				end
-				
-				b[1]().tw({
+
+				b[1]().twSafe({
 					v = Tab.Accent,
 					t = 0.25,
 					s = "Linear",
 					d = "Out",
 					g = {BackgroundTransparency = 0}
 				}):Play()
-
-				b[1]().tw({
-					v = Tab.SideGlow,
+				b[1]().twSafe({
+					v = Tab.Tint,
 					t = 0.25,
 					s = "Linear",
 					d = "Out",
-					g = {BackgroundTransparency = 0.65}
+					g = {BackgroundTransparency = 0}
 				}):Play()
-				
+
 				-- Show page with fade in
 				Page.Visible = true
-				b[1]().tw({
+				b[1]().twSafe({
 					v = Page.CanvasGroup,
 					t = 0.25,
 					s = "Linear",
@@ -1587,18 +1357,24 @@ b = {
 					g = {GroupTransparency = 0}
 				}):Play()
 			end
-
+			-- Debounce: ignore rapid-fire clicks on the same tab while its own
+			-- select tween is still settling in, preventing the "solid color
+			-- snap" caused by overlapping tweens on the same property.
+			local lastClickTime = 0
 			Tab.TextButton.MouseButton1Click:Connect(function()
+				local now = os.clock()
+				if now - lastClickTime < 0.05 then
+					return
+				end
+				lastClickTime = now
 				b[1]().jc(Tab.TextButton, Tab)
 				selectTab()
 			end)
-
 			delay(0.1, function()
 				if patab:FindFirstChild(Tab.Name) == Tab and Tab == patab:GetChildren()[1] then
 					selectTab()
 				end
 			end)
-
 			Search.Changed:Connect(function()
 				local SearchT = string.lower(Search.Text)
 				for i,v in pairs(Scroll:GetChildren()) do
@@ -1615,21 +1391,18 @@ b = {
 					end
 				end
 			end)
-
 			local Func = {}
-			
+
 			Func.ConfigSystem = b[3]()
 			Func.ConfigSystem.ConfigName = op.Title .. "_" .. gfjd.Title
-			
+
 			delay(1, function()
 				Func.ConfigSystem:LoadConfig()
 			end)
-
 			function Func:CreateToggle(khgkgh)
 				assert(khgkgh.Title, "Toggle - Missing Title")
 				local Value = khgkgh.Value or false
 				local Callback = khgkgh.Callback or function() end
-
 				local par = b[1]().background(Scroll, khgkgh.Title, khgkgh.Desc, false, op)
 				local click = b[1]().click(par)
 				local toggle = f("Frame", {
@@ -1650,7 +1423,7 @@ b = {
 					f("UIPadding", {PaddingRight = UDim.new(0, 13)}),
 					f("Frame", {
 						BorderSizePixel = 0,
-						BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Toggle Color'],
+						BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Toggle Color'],
 						Size = UDim2.new(0, 30, 0, 15),
 						BorderColor3 = Color3.fromRGB(0, 0, 0)
 					}, {
@@ -1667,7 +1440,6 @@ b = {
 						})
 					})
 				})
-
 				local function ToggleC(newValue)
 					Value = newValue
 					if not Value then
@@ -1686,7 +1458,7 @@ b = {
 							t = 0.15,
 							s = "Linear",
 							d = "InOut",
-							g = {BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Toggle Color']}
+							g = {BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Toggle Color']}
 						}):Play()
 						b[1]().tw({
 							v = toggle.Frame.Frame,
@@ -1695,7 +1467,7 @@ b = {
 							d = "InOut",
 							g = {Position = UDim2.new(0.25, 0, 0.5, 0)}
 						}):Play()
-					elseif Value then 
+					elseif Value then
 						pcall(function()
 							Callback(Value)
 						end)
@@ -1711,7 +1483,7 @@ b = {
 							t = 0.15,
 							s = "Linear",
 							d = "InOut",
-							g = {BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Color Main']}
+							g = {BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Color Main']}
 						}):Play()
 						b[1]().tw({
 							v = toggle.Frame.Frame,
@@ -1722,24 +1494,19 @@ b = {
 						}):Play()
 					end
 				end
-
 				delay(0.5,function()
 					ToggleC(Value)
 				end)
-
 				click.MouseButton1Click:Connect(function()
 					Value = not Value
 					b[1]().jc(click, par)
-					b[1]().flash(par, "BackgroundTransparency", a.Theme[op.Theme or 'Quizzy']['Background Function Transparency Moved'], 0.1)
+					b[1]().flash(par, "BackgroundTransparency", a.Theme[op.Theme or 'Dark']['Background Function Transparency Moved'], 0.1)
 					ToggleC(Value)
 				end)
-
 				local NewSet = {}
-
 				function NewSet:SetTitle(newTitle)
 					par.TextDesc.TextLabel.Text = newTitle
 				end
-
 				function NewSet:SetDesc(newDesc)
 					local descLabel = par.TextDesc:FindFirstChild("Desc")
 					if descLabel then
@@ -1748,24 +1515,20 @@ b = {
 						b[1]().desc(par.TextDesc, newDesc, op)
 					end
 				end
-
 				function NewSet:SetVisible(newVisible)
 					par.Visible = newVisible
 				end
-
 				function NewSet:SetValue(newValue)
 					ToggleC(newValue)
 				end
-				
+
 				local Key = khgkgh.Key or khgkgh.Title
-				Func.ConfigSystem:Register(Key, 
+				Func.ConfigSystem:Register(Key,
 					function() return Value end,
 					function(val) ToggleC(val) end
 				)
-
 				return NewSet
 			end
-
 				function Func:CreateDropdown(khgkgh)
 				assert(khgkgh.Title, "Dropdown - Missing Title")
 				local List = khgkgh.List or {}
@@ -1793,7 +1556,7 @@ b = {
 					f("UIPadding", {PaddingRight = UDim.new(0, 13)}),
 					f("Frame", {
 						AnchorPoint = Vector2.new(1, 0.5),
-						BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Dropdown Color'],
+						BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Dropdown Color'],
 						BorderColor3 = Color3.fromRGB(0,0,0),
 						BorderSizePixel = 0,
 						Size = UDim2.new(1, 0,0, 20),
@@ -1828,7 +1591,7 @@ b = {
 				})
 				local dropdownselect = f("Frame", {
 					Parent = fo.Parent,
-					BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Dropdown Select Background'],
+					BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Dropdown Select Background'],
 					BorderColor3 = Color3.fromRGB(0,0,0),
 					BorderSizePixel = 0,
 					Position = UDim2.new(0, 0,0, 0),
@@ -1837,9 +1600,9 @@ b = {
 				}, {
 					f("UICorner", {CornerRadius = UDim.new(0, 4)}),
 					f("UIPadding", {PaddingBottom = UDim.new(0, 5), PaddingTop = UDim.new(0, 5), PaddingRight = UDim.new(0, 3)}),
-					f("UIStroke", {Color = a.Theme[op.Theme or 'Quizzy']['Dropdown Select Stroke'], Transparency = 1}),
+					f("UIStroke", {Color = a.Theme[op.Theme or 'Dark']['Dropdown Select Stroke'], Transparency = 1}),
 					f("Frame", {
-						BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Search'],
+						BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Search'],
 						BorderSizePixel = 0,
 						Size = UDim2.new(1, -3, 0, 18),
 						Position = UDim2.new(0, 0, 0, 0),
@@ -1848,7 +1611,7 @@ b = {
 						f("UICorner", {CornerRadius = UDim.new(0, 4)}),
 						f("UIPadding", {PaddingLeft = UDim.new(0, 6), PaddingRight = UDim.new(0, 6)}),
 						f("TextBox", {
-							TextColor3 = a.Theme[op.Theme or 'Quizzy']['Text Color'],
+							TextColor3 = a.Theme[op.Theme or 'Dark']['Text Color'],
 							BorderSizePixel = 0,
 							TextXAlignment = Enum.TextXAlignment.Left,
 							TextSize = 10,
@@ -1876,7 +1639,7 @@ b = {
 						ElasticBehavior = Enum.ElasticBehavior.WhenScrollable,
 						HorizontalScrollBarInset = Enum.ScrollBarInset.None,
 						MidImage = "rbxasset://textures/ui/Scroll/scroll-middle.png",
-						ScrollBarImageColor3 = a.Theme[op.Theme or 'Quizzy']['Color Main'],
+						ScrollBarImageColor3 = a.Theme[op.Theme or 'Dark']['Color Main'],
 						ScrollBarImageTransparency = 0,
 						ScrollBarThickness = 3,
 						ScrollingDirection = Enum.ScrollingDirection.XY,
@@ -1889,10 +1652,6 @@ b = {
 						f("UIPadding", {PaddingLeft = UDim.new(0,3), PaddingRight = UDim.new(0,7)})
 					})
 				})
-
-				-- Filters this dropdown's own item list only (never touches other
-				-- dropdowns or the page-level search) 鈥� combines with the item
-				-- highlight/select tweens below rather than replacing them.
 				dropdownselect.SearchBar.Box:GetPropertyChangedSignal("Text"):Connect(function()
 					local q = string.lower(dropdownselect.SearchBar.Box.Text)
 					for _, child in ipairs(dropdownselect.ItemList:GetChildren()) do
@@ -2051,7 +1810,7 @@ b = {
 										Callback(selectedList)
 									end)
 								end
-								
+
 								if not Multi and Value == t then
 									Value = ""
 									dropdown.Frame.SelectedText.Text = ""
@@ -2059,7 +1818,7 @@ b = {
 										Callback("")
 									end)
 								end
-								
+
 								child:Destroy()
 								break
 							end
@@ -2070,15 +1829,46 @@ b = {
 				function itemslist:Add(t)
 					local item = f("Frame", {
 						Parent = dropdownselect.ItemList,
-						BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Dropdown Item'],
+						BackgroundColor3 = Color3.fromRGB(35, 35, 35),
 						BackgroundTransparency = 0.9,
 						BorderColor3 = Color3.fromRGB(0,0,0),
 						BorderSizePixel = 0,
+						ClipsDescendants = true,
 						Size = UDim2.new(1, 0,0, 20),
 					}, {
 						f("UICorner", {CornerRadius = UDim.new(0, 4)}),
 						f("UIPadding", {PaddingLeft = UDim.new(0, 5)}),
-						f("UIGradient", {Color = ColorSequence.new{ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1, Color3.fromRGB(170, 170, 170))}}),
+						f("Frame", {
+							Name = "Accent",
+							BorderSizePixel = 0,
+							BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Color Main'],
+							AnchorPoint = Vector2.new(0, 0.5),
+							Position = UDim2.new(0, 0, 0.5, 0),
+							Size = UDim2.new(0, 2, 0.6, 0),
+							BackgroundTransparency = 1
+						}, {
+							f("UICorner", {CornerRadius = UDim.new(1, 0)})
+						}),
+						f("Frame", {
+							Name = "Tint",
+							BorderSizePixel = 0,
+							BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Color Main'],
+							ClipsDescendants = true,
+							Size = UDim2.new(1, 0, 1, 0),
+							BackgroundTransparency = 1,
+							ZIndex = 0
+						}, {
+							f("UICorner", {CornerRadius = UDim.new(0, 4)}),
+							f("UIGradient", {
+								Rotation = 0,
+								Transparency = NumberSequence.new{
+									NumberSequenceKeypoint.new(0, 0.65),
+									NumberSequenceKeypoint.new(0.22, 0.9),
+									NumberSequenceKeypoint.new(0.4, 1),
+									NumberSequenceKeypoint.new(1, 1)
+								}
+							})
+						}),
 						f("TextLabel", {
 							BackgroundColor3 = Color3.fromRGB(255,255,255),
 							BackgroundTransparency = 1,
@@ -2098,19 +1888,26 @@ b = {
 						if Multi then
 							if selectedValues[t] then
 								selectedValues[t] = nil
-								b[1]().tw({
+								b[1]().twSafe({
 									v = item,
 									t = 0.15,
 									s = "Linear",
 									d = "InOut",
-									g = {BackgroundColor3 = Color3.fromRGB(88, 88, 88), BackgroundTransparency = 0.9}
+									g = {BackgroundColor3 = Color3.fromRGB(35, 35, 35), BackgroundTransparency = 0.9}
 								}):Play()
-								b[1]().tw({
-									v = item.TextLabel,
+								b[1]().twSafe({
+									v = item.Accent,
 									t = 0.15,
 									s = "Linear",
 									d = "InOut",
-									g = {TextColor3 = Color3.fromRGB(255 ,255 ,255)}
+									g = {BackgroundTransparency = 1}
+								}):Play()
+								b[1]().twSafe({
+									v = item.Tint,
+									t = 0.15,
+									s = "Linear",
+									d = "InOut",
+									g = {BackgroundTransparency = 1}
 								}):Play()
 								item.TextLabel.Text = t
 								local selectedList = {}
@@ -2126,19 +1923,26 @@ b = {
 									Callback(selectedList)
 								end)
 							else
-								b[1]().tw({
+								b[1]().twSafe({
 									v = item,
 									t = 0.15,
 									s = "Linear",
 									d = "InOut",
-									g = {BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Color Main'], BackgroundTransparency = 0}
+									g = {BackgroundColor3 = Color3.fromRGB(35, 35, 35), BackgroundTransparency = 0}
 								}):Play()
-								b[1]().tw({
-									v = item.TextLabel,
+								b[1]().twSafe({
+									v = item.Accent,
 									t = 0.15,
 									s = "Linear",
 									d = "InOut",
-									g = {TextColor3 = Color3.fromRGB(0, 0, 0)}
+									g = {BackgroundTransparency = 0}
+								}):Play()
+								b[1]().twSafe({
+									v = item.Tint,
+									t = 0.15,
+									s = "Linear",
+									d = "InOut",
+									g = {BackgroundTransparency = 0}
 								}):Play()
 								selectedValues[t] = true
 								item.TextLabel.Text = t
@@ -2154,35 +1958,53 @@ b = {
 						else
 							for i,v in pairs(dropdownselect.ItemList:GetChildren()) do
 								if v:IsA("Frame") then
-									b[1]().tw({
+									b[1]().twSafe({
 										v = v,
 										t = 0.15,
 										s = "Linear",
 										d = "InOut",
-										g = {BackgroundColor3 = Color3.fromRGB(88, 88, 88), BackgroundTransparency = 0.9}
+										g = {BackgroundColor3 = Color3.fromRGB(35, 35, 35), BackgroundTransparency = 0.9}
 									}):Play()
-									b[1]().tw({
-										v = v.TextLabel,
-										t = 0.15,
-										s = "Linear",
-										d = "InOut",
-										g = {TextColor3 = Color3.fromRGB(255 ,255 ,255)}
-									}):Play()
+									if v:FindFirstChild("Accent") then
+										b[1]().twSafe({
+											v = v.Accent,
+											t = 0.15,
+											s = "Linear",
+											d = "InOut",
+											g = {BackgroundTransparency = 1}
+										}):Play()
+									end
+									if v:FindFirstChild("Tint") then
+										b[1]().twSafe({
+											v = v.Tint,
+											t = 0.15,
+											s = "Linear",
+											d = "InOut",
+											g = {BackgroundTransparency = 1}
+										}):Play()
+									end
 								end
 							end
-							b[1]().tw({
+							b[1]().twSafe({
 								v = item,
 								t = 0.15,
 								s = "Linear",
 								d = "InOut",
-								g = {BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Color Main'], BackgroundTransparency = 0}
+								g = {BackgroundColor3 = Color3.fromRGB(35, 35, 35), BackgroundTransparency = 0}
 							}):Play()
-							b[1]().tw({
-								v = item.TextLabel,
+							b[1]().twSafe({
+								v = item.Accent,
 								t = 0.15,
 								s = "Linear",
 								d = "InOut",
-								g = {TextColor3 = Color3.fromRGB(0, 0, 0)}
+								g = {BackgroundTransparency = 0}
+							}):Play()
+							b[1]().twSafe({
+								v = item.Tint,
+								t = 0.15,
+								s = "Linear",
+								d = "InOut",
+								g = {BackgroundTransparency = 0}
 							}):Play()
 							item.TextLabel.Text = t
 							Value = t
@@ -2207,19 +2029,26 @@ b = {
 					delay(0,function()
 						if Multi then
 							if isValueInTable(t, Value) then
-								b[1]().tw({
+								b[1]().twSafe({
 									v = item,
 									t = 0.15,
 									s = "Linear",
 									d = "InOut",
-									g = {BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Color Main'], BackgroundTransparency = 0}
+									g = {BackgroundColor3 = Color3.fromRGB(35, 35, 35), BackgroundTransparency = 0}
 								}):Play()
-								b[1]().tw({
-									v = item.TextLabel,
+								b[1]().twSafe({
+									v = item.Accent,
 									t = 0.15,
 									s = "Linear",
 									d = "InOut",
-									g = {TextColor3 = Color3.fromRGB(0, 0, 0)}
+									g = {BackgroundTransparency = 0}
+								}):Play()
+								b[1]().twSafe({
+									v = item.Tint,
+									t = 0.15,
+									s = "Linear",
+									d = "InOut",
+									g = {BackgroundTransparency = 0}
 								}):Play()
 								item.TextLabel.Text = t
 								selectedValues[t] = true
@@ -2234,19 +2063,26 @@ b = {
 							end
 						else
 							if t == Value then
-								b[1]().tw({
+								b[1]().twSafe({
 									v = item,
 									t = 0.15,
 									s = "Linear",
 									d = "InOut",
-									g = {BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Color Main'], BackgroundTransparency = 0}
+									g = {BackgroundColor3 = Color3.fromRGB(35, 35, 35), BackgroundTransparency = 0}
 								}):Play()
-								b[1]().tw({
-									v = item.TextLabel,
+								b[1]().twSafe({
+									v = item.Accent,
 									t = 0.15,
 									s = "Linear",
 									d = "InOut",
-									g = {TextColor3 = Color3.fromRGB(0, 0, 0)}
+									g = {BackgroundTransparency = 0}
+								}):Play()
+								b[1]().twSafe({
+									v = item.Tint,
+									t = 0.15,
+									s = "Linear",
+									d = "InOut",
+									g = {BackgroundTransparency = 0}
 								}):Play()
 								item.TextLabel.Text = t
 								Value = t
@@ -2285,9 +2121,6 @@ b = {
 					par.Visible = newVisible
 				end
 				function itemslist:SetList(newList, autoSelectValue)
-					-- Preserve the current selection across a refresh instead of
-					-- always wiping it 鈥� fixes the selected item (e.g. a player
-					-- name) disappearing every time the list auto-refreshes.
 					local previousValue = Value
 					local previousSelected = {}
 					if Multi then
@@ -2295,26 +2128,22 @@ b = {
 							previousSelected[k] = true
 						end
 					end
-
 					for _, child in ipairs(dropdownselect.ItemList:GetChildren()) do
 						if child:IsA("Frame") then
 							child:Destroy()
 						end
 					end
 					dropdownselect.ItemList.CanvasSize = UDim2.new(0,0,0,0)
-
 					if newList and type(newList) == "table" then
 						for _, v in ipairs(newList) do
 							self:Add(v)
 						end
 					end
-
 					if autoSelectValue then
 						task.defer(function()
 							self:SetValue(autoSelectValue)
 						end)
 					elseif Multi then
-						-- Re-apply only the selections that still exist in newList
 						local stillValid = {}
 						local anyMissing = false
 						for k in pairs(previousSelected) do
@@ -2356,7 +2185,6 @@ b = {
 							dropdown.Frame.SelectedText.Text = ""
 						end
 					end
-
 					dropdownselect.ItemList.CanvasSize = UDim2.new(0,0,0, dropdownselect.ItemList.UIListLayout.AbsoluteContentSize.Y + 5)
 					dps()
 				end
@@ -2372,11 +2200,21 @@ b = {
 							if child:IsA("Frame") and child:FindFirstChild("TextLabel") then
 								local txt = child.TextLabel.Text
 								if selectedValues[txt] then
-									b[1]().tw({v=child,t=0.15,s="Linear",d="InOut",g={BackgroundColor3=a.Theme[op.Theme or 'Quizzy']['Color Main'],BackgroundTransparency=0}}):Play()
-									b[1]().tw({v=child.TextLabel,t=0.15,s="Linear",d="InOut",g={TextColor3=Color3.fromRGB(0,0,0)}}):Play()
+									b[1]().twSafe({v=child,t=0.15,s="Linear",d="InOut",g={BackgroundColor3=Color3.fromRGB(35, 35, 35),BackgroundTransparency=0}}):Play()
+									if child:FindFirstChild("Accent") then
+										b[1]().twSafe({v=child.Accent,t=0.15,s="Linear",d="InOut",g={BackgroundTransparency=0}}):Play()
+									end
+									if child:FindFirstChild("Tint") then
+										b[1]().twSafe({v=child.Tint,t=0.15,s="Linear",d="InOut",g={BackgroundTransparency=0}}):Play()
+									end
 								else
-									b[1]().tw({v=child,t=0.15,s="Linear",d="InOut",g={BackgroundColor3=Color3.fromRGB(88,88,88),BackgroundTransparency=0.9}}):Play()
-									b[1]().tw({v=child.TextLabel,t=0.15,s="Linear",d="InOut",g={TextColor3=Color3.fromRGB(255,255,255)}}):Play()
+									b[1]().twSafe({v=child,t=0.15,s="Linear",d="InOut",g={BackgroundColor3=Color3.fromRGB(35, 35, 35),BackgroundTransparency=0.9}}):Play()
+									if child:FindFirstChild("Accent") then
+										b[1]().twSafe({v=child.Accent,t=0.15,s="Linear",d="InOut",g={BackgroundTransparency=1}}):Play()
+									end
+									if child:FindFirstChild("Tint") then
+										b[1]().twSafe({v=child.Tint,t=0.15,s="Linear",d="InOut",g={BackgroundTransparency=1}}):Play()
+									end
 								end
 							end
 						end
@@ -2391,12 +2229,22 @@ b = {
 						for _, child in ipairs(dropdownselect.ItemList:GetChildren()) do
 							if child:IsA("Frame") and child:FindFirstChild("TextLabel") then
 								if child.TextLabel.Text == newValue then
-									b[1]().tw({v=child,t=0.15,s="Linear",d="InOut",g={BackgroundColor3=a.Theme[op.Theme or 'Quizzy']['Color Main'],BackgroundTransparency=0}}):Play()
-									b[1]().tw({v=child.TextLabel,t=0.15,s="Linear",d="InOut",g={TextColor3=Color3.fromRGB(0,0,0)}}):Play()
+									b[1]().twSafe({v=child,t=0.15,s="Linear",d="InOut",g={BackgroundColor3=Color3.fromRGB(35, 35, 35),BackgroundTransparency=0}}):Play()
+									if child:FindFirstChild("Accent") then
+										b[1]().twSafe({v=child.Accent,t=0.15,s="Linear",d="InOut",g={BackgroundTransparency=0}}):Play()
+									end
+									if child:FindFirstChild("Tint") then
+										b[1]().twSafe({v=child.Tint,t=0.15,s="Linear",d="InOut",g={BackgroundTransparency=0}}):Play()
+									end
 									selectedItem = child
 								else
-									b[1]().tw({v=child,t=0.15,s="Linear",d="InOut",g={BackgroundColor3=Color3.fromRGB(88,88,88),BackgroundTransparency=0.9}}):Play()
-									b[1]().tw({v=child.TextLabel,t=0.15,s="Linear",d="InOut",g={TextColor3=Color3.fromRGB(255,255,255)}}):Play()
+									b[1]().twSafe({v=child,t=0.15,s="Linear",d="InOut",g={BackgroundColor3=Color3.fromRGB(35, 35, 35),BackgroundTransparency=0.9}}):Play()
+									if child:FindFirstChild("Accent") then
+										b[1]().twSafe({v=child.Accent,t=0.15,s="Linear",d="InOut",g={BackgroundTransparency=1}}):Play()
+									end
+									if child:FindFirstChild("Tint") then
+										b[1]().twSafe({v=child.Tint,t=0.15,s="Linear",d="InOut",g={BackgroundTransparency=1}}):Play()
+									end
 								end
 							end
 						end
@@ -2407,7 +2255,7 @@ b = {
 				end
 				local Key = khgkgh.Key or khgkgh.Title
 				Func.ConfigSystem:Register(Key,
-					function() 
+					function()
 						if Multi then
 							local list = {}
 							for k, v in pairs(selectedValues) do
@@ -2424,19 +2272,14 @@ b = {
 				)
 				return itemslist
 			end
-
-
 			function Func:CreateLabel(khgkgh)
 				assert(khgkgh.Title, "Label - Missing Title")
 				local par = b[1]().background(Scroll, khgkgh.Title, khgkgh.Desc, true, op)
 				par.TextDesc.TextLabel.TextTransparency = 0
-
 				local NewSet = {}
-
 				function NewSet:SetTitle(newTitle)
 					par.TextDesc.TextLabel.Text = newTitle
 				end
-
 				function NewSet:SetDesc(newDesc)
 					local descLabel = par.TextDesc:FindFirstChild("Desc")
 					if descLabel then
@@ -2445,19 +2288,15 @@ b = {
 						b[1]().desc(par.TextDesc, newDesc, op)
 					end
 				end
-
 				function NewSet:SetVisible(newVisible)
 					par.Visible = newVisible
 				end
-
 				return NewSet
 			end
-
 			function Func:CreateButton(khgkgh)
 				assert(khgkgh.Title, "Button - Missing Title")
 				local par, Callback = b[1]().background(Scroll, khgkgh.Title, khgkgh.Desc, false, op), khgkgh.Callback or function() end
 				par.TextDesc.TextLabel.TextTransparency = 0
-
 				local button = f("Frame", {
 					Parent = par,
 					AnchorPoint = Vector2.new(1, 0.5),
@@ -2479,22 +2318,18 @@ b = {
 						Image = "rbxassetid://14922213932"
 					})
 				})
-
 				local click = b[1]().click(par)
 				click.MouseButton1Click:Connect(function()
 					b[1]().jc(click, par)
-					b[1]().flash(par, "BackgroundTransparency", a.Theme[op.Theme or 'Quizzy']['Background Function Transparency Moved'], 0.1)
+					b[1]().flash(par, "BackgroundTransparency", a.Theme[op.Theme or 'Dark']['Background Function Transparency Moved'], 0.1)
 					pcall(function()
 						Callback()
 					end)
 				end)
-
 				local NewSet = {}
-
 				function NewSet:SetTitle(newTitle)
 					par.TextDesc.TextLabel.Text = newTitle
 				end
-
 				function NewSet:SetDesc(newDesc)
 					local descLabel = par.TextDesc:FindFirstChild("Desc")
 					if descLabel then
@@ -2503,20 +2338,16 @@ b = {
 						b[1]().desc(par.TextDesc, newDesc, op)
 					end
 				end
-
 				function NewSet:SetVisible(newVisible)
 					par.Visible = newVisible
 				end
-
 				return NewSet
 			end
-
 			function Func:CreateTextbox(khgkgh)
 				assert(khgkgh.Title, "TextBox - Missing Title")
 				local par, Callback, Placeholder, Value, ClearTextOnFocus = b[1]().background(Scroll, khgkgh.Title, khgkgh.Desc, false, op), khgkgh.Callback or function() end, khgkgh.Placeholder or "Paste Your Text", khgkgh.Value or "", khgkgh.ClearTextOnFocus or false
 				par.TextDesc.TextLabel.TextTransparency = 0
 				par.TextDesc.UIPadding.PaddingRight = UDim.new(0, 210)
-
 				local textbox = f("Frame", {
 					Parent = par,
 					AnchorPoint = Vector2.new(1, 0.5),
@@ -2532,14 +2363,14 @@ b = {
 						VerticalAlignment = Enum.VerticalAlignment.Center
 					}),
 					f("Frame", {
-						BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Textbox Color'],
+						BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Textbox Color'],
 						BorderSizePixel = 0,
 						Size = UDim2.new(1, 0,0, 20)
 					}, {
 						f("UICorner", {CornerRadius = UDim.new(0,4)}),
 						f("Frame", {
 							AnchorPoint = Vector2.new(.5, 1),
-							BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Color Main'],
+							BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Color Main'],
 							BorderSizePixel = 0,
 							Position = UDim2.new(.5, 0,1, 0),
 							Size = UDim2.new(0, 0,0, 1),
@@ -2572,7 +2403,6 @@ b = {
 						})
 					}),
 				})
-
 				textbox.Frame.ValueBox.TextBox.FocusLost:Connect(function()
 					if Value then
 						if #textbox.Frame.ValueBox.TextBox.Text > 0 then
@@ -2580,7 +2410,6 @@ b = {
 						end
 					end
 				end)
-
 				textbox.Frame.ValueBox.TextBox.Focused:Connect(function()
 					b[1]().tw({
 						v = textbox.Frame.Line,
@@ -2590,7 +2419,6 @@ b = {
 						g = {BackgroundTransparency = 0, Size = UDim2.new(1, 0, 0, 1)}
 					}):Play()
 				end)
-
 				textbox.Frame.ValueBox.TextBox.FocusLost:Connect(function()
 					b[1]().tw({
 						v = textbox.Frame.Line,
@@ -2600,7 +2428,6 @@ b = {
 						g = {BackgroundTransparency = 0.9, Size = UDim2.new(0, 0, 0, 1)}
 					}):Play()
 				end)
-
 				delay(0,function()
 					if Value then
 						if #textbox.Frame.ValueBox.TextBox.Text > 0 then
@@ -2608,13 +2435,10 @@ b = {
 						end
 					end
 				end)
-
 				local NewSet = {}
-
 				function NewSet:SetTitle(newTitle)
 					par.TextDesc.TextLabel.Text = newTitle
 				end
-
 				function NewSet:SetDesc(newDesc)
 					local descLabel = par.TextDesc:FindFirstChild("Desc")
 					if descLabel then
@@ -2623,42 +2447,36 @@ b = {
 						b[1]().desc(par.TextDesc, newDesc, op)
 					end
 				end
-
 				function NewSet:SetVisible(newVisible)
 					par.Visible = newVisible
 				end
-
 				function NewSet:SetValue(newValue)
 					textbox.Frame.ValueBox.TextBox.Text = newValue
 				end
-				
+
 				local Key = khgkgh.Key or khgkgh.Title
 				Func.ConfigSystem:Register(Key,
 					function() return textbox.Frame.ValueBox.TextBox.Text end,
-					function(val) 
+					function(val)
 						textbox.Frame.ValueBox.TextBox.Text = val
 						pcall(function()
 							Callback(val)
 						end)
 					end
 				)
-
 				return NewSet
 			end
-
 			function Func:CreateSlider(khgkgh)
 				assert(khgkgh.Title, "Slider - Missing Title")
-				local par, Callback, Value, Min, Max, DecimalPlaces = 
-					b[1]().background(Scroll, khgkgh.Title, khgkgh.Desc, true, op), 
-				khgkgh.Callback or function() end, 
-				khgkgh.Value or khgkgh.Max / 2, 
-				khgkgh.Min or 0, 
+				local par, Callback, Value, Min, Max, DecimalPlaces =
+					b[1]().background(Scroll, khgkgh.Title, khgkgh.Desc, true, op),
+				khgkgh.Callback or function() end,
+				khgkgh.Value or khgkgh.Max / 2,
+				khgkgh.Min or 0,
 				khgkgh.Max or 100,
 				khgkgh.DecimalPlaces or 0
-
 				par.TextDesc.TextLabel.TextTransparency = 0
 				par.TextDesc.UIPadding.PaddingRight = UDim.new(0, 210)
-
 				local slider = f("Frame", {
 					Parent = par,
 					AnchorPoint = Vector2.new(1, 0.5),
@@ -2693,7 +2511,7 @@ b = {
 						TextSize = 10,
 					}),
 					f("CanvasGroup", {
-						BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Slider Color'],
+						BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Slider Color'],
 						BorderColor3 = Color3.fromRGB(0,0,0),
 						BorderSizePixel = 0,
 						Size = UDim2.new(0, 150,0, 8),
@@ -2701,7 +2519,7 @@ b = {
 					}, {
 						f("UICorner", {CornerRadius = UDim.new(1,0)}),
 						f("Frame", {
-							BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Color Main'],
+							BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Color Main'],
 							BorderColor3 = Color3.fromRGB(0,0,0),
 							BorderSizePixel = 0,
 							Size = UDim2.new(0.8, 0,1, 0)
@@ -2721,18 +2539,15 @@ b = {
 						}),
 					})
 				})
-
 				local click = b[1]().click(slider.Frame)
-
 				local function roundToDecimal(value, decimals)
 					local factor = 10 ^ decimals
 					return math.floor(value * factor + 0.5) / factor
 				end
-
 				local function updateSlider(value)
 					value = math.clamp(value, Min, Max)
 					value = roundToDecimal(value, DecimalPlaces)
-					Value = value  
+					Value = value
 					b[1]().tw({
 						v = slider.Frame.Frame,
 						t = 0.5,
@@ -2742,53 +2557,43 @@ b = {
 					}):Play()
 					slider.TextBox.Text = tonumber(value)
 					pcall(function()
-						Callback(value)  
+						Callback(value)
 					end)
 				end
-
 				delay(0.5,function()
 					updateSlider(Value or 0)
 				end)
-
 				slider.TextBox.FocusLost:Connect(function()
 					local value = tonumber(slider.TextBox.Text) or Min
 					updateSlider(value)
 				end)
-
 				local function move(input)
 					local sliderBar = slider.Frame
 					local relativeX = math.clamp((input.Position.X - sliderBar.AbsolutePosition.X) / sliderBar.AbsoluteSize.X, 0, 1)
 					local value = relativeX * (Max - Min) + Min
 					updateSlider(value)
 				end
-
 				local dragging = false
-
 				click.InputBegan:Connect(function(input)
 					if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
 						dragging = true
 						move(input)
 					end
 				end)
-
 				click.InputEnded:Connect(function(input)
 					if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
 						dragging = false
 					end
 				end)
-
 				game:GetService("UserInputService").InputChanged:Connect(function(input)
 					if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
 						move(input)
 					end
 				end)
-
 				local NewSet = {}
-
 				function NewSet:SetTitle(newTitle)
 					par.TextDesc.TextLabel.Text = newTitle
 				end
-
 				function NewSet:SetDesc(newDesc)
 					local descLabel = par.TextDesc:FindFirstChild("Desc")
 					if descLabel then
@@ -2797,32 +2602,26 @@ b = {
 						b[1]().desc(par.TextDesc, newDesc, op)
 					end
 				end
-
 				function NewSet:SetVisible(newVisible)
 					par.Visible = newVisible
 				end
-
 				function NewSet:SetDecimalPlaces(newDecimalPlaces)
 					DecimalPlaces = newDecimalPlaces
 					updateSlider(Value)
 				end
-
 				function NewSet:SetValue(newValue)
 					updateSlider(newValue)
 				end
-
 				local Key = khgkgh.Key or khgkgh.Title
 				Func.ConfigSystem:Register(Key,
 					function() return Value end,
-					function(val) 
+					function(val)
 						Value = val
-						updateSlider(val) 
+						updateSlider(val)
 					end
 				)
-
 				return NewSet
 			end
-
 			function Func:CreateSection(khgkgh)
 				assert(khgkgh.Title, "Section - Missing Title")
 				local section = f("Frame", {
@@ -2837,7 +2636,7 @@ b = {
 						Size = UDim2.new(0, 200,1, 0),
 						Font = Enum.Font.Gotham,
 						Text = khgkgh.Title,
-						TextColor3 = a.Theme[op.Theme or 'Quizzy']['Text Color'],
+						TextColor3 = a.Theme[op.Theme or 'Dark']['Text Color'],
 						TextSize = 14,
 						TextXAlignment = Enum.TextXAlignment.Left
 					}),
@@ -2846,27 +2645,20 @@ b = {
 						PaddingRight = UDim.new(0,90)
 					})
 				})
-
 				local NewSet = {}
-
 				function NewSet:SetTitle(newTitle)
 					section.TextLabel.Text = newTitle
 				end
-
 				function NewSet:SetVisible(newVisible)
 					section.Visible = newVisible
 				end
-
 				return NewSet
 			end
-
 			Scroll.UIListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
 				Scroll.CanvasSize = UDim2.new(0, 0, 0, Scroll.UIListLayout.AbsoluteContentSize.Y + 10)
 			end)
-
 			return Func
 		end
-
 		function g:CreateDialog(hfdjgf)
 			assert(hfdjgf.Title, "Dialog - Missing Title")
 			return b[1]().dialog(fo ,
@@ -2875,9 +2667,8 @@ b = {
 				hfdjgf.Callback or function() end
 				, op)
 		end
-
 		function g:SetTransparency(khgkgh)
-			a.Theme[op.Theme or 'Quizzy']['Background Transparency'] = khgkgh
+			a.Theme[op.Theme or 'Dark']['Background Transparency'] = khgkgh
 			b[1]().tw({
 				v = fo,
 				t = 0.5,
@@ -2886,14 +2677,13 @@ b = {
 				g = {GroupTransparency = khgkgh}
 			}):Play()
 		end
-
 		local CloseUI = f("ImageButton", {
 			Name = "CloseUI",
 			Parent = fo.Parent,
 			Active = true,
 			AnchorPoint = Vector2.new(0.5, 0.5),
-			BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Background'],
-			BackgroundTransparency = a.Theme[op.Theme or 'Quizzy']['Background Transparency'],
+			BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Background'],
+			BackgroundTransparency = a.Theme[op.Theme or 'Dark']['Background Transparency'],
 			BorderColor3 = Color3.fromRGB(0,0,0),
 			BorderSizePixel = 0,
 			Position = UDim2.new(0.1, 0,0.1, 0),
@@ -2904,10 +2694,8 @@ b = {
 				CornerRadius = UDim.new(0,6)
 			})
 		})
-
 		b[1]().init(CloseUI)
 		b[1]().lak(CloseUI)
-
 		local function closeopenui()
 			isopen = not isopen
 			local g
@@ -2937,25 +2725,21 @@ b = {
 					t = 0.15,
 					s = "Linear",
 					d = "Out",
-					g = {GroupTransparency = a.Theme[op.Theme or 'Quizzy']['Background Transparency']}
+					g = {GroupTransparency = a.Theme[op.Theme or 'Dark']['Background Transparency']}
 				}):Play()
 			end
 		end
-
 		CloseUI.MouseButton1Click:Connect(function()
 			closeopenui()
 		end)
-
 		game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
 			if not gameProcessed and input.KeyCode == KeyCloseUI then
 				closeopenui()
 			end
 		end)
-
 		scl.CanvasGroup.UIListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
 			scl.CanvasSize = UDim2.new(0, 0, 0, scl.CanvasGroup.UIListLayout.AbsoluteContentSize.Y + 20)
 		end)
-
 		return g
 	end,
 }
