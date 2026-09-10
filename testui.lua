@@ -501,7 +501,7 @@ b = {
 			expandTween.Completed:Connect(function()
 				ClickButtonCircle:Destroy()
 			end)
-			expandTween:Play()
+			expandTween.Play()
 		end
 		function x.init(gf)
 			local binds = {}
@@ -1352,7 +1352,14 @@ b = {
 				selectTab()
 			end)
 			delay(0.1, function()
-				if patab:FindFirstChild(Tab.Name) == Tab and Tab == patab:GetChildren()[1] then
+				local firstTab = nil
+				for _, child in ipairs(patab:GetChildren()) do
+					if child:IsA("Frame") then
+						firstTab = child
+						break
+					end
+				end
+				if Tab == firstTab then
 					selectTab()
 				end
 			end)
@@ -2481,7 +2488,7 @@ b = {
 				function NewSet:SetDesc(newDesc)
 					local descLabel = par.TextDesc:FindFirstChild("Desc")
 					if descLabel then
-						descLabel.Text = newDesc
+											descLabel.Text = newDesc
 					else
 						b[1]().desc(par.TextDesc, newDesc, op)
 					end
