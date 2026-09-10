@@ -1029,6 +1029,26 @@ b = {
 					f("UICorner", {CornerRadius = UDim.new(1, 0)})
 				}),
 				f("Frame", {
+					Name = "Tint",
+					BorderSizePixel = 0,
+					BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Color Main'],
+					ClipsDescendants = true,
+					Size = UDim2.new(1, 0, 1, 0),
+					BackgroundTransparency = 1,
+					ZIndex = 0
+				}, {
+					f("UICorner", {CornerRadius = UDim.new(0, 8)}),
+					f("UIGradient", {
+						Rotation = 0,
+						Transparency = NumberSequence.new{
+							NumberSequenceKeypoint.new(0, 0.65),
+							NumberSequenceKeypoint.new(0.22, 0.9),
+							NumberSequenceKeypoint.new(0.4, 1),
+							NumberSequenceKeypoint.new(1, 1)
+						}
+					})
+				}),
+				f("Frame", {
 					Name = "Content",
 					BorderSizePixel = 0,
 					BackgroundTransparency = 1,
@@ -1288,6 +1308,13 @@ b = {
 						d = "Out",
 						g = {BackgroundTransparency = 1}
 					}):Play()
+					b[1]().twSafe({
+						v = previousTab.Tint,
+						t = 0.25,
+						s = "Linear",
+						d = "Out",
+						g = {BackgroundTransparency = 1}
+					}):Play()
 				end
 				-- Hide whichever page was visible before switching.
 				for i, v in pairs(fo:GetChildren()) do
@@ -1307,6 +1334,13 @@ b = {
 
 				b[1]().twSafe({
 					v = Tab.Accent,
+					t = 0.25,
+					s = "Linear",
+					d = "Out",
+					g = {BackgroundTransparency = 0}
+				}):Play()
+				b[1]().twSafe({
+					v = Tab.Tint,
 					t = 0.25,
 					s = "Linear",
 					d = "Out",
