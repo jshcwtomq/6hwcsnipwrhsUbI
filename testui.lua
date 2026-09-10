@@ -82,9 +82,6 @@ b = {
 			end
 			return Services.TweenService:Create(info.v, ti, info.g)
 		end
-		-- Tracks the currently running tween per (instance, property) pair so a
-		-- new tween on the same property can cancel the old one instead of the
-		-- two racing and snapping the value instantly.
 		local activeTweens = setmetatable({}, {__mode = "k"})
 		function x.twSafe(info)
 			local inst = info.v
@@ -108,9 +105,6 @@ b = {
 			end)
 			return tween
 		end
-		-- Generic "flash" click effect: briefly tweens a color property to `color`
-		-- then back to its original value. Used to give every clickable element
-		-- (tabs, toggles, buttons, dropdown items) a consistent color pulse on press.
 		function x.flash(inst, prop, color, dur)
 			if not inst or not inst:IsDescendantOf(game) and not inst.Parent then return end
 			local ok, original = pcall(function() return inst[prop] end)
@@ -755,7 +749,7 @@ b = {
 	end,
 
 	CreateWindow = function(self, op)
-		local f, g, CloseUI, patab, of, scl, KeyCloseUI, isopen = self[1]().n, {}, nil, nil, false ,nil, op.Keybind or Enum.KeyCode.LeftControl, false
+		local f, g, CloseBtn, patab, of, scl, KeyCloseUI, isopen = self[1]().n, {}, nil, nil, false ,nil, op.Keybind or Enum.KeyCode.LeftControl, false
 		local currentSelectedTab = nil
 		assert(op.Title, "Window - Missing Title")
 		assert(op.Icon, "Window - Missing Icon")
@@ -919,7 +913,7 @@ b = {
 						Transparency = NumberSequence.new{NumberSequenceKeypoint.new(0,1), NumberSequenceKeypoint.new(1,0)}
 					})
 				}, function(a)
-					CloseUI = a
+					CloseBtn = a
 				end),
 				f("UIListLayout", {
 					HorizontalAlignment = Enum.HorizontalAlignment.Right,
@@ -965,25 +959,25 @@ b = {
 				Services.TweenService:Create(fo, resizeTweenInfo, {Size = newSize}):Play()
 			end
 		end)
-		CloseUI.MouseMoved:Connect(function()
+		CloseBtn.MouseMoved:Connect(function()
 			b[1]().tw({
-				v = CloseUI,
+				v = CloseBtn,
 				t = 0.2,
 				s = "Linear",
 				d = "Out",
 				g = {ImageTransparency = 0.5}
 			}):Play()
 		end)
-		CloseUI.MouseLeave:Connect(function()
+		CloseBtn.MouseLeave:Connect(function()
 			b[1]().tw({
-				v = CloseUI,
+				v = CloseBtn,
 				t = 0.2,
 				s = "Linear",
 				d = "Out",
 				g = {ImageTransparency = 1}
 			}):Play()
 		end)
-		CloseUI.ImageButton.MouseButton1Click:Connect(function()
+		CloseBtn.ImageButton.MouseButton1Click:Connect(function()
 			b[1]().dialog(fo ,
 				'Do you want to <font color="#ff0000"><b>close?</b></font>',
 				'You just press <font color="#3eff00">confirm</font> and this ui will close immediately. and <font color="#ff3200">cannot be opened again</font> until you execute it again',
@@ -1286,8 +1280,6 @@ b = {
 			})
 
 			local function selectTab()
-				-- Guard: skip entirely if this tab is already selected (prevents
-				-- restarting tweens on every other tab on re-click).
 				if currentSelectedTab == Tab then
 					return
 				end
@@ -1316,7 +1308,6 @@ b = {
 						g = {BackgroundTransparency = 1}
 					}):Play()
 				end
-				-- Hide whichever page was visible before switching.
 				for i, v in pairs(fo:GetChildren()) do
 					if v:IsA("Frame") and v.Name == "Page" and v ~= Page and v.Visible then
 						v.Visible = false
@@ -1347,7 +1338,6 @@ b = {
 					g = {BackgroundTransparency = 0}
 				}):Play()
 
-				-- Show page with fade in
 				Page.Visible = true
 				b[1]().twSafe({
 					v = Page.CanvasGroup,
@@ -1357,9 +1347,6 @@ b = {
 					g = {GroupTransparency = 0}
 				}):Play()
 			end
-			-- Debounce: ignore rapid-fire clicks on the same tab while its own
-			-- select tween is still settling in, preventing the "solid color
-			-- snap" caused by overlapping tweens on the same property.
 			local lastClickTime = 0
 			Tab.TextButton.MouseButton1Click:Connect(function()
 				local now = os.clock()
@@ -1379,12 +1366,24 @@ b = {
 				local SearchT = string.lower(Search.Text)
 				for i,v in pairs(Scroll:GetChildren()) do
 					if v:IsA("Frame") then
-						if SearchT ~= "" and v:FindFirstChild("TextDesc") and v.TextDesc:FindFirstChild("TextLabel") then
-							if string.find(string.lower(v.TextDesc.TextLabel.Text), SearchT) then
-								v.Visible = true
-							else
-								v.Visible = false
+						if SearchT ~= "" then
+							local found = false
+							if v:FindFirstChild("TextDesc") and v.TextDesc:FindFirstChild("TextLabel") then
+								if string.find(string.lower(v.TextDesc.TextLabel.Text), SearchT) then
+									found = true
+								end
 							end
+							if v:FindFirstChild("FolderContent") then
+								for _, child in pairs(v.FolderContent:GetChildren()) do
+									if child:IsA("Frame") and child:FindFirstChild("TextDesc") and child.TextDesc:FindFirstChild("TextLabel") then
+										if string.find(string.lower(child.TextDesc.TextLabel.Text), SearchT) then
+											found = true
+											break
+										end
+									end
+								end
+							end
+							v.Visible = found
 						else
 							v.Visible = true
 						end
@@ -1399,404 +1398,522 @@ b = {
 			delay(1, function()
 				Func.ConfigSystem:LoadConfig()
 			end)
-			function Func:CreateToggle(khgkgh)
-				assert(khgkgh.Title, "Toggle - Missing Title")
-				local Value = khgkgh.Value or false
-				local Callback = khgkgh.Callback or function() end
-				local par = b[1]().background(Scroll, khgkgh.Title, khgkgh.Desc, false, op)
-				local click = b[1]().click(par)
-				local toggle = f("Frame", {
-					Parent = par,
-					BorderSizePixel = 0,
-					BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-					AnchorPoint = Vector2.new(1, 0.5),
-					Size = UDim2.new(0, 100, 0.8, 0),
-					Position = UDim2.new(1, 0, 0.5, 0),
-					BorderColor3 = Color3.fromRGB(0, 0, 0),
-					BackgroundTransparency = 1
-				}, {
-					f("UIListLayout", {
-						HorizontalAlignment = Enum.HorizontalAlignment.Right,
-						VerticalAlignment = Enum.VerticalAlignment.Center,
-						SortOrder = Enum.SortOrder.LayoutOrder
-					}),
-					f("UIPadding", {PaddingRight = UDim.new(0, 13)}),
-					f("Frame", {
+
+			local function createElementAPI(parentScroll, configSystemRef)
+				local api = {}
+				
+				function api:CreateToggle(khgkgh)
+					assert(khgkgh.Title, "Toggle - Missing Title")
+					local Value = khgkgh.Value or false
+					local Callback = khgkgh.Callback or function() end
+					local par = b[1]().background(parentScroll, khgkgh.Title, khgkgh.Desc, false, op)
+					local click = b[1]().click(par)
+					local toggle = f("Frame", {
+						Parent = par,
 						BorderSizePixel = 0,
-						BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Toggle Color'],
-						Size = UDim2.new(0, 30, 0, 15),
-						BorderColor3 = Color3.fromRGB(0, 0, 0)
+						BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+						AnchorPoint = Vector2.new(1, 0.5),
+						Size = UDim2.new(0, 100, 0.8, 0),
+						Position = UDim2.new(1, 0, 0.5, 0),
+						BorderColor3 = Color3.fromRGB(0, 0, 0),
+						BackgroundTransparency = 1
 					}, {
-						f("UICorner", {CornerRadius = UDim.new(1, 0)}),
+						f("UIListLayout", {
+							HorizontalAlignment = Enum.HorizontalAlignment.Right,
+							VerticalAlignment = Enum.VerticalAlignment.Center,
+							SortOrder = Enum.SortOrder.LayoutOrder
+						}),
+						f("UIPadding", {PaddingRight = UDim.new(0, 13)}),
 						f("Frame", {
 							BorderSizePixel = 0,
-							BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-							AnchorPoint = Vector2.new(0.5, 0.5),
-							Size = UDim2.new(0, 8, 0, 8),
-							Position = UDim2.new(0.25, 0, 0.5, 0),
+							BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Toggle Color'],
+							Size = UDim2.new(0, 30, 0, 15),
 							BorderColor3 = Color3.fromRGB(0, 0, 0)
 						}, {
 							f("UICorner", {CornerRadius = UDim.new(1, 0)}),
+							f("Frame", {
+								BorderSizePixel = 0,
+								BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+								AnchorPoint = Vector2.new(0.5, 0.5),
+								Size = UDim2.new(0, 8, 0, 8),
+								Position = UDim2.new(0.25, 0, 0.5, 0),
+								BorderColor3 = Color3.fromRGB(0, 0, 0)
+							}, {
+								f("UICorner", {CornerRadius = UDim.new(1, 0)}),
+							})
 						})
 					})
-				})
-				local function ToggleC(newValue)
-					Value = newValue
-					if not Value then
-						pcall(function()
-							Callback(Value)
-						end)
-						b[1]().tw({
-							v = par.TextDesc.TextLabel,
-							t = 0.15,
-							s = "Linear",
-							d = "InOut",
-							g = {TextTransparency = 0.4}
-						}):Play()
-						b[1]().tw({
-							v = toggle.Frame,
-							t = 0.15,
-							s = "Linear",
-							d = "InOut",
-							g = {BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Toggle Color']}
-						}):Play()
-						b[1]().tw({
-							v = toggle.Frame.Frame,
-							t = 0.15,
-							s = "Linear",
-							d = "InOut",
-							g = {Position = UDim2.new(0.25, 0, 0.5, 0)}
-						}):Play()
-					elseif Value then
-						pcall(function()
-							Callback(Value)
-						end)
-						b[1]().tw({
-							v = par.TextDesc.TextLabel,
-							t = 0.15,
-							s = "Linear",
-							d = "InOut",
-							g = {TextTransparency = 0}
-						}):Play()
-						b[1]().tw({
-							v = toggle.Frame,
-							t = 0.15,
-							s = "Linear",
-							d = "InOut",
-							g = {BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Color Main']}
-						}):Play()
-						b[1]().tw({
-							v = toggle.Frame.Frame,
-							t = 0.15,
-							s = "Linear",
-							d = "InOut",
-							g = {Position = UDim2.new(0.75, 0, 0.5, 0)}
-						}):Play()
+					local function ToggleC(newValue)
+						Value = newValue
+						if not Value then
+							pcall(function()
+								Callback(Value)
+							end)
+							b[1]().tw({
+								v = par.TextDesc.TextLabel,
+								t = 0.15,
+								s = "Linear",
+								d = "InOut",
+								g = {TextTransparency = 0.4}
+							}):Play()
+							b[1]().tw({
+								v = toggle.Frame,
+								t = 0.15,
+								s = "Linear",
+								d = "InOut",
+								g = {BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Toggle Color']}
+							}):Play()
+							b[1]().tw({
+								v = toggle.Frame.Frame,
+								t = 0.15,
+								s = "Linear",
+								d = "InOut",
+								g = {Position = UDim2.new(0.25, 0, 0.5, 0)}
+							}):Play()
+						elseif Value then
+							pcall(function()
+								Callback(Value)
+							end)
+							b[1]().tw({
+								v = par.TextDesc.TextLabel,
+								t = 0.15,
+								s = "Linear",
+								d = "InOut",
+								g = {TextTransparency = 0}
+							}):Play()
+							b[1]().tw({
+								v = toggle.Frame,
+								t = 0.15,
+								s = "Linear",
+								d = "InOut",
+								g = {BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Color Main']}
+							}):Play()
+							b[1]().tw({
+								v = toggle.Frame.Frame,
+								t = 0.15,
+								s = "Linear",
+								d = "InOut",
+								g = {Position = UDim2.new(0.75, 0, 0.5, 0)}
+							}):Play()
+						end
 					end
-				end
-				delay(0.5,function()
-					ToggleC(Value)
-				end)
-				click.MouseButton1Click:Connect(function()
-					Value = not Value
-					b[1]().jc(click, par)
-					b[1]().flash(par, "BackgroundTransparency", a.Theme[op.Theme or 'Dark']['Background Function Transparency Moved'], 0.1)
-					ToggleC(Value)
-				end)
-				local NewSet = {}
-				function NewSet:SetTitle(newTitle)
-					par.TextDesc.TextLabel.Text = newTitle
-				end
-				function NewSet:SetDesc(newDesc)
-					local descLabel = par.TextDesc:FindFirstChild("Desc")
-					if descLabel then
-						descLabel.Text = newDesc
-					else
-						b[1]().desc(par.TextDesc, newDesc, op)
+					delay(0.5,function()
+						ToggleC(Value)
+					end)
+					click.MouseButton1Click:Connect(function()
+						Value = not Value
+						b[1]().jc(click, par)
+						b[1]().flash(par, "BackgroundTransparency", a.Theme[op.Theme or 'Dark']['Background Function Transparency Moved'], 0.1)
+						ToggleC(Value)
+					end)
+					local NewSet = {}
+					function NewSet:SetTitle(newTitle)
+						par.TextDesc.TextLabel.Text = newTitle
 					end
-				end
-				function NewSet:SetVisible(newVisible)
-					par.Visible = newVisible
-				end
-				function NewSet:SetValue(newValue)
-					ToggleC(newValue)
-				end
+					function NewSet:SetDesc(newDesc)
+						local descLabel = par.TextDesc:FindFirstChild("Desc")
+						if descLabel then
+							descLabel.Text = newDesc
+						else
+							b[1]().desc(par.TextDesc, newDesc, op)
+						end
+					end
+					function NewSet:SetVisible(newVisible)
+						par.Visible = newVisible
+					end
+					function NewSet:SetValue(newValue)
+						ToggleC(newValue)
+					end
 
-				local Key = khgkgh.Key or khgkgh.Title
-				Func.ConfigSystem:Register(Key,
-					function() return Value end,
-					function(val) ToggleC(val) end
-				)
-				return NewSet
-			end
-				function Func:CreateDropdown(khgkgh)
-				assert(khgkgh.Title, "Dropdown - Missing Title")
-				local List = khgkgh.List or {}
-				local Value = khgkgh.Value or ""
-				local Multi = khgkgh.Multi or false
-				local Callback = khgkgh.Callback or function() end
-				local function vd()
-					if type(Value) == "table" then
-						return table.concat(Value, ", ")
-					else
-						return Value
-					end
+					local Key = khgkgh.Key or khgkgh.Title
+					configSystemRef:Register(Key,
+						function() return Value end,
+						function(val) ToggleC(val) end
+					)
+					return NewSet
 				end
-				local par = b[1]().background(Scroll, khgkgh.Title, khgkgh.Desc, false, op)
-				local dropdown = f("Frame", {
-					Parent = par,
-					AnchorPoint = Vector2.new(1, 0.5),
-					BackgroundColor3 = Color3.fromRGB(255,255,255),
-					BackgroundTransparency = 1,
-					BorderColor3 = Color3.fromRGB(0,0,0),
-					BorderSizePixel = 0,
-					Position = UDim2.new(1, 0,0.5, 0),
-					Size = UDim2.new(0, 100, 1, 0)
-				}, {
-					f("UIPadding", {PaddingRight = UDim.new(0, 13)}),
-					f("Frame", {
+				
+				function api:CreateDropdown(khgkgh)
+					assert(khgkgh.Title, "Dropdown - Missing Title")
+					local List = khgkgh.List or {}
+					local Value = khgkgh.Value or ""
+					local Multi = khgkgh.Multi or false
+					local Callback = khgkgh.Callback or function() end
+					local function vd()
+						if type(Value) == "table" then
+							return table.concat(Value, ", ")
+						else
+							return Value
+						end
+					end
+					local par = b[1]().background(parentScroll, khgkgh.Title, khgkgh.Desc, false, op)
+					local dropdown = f("Frame", {
+						Parent = par,
 						AnchorPoint = Vector2.new(1, 0.5),
-						BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Dropdown Color'],
-						BorderColor3 = Color3.fromRGB(0,0,0),
-						BorderSizePixel = 0,
-						Size = UDim2.new(1, 0,0, 20),
-						Position = UDim2.new(1, 0, 0.5, 0)
-					}, {
-						f("UICorner", {CornerRadius = UDim.new(0,4)}),
-						f("UIPadding", {PaddingLeft = UDim.new(0,5)}),
-						f("ImageLabel", {
-							AnchorPoint = Vector2.new(1, 0),
-							BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-							BackgroundTransparency = 1,
-							BorderColor3 = Color3.fromRGB(0,0,0),
-							BorderSizePixel = 0,
-							Position = UDim2.new(1, 0,0, 0),
-							Size = UDim2.new(0, 20,0, 20),
-							Image = "rbxassetid://14928415132"
-						}),
-						f("TextLabel", {
-							BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-							BackgroundTransparency = 1,
-							BorderColor3 = Color3.fromRGB(0,0,0),
-							BorderSizePixel = 0,
-							Size = UDim2.new(0.75, 0,1, 0),
-							Font = Enum.Font.Gotham,
-							Text = vd(),
-							TextColor3 = Color3.fromRGB(255,255,255),
-							TextSize = 10,
-							TextXAlignment = Enum.TextXAlignment.Left,
-							Name = "SelectedText"
-						})
-					})
-				})
-				local dropdownselect = f("Frame", {
-					Parent = fo.Parent,
-					BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Dropdown Select Background'],
-					BorderColor3 = Color3.fromRGB(0,0,0),
-					BorderSizePixel = 0,
-					Position = UDim2.new(0, 0,0, 0),
-					Size = UDim2.new(0, 150,0, 0),
-					ClipsDescendants = true,
-				}, {
-					f("UICorner", {CornerRadius = UDim.new(0, 4)}),
-					f("UIPadding", {PaddingBottom = UDim.new(0, 5), PaddingTop = UDim.new(0, 5), PaddingRight = UDim.new(0, 3)}),
-					f("UIStroke", {Color = a.Theme[op.Theme or 'Dark']['Dropdown Select Stroke'], Transparency = 1}),
-					f("Frame", {
-						BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Search'],
-						BorderSizePixel = 0,
-						Size = UDim2.new(1, -3, 0, 18),
-						Position = UDim2.new(0, 0, 0, 0),
-						Name = "SearchBar"
-					}, {
-						f("UICorner", {CornerRadius = UDim.new(0, 4)}),
-						f("UIPadding", {PaddingLeft = UDim.new(0, 6), PaddingRight = UDim.new(0, 6)}),
-						f("TextBox", {
-							TextColor3 = a.Theme[op.Theme or 'Dark']['Text Color'],
-							BorderSizePixel = 0,
-							TextXAlignment = Enum.TextXAlignment.Left,
-							TextSize = 10,
-							Font = Enum.Font.Gotham,
-							BackgroundTransparency = 1,
-							PlaceholderText = "search...",
-							Size = UDim2.new(1, 0, 1, 0),
-							Text = "",
-							ClearTextOnFocus = false,
-							Name = "Box"
-						})
-					}),
-					f("ScrollingFrame", {
-						Active = true,
 						BackgroundColor3 = Color3.fromRGB(255,255,255),
 						BackgroundTransparency = 1,
 						BorderColor3 = Color3.fromRGB(0,0,0),
 						BorderSizePixel = 0,
-						Size = UDim2.new(1, 0,1, -21),
-						Position = UDim2.new(0, 0, 0, 21),
-						ClipsDescendants = true,
-						AutomaticCanvasSize = Enum.AutomaticSize.None,
-						BottomImage = "rbxasset://textures/ui/Scroll/scroll-bottom.png",
-						CanvasPosition = Vector2.new(0, 0),
-						ElasticBehavior = Enum.ElasticBehavior.WhenScrollable,
-						HorizontalScrollBarInset = Enum.ScrollBarInset.None,
-						MidImage = "rbxasset://textures/ui/Scroll/scroll-middle.png",
-						ScrollBarImageColor3 = a.Theme[op.Theme or 'Dark']['Color Main'],
-						ScrollBarImageTransparency = 0,
-						ScrollBarThickness = 3,
-						ScrollingDirection = Enum.ScrollingDirection.XY,
-						TopImage = "rbxasset://textures/ui/Scroll/scroll-top.png",
-						VerticalScrollBarInset = Enum.ScrollBarInset.None,
-						VerticalScrollBarPosition = Enum.VerticalScrollBarPosition.Right,
-						Name = "ItemList"
+						Position = UDim2.new(1, 0,0.5, 0),
+						Size = UDim2.new(0, 100, 1, 0)
 					}, {
-						f("UIListLayout", {Padding = UDim.new(0,3), SortOrder = Enum.SortOrder.LayoutOrder}),
-						f("UIPadding", {PaddingLeft = UDim.new(0,3), PaddingRight = UDim.new(0,7)})
+						f("UIPadding", {PaddingRight = UDim.new(0, 13)}),
+						f("Frame", {
+							AnchorPoint = Vector2.new(1, 0.5),
+							BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Dropdown Color'],
+							BorderColor3 = Color3.fromRGB(0,0,0),
+							BorderSizePixel = 0,
+							Size = UDim2.new(1, 0,0, 20),
+							Position = UDim2.new(1, 0, 0.5, 0)
+						}, {
+							f("UICorner", {CornerRadius = UDim.new(0,4)}),
+							f("UIPadding", {PaddingLeft = UDim.new(0,5)}),
+							f("ImageLabel", {
+								AnchorPoint = Vector2.new(1, 0),
+								BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+								BackgroundTransparency = 1,
+								BorderColor3 = Color3.fromRGB(0,0,0),
+								BorderSizePixel = 0,
+								Position = UDim2.new(1, 0,0, 0),
+								Size = UDim2.new(0, 20,0, 20),
+								Image = "rbxassetid://14928415132"
+							}),
+							f("TextLabel", {
+								BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+								BackgroundTransparency = 1,
+								BorderColor3 = Color3.fromRGB(0,0,0),
+								BorderSizePixel = 0,
+								Size = UDim2.new(0.75, 0,1, 0),
+								Font = Enum.Font.Gotham,
+								Text = vd(),
+								TextColor3 = Color3.fromRGB(255,255,255),
+								TextSize = 10,
+								TextXAlignment = Enum.TextXAlignment.Left,
+								Name = "SelectedText"
+							})
+						})
 					})
-				})
-				dropdownselect.SearchBar.Box:GetPropertyChangedSignal("Text"):Connect(function()
-					local q = string.lower(dropdownselect.SearchBar.Box.Text)
-					for _, child in ipairs(dropdownselect.ItemList:GetChildren()) do
-						if child:IsA("Frame") and child:FindFirstChild("TextLabel") then
-							if q == "" or string.find(string.lower(child.TextLabel.Text), q, 1, true) then
-								child.Visible = true
-							else
-								child.Visible = false
+					local dropdownselect = f("Frame", {
+						Parent = fo.Parent,
+						BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Dropdown Select Background'],
+						BorderColor3 = Color3.fromRGB(0,0,0),
+						BorderSizePixel = 0,
+						Position = UDim2.new(0, 0,0, 0),
+						Size = UDim2.new(0, 150,0, 0),
+						ClipsDescendants = true,
+					}, {
+						f("UICorner", {CornerRadius = UDim.new(0, 4)}),
+						f("UIPadding", {PaddingBottom = UDim.new(0, 5), PaddingTop = UDim.new(0, 5), PaddingRight = UDim.new(0, 3)}),
+						f("UIStroke", {Color = a.Theme[op.Theme or 'Dark']['Dropdown Select Stroke'], Transparency = 1}),
+						f("Frame", {
+							BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Search'],
+							BorderSizePixel = 0,
+							Size = UDim2.new(1, -3, 0, 18),
+							Position = UDim2.new(0, 0, 0, 0),
+							Name = "SearchBar"
+						}, {
+							f("UICorner", {CornerRadius = UDim.new(0, 4)}),
+							f("UIPadding", {PaddingLeft = UDim.new(0, 6), PaddingRight = UDim.new(0, 6)}),
+							f("TextBox", {
+								TextColor3 = a.Theme[op.Theme or 'Dark']['Text Color'],
+								BorderSizePixel = 0,
+								TextXAlignment = Enum.TextXAlignment.Left,
+								TextSize = 10,
+								Font = Enum.Font.Gotham,
+								BackgroundTransparency = 1,
+								PlaceholderText = "search...",
+								Size = UDim2.new(1, 0, 1, 0),
+								Text = "",
+								ClearTextOnFocus = false,
+								Name = "Box"
+							})
+						}),
+						f("ScrollingFrame", {
+							Active = true,
+							BackgroundColor3 = Color3.fromRGB(255,255,255),
+							BackgroundTransparency = 1,
+							BorderColor3 = Color3.fromRGB(0,0,0),
+							BorderSizePixel = 0,
+							Size = UDim2.new(1, 0,1, -21),
+							Position = UDim2.new(0, 0, 0, 21),
+							ClipsDescendants = true,
+							AutomaticCanvasSize = Enum.AutomaticSize.None,
+							BottomImage = "rbxasset://textures/ui/Scroll/scroll-bottom.png",
+							CanvasPosition = Vector2.new(0, 0),
+							ElasticBehavior = Enum.ElasticBehavior.WhenScrollable,
+							HorizontalScrollBarInset = Enum.ScrollBarInset.None,
+							MidImage = "rbxasset://textures/ui/Scroll/scroll-middle.png",
+							ScrollBarImageColor3 = a.Theme[op.Theme or 'Dark']['Color Main'],
+							ScrollBarImageTransparency = 0,
+							ScrollBarThickness = 3,
+							ScrollingDirection = Enum.ScrollingDirection.XY,
+							TopImage = "rbxasset://textures/ui/Scroll/scroll-top.png",
+							VerticalScrollBarInset = Enum.ScrollBarInset.None,
+							VerticalScrollBarPosition = Enum.VerticalScrollBarPosition.Right,
+							Name = "ItemList"
+						}, {
+							f("UIListLayout", {Padding = UDim.new(0,3), SortOrder = Enum.SortOrder.LayoutOrder}),
+							f("UIPadding", {PaddingLeft = UDim.new(0,3), PaddingRight = UDim.new(0,7)})
+						})
+					})
+					dropdownselect.SearchBar.Box:GetPropertyChangedSignal("Text"):Connect(function()
+						local q = string.lower(dropdownselect.SearchBar.Box.Text)
+						for _, child in ipairs(dropdownselect.ItemList:GetChildren()) do
+							if child:IsA("Frame") and child:FindFirstChild("TextLabel") then
+								if q == "" or string.find(string.lower(child.TextLabel.Text), q, 1, true) then
+									child.Visible = true
+								else
+									child.Visible = false
+								end
 							end
 						end
+						dropdownselect.ItemList.CanvasSize = UDim2.new(0,0,0, dropdownselect.ItemList.UIListLayout.AbsoluteContentSize.Y + 5)
+					end)
+					dropdownselect.Position = UDim2.new(0, dropdown.Frame.AbsolutePosition.X - dropdownselect.Parent.AbsolutePosition.X + dropdown.Frame.Size.X.Offset - 150, 0, dropdown.Frame.AbsolutePosition.Y - dropdownselect.Parent.AbsolutePosition.Y + dropdown.Frame.Size.Y.Offset - 20)
+					local isopen = false
+					local click = b[1]().click(par)
+					local function opendropdown()
+						local screenGui = fo.Parent.Parent
+						local viewportSize = workspace.CurrentCamera.ViewportSize
+						local targetX = dropdown.Frame.AbsolutePosition.X - dropdownselect.Parent.AbsolutePosition.X + dropdown.Frame.Size.X.Offset - 80
+						local targetY = dropdown.Frame.AbsolutePosition.Y - dropdownselect.Parent.AbsolutePosition.Y + dropdown.Frame.Size.Y.Offset - 20
+						if targetX < 0 then targetX = 0 end
+						if targetX + 150 > viewportSize.X then targetX = viewportSize.X - 150 end
+						if targetY < 0 then targetY = 0 end
+						if targetY + 200 > viewportSize.Y then targetY = viewportSize.Y - 200 end
+						dropdownselect.Position = UDim2.new(0, targetX, 0, targetY)
+						if dropdownselect.ItemList.UIListLayout.AbsoluteContentSize.Y + 13 + 21 < 141 then
+							b[1]().tw({
+								v = dropdownselect,
+								t = 0.15,
+								s = "Exponential",
+								d = "InOut",
+								g = {Size = UDim2.new(0, 150,0, dropdownselect.ItemList.UIListLayout.AbsoluteContentSize.Y + 13 + 21)}
+							}):Play()
+							b[1]().tw({
+								v = dropdownselect.UIStroke,
+								t = 0.15,
+								s = "Exponential",
+								d = "InOut",
+								g = {Transparency = 0}
+							}):Play()
+						else
+							b[1]().tw({
+								v = dropdownselect.UIStroke,
+								t = 0.15,
+								s = "Exponential",
+								d = "InOut",
+								g = {Transparency = 0}
+							}):Play()
+							b[1]().tw({
+								v = dropdownselect,
+								t = 0.15,
+								s = "Exponential",
+								d = "InOut",
+								g = {Size = UDim2.new(0, 150,0, 141), Position = UDim2.new(0, targetX, 0, targetY)}
+							}):Play()
+						end
 					end
-					dropdownselect.ItemList.CanvasSize = UDim2.new(0,0,0, dropdownselect.ItemList.UIListLayout.AbsoluteContentSize.Y + 5)
-				end)
-				dropdownselect.Position = UDim2.new(0, dropdown.Frame.AbsolutePosition.X - dropdownselect.Parent.AbsolutePosition.X + dropdown.Frame.Size.X.Offset - 150, 0, dropdown.Frame.AbsolutePosition.Y - dropdownselect.Parent.AbsolutePosition.Y + dropdown.Frame.Size.Y.Offset - 20)
-				local isopen = false
-				local click = b[1]().click(par)
-				local function opendropdown()
-					local screenGui = fo.Parent.Parent
-					local viewportSize = workspace.CurrentCamera.ViewportSize
-					local targetX = dropdown.Frame.AbsolutePosition.X - dropdownselect.Parent.AbsolutePosition.X + dropdown.Frame.Size.X.Offset - 80
-					local targetY = dropdown.Frame.AbsolutePosition.Y - dropdownselect.Parent.AbsolutePosition.Y + dropdown.Frame.Size.Y.Offset - 20
-					if targetX < 0 then targetX = 0 end
-					if targetX + 150 > viewportSize.X then targetX = viewportSize.X - 150 end
-					if targetY < 0 then targetY = 0 end
-					if targetY + 200 > viewportSize.Y then targetY = viewportSize.Y - 200 end
-					dropdownselect.Position = UDim2.new(0, targetX, 0, targetY)
-					if dropdownselect.ItemList.UIListLayout.AbsoluteContentSize.Y + 13 + 21 < 141 then
+					local function closedropdown()
 						b[1]().tw({
 							v = dropdownselect,
 							t = 0.15,
 							s = "Exponential",
 							d = "InOut",
-							g = {Size = UDim2.new(0, 150,0, dropdownselect.ItemList.UIListLayout.AbsoluteContentSize.Y + 13 + 21)}
+							g = {Size = UDim2.new(0, 150,0, 0)}
 						}):Play()
 						b[1]().tw({
 							v = dropdownselect.UIStroke,
 							t = 0.15,
 							s = "Exponential",
 							d = "InOut",
-							g = {Transparency = 0}
+							g = {Transparency = 1}
 						}):Play()
-					else
-						b[1]().tw({
-							v = dropdownselect.UIStroke,
-							t = 0.15,
-							s = "Exponential",
-							d = "InOut",
-							g = {Transparency = 0}
-						}):Play()
-						b[1]().tw({
-							v = dropdownselect,
-							t = 0.15,
-							s = "Exponential",
-							d = "InOut",
-							g = {Size = UDim2.new(0, 150,0, 141), Position = UDim2.new(0, targetX, 0, targetY)}
-						}):Play()
+						if dropdownselect.SearchBar.Box.Text ~= "" then
+							dropdownselect.SearchBar.Box.Text = ""
+						end
 					end
-				end
-				local function closedropdown()
-					b[1]().tw({
-						v = dropdownselect,
-						t = 0.15,
-						s = "Exponential",
-						d = "InOut",
-						g = {Size = UDim2.new(0, 150,0, 0)}
-					}):Play()
-					b[1]().tw({
-						v = dropdownselect.UIStroke,
-						t = 0.15,
-						s = "Exponential",
-						d = "InOut",
-						g = {Transparency = 1}
-					}):Play()
-					if dropdownselect.SearchBar.Box.Text ~= "" then
-						dropdownselect.SearchBar.Box.Text = ""
-					end
-				end
-				Services.UserInputService.InputBegan:Connect(function(A)
-					if not isopen then return end
-					if A.UserInputType == Enum.UserInputType.MouseButton1 or A.UserInputType == Enum.UserInputType.Touch then
-						local B, C = dropdownselect.AbsolutePosition, dropdownselect.AbsoluteSize
-						local M = LocalPlayer:GetMouse()
-						if M.X < B.X or M.X > B.X + C.X or M.Y < (B.Y - 20 - 1) or M.Y > B.Y + C.Y then
-							isopen = false
+					Services.UserInputService.InputBegan:Connect(function(A)
+						if not isopen then return end
+						if A.UserInputType == Enum.UserInputType.MouseButton1 or A.UserInputType == Enum.UserInputType.Touch then
+							local B, C = dropdownselect.AbsolutePosition, dropdownselect.AbsoluteSize
+							local M = LocalPlayer:GetMouse()
+							if M.X < B.X or M.X > B.X + C.X or M.Y < (B.Y - 20 - 1) or M.Y > B.Y + C.Y then
+								isopen = false
+								closedropdown()
+							end
+						end
+					end)
+					click.MouseButton1Click:Connect(function()
+						b[1]().jc(click, par)
+						isopen = not isopen
+						if not isopen then
 							closedropdown()
+						else
+							opendropdown()
 						end
+					end)
+					local function dps()
+						local newWidth = dropdown.Frame.SelectedText.TextBounds.X + 50
+						if newWidth > 150 then
+							newWidth = 150
+						end
+						local g = b[1]().tw({
+							v = dropdown,
+							t = 0.15,
+							s = "Back",
+							d = "InOut",
+							g = {Size = UDim2.new(0, newWidth, 1, 0)}
+						})
+						g:Play()
+						g.Completed:Wait()
+						dropdown.Frame.SelectedText.TextTruncate = Enum.TextTruncate.AtEnd
 					end
-				end)
-				click.MouseButton1Click:Connect(function()
-					b[1]().jc(click, par)
-					isopen = not isopen
-					if not isopen then
-						closedropdown()
-					else
-						opendropdown()
+					local itemslist = {}
+					local selectedValues = {}
+					local selectedItem
+					function itemslist:Clear()
+						if not Multi then
+							for _, child in ipairs(dropdownselect.ItemList:GetChildren()) do
+								if child:IsA("Frame") then
+									child:Destroy()
+								end
+							end
+							selectedItem = nil
+							Value = ""
+							dropdown.Frame.SelectedText.Text = ""
+						else
+							for key in pairs(selectedValues) do
+								selectedValues[key] = nil
+							end
+							for _, child in ipairs(dropdownselect.ItemList:GetChildren()) do
+								if child:IsA("Frame") then
+									child:Destroy()
+								end
+							end
+							dropdown.Frame.SelectedText.Text = ""
+						end
+						dropdownselect.ItemList.CanvasSize = UDim2.new(0,0,0,0)
 					end
-				end)
-				local function dps()
-					local newWidth = dropdown.Frame.SelectedText.TextBounds.X + 50
-					if newWidth > 150 then
-						newWidth = 150
-					end
-					local g = b[1]().tw({
-						v = dropdown,
-						t = 0.15,
-						s = "Back",
-						d = "InOut",
-						g = {Size = UDim2.new(0, newWidth, 1, 0)}
-					})
-					g:Play()
-					g.Completed:Wait()
-					dropdown.Frame.SelectedText.TextTruncate = Enum.TextTruncate.AtEnd
-				end
-				local itemslist = {}
-				local selectedValues = {}
-				local selectedItem
-				function itemslist:Clear()
-					if not Multi then
+					function itemslist:Remove(t)
 						for _, child in ipairs(dropdownselect.ItemList:GetChildren()) do
-							if child:IsA("Frame") then
-								child:Destroy()
+							if child:IsA("Frame") and child:FindFirstChild("TextLabel") then
+								if child.TextLabel.Text == t then
+									if Multi and selectedValues[t] then
+										selectedValues[t] = nil
+										local selectedList = {}
+										for i, v in pairs(selectedValues) do
+											table.insert(selectedList, i)
+										end
+										if #selectedList > 0 then
+											dropdown.Frame.SelectedText.Text = table.concat(selectedList, ", ")
+										else
+											dropdown.Frame.SelectedText.Text = ""
+										end
+										pcall(function()
+											Callback(selectedList)
+										end)
+									end
+
+									if not Multi and Value == t then
+										Value = ""
+										dropdown.Frame.SelectedText.Text = ""
+										pcall(function()
+											Callback("")
+										end)
+									end
+
+									child:Destroy()
+									break
+								end
 							end
 						end
-						selectedItem = nil
-						Value = ""
-						dropdown.Frame.SelectedText.Text = ""
-					else
-						for key in pairs(selectedValues) do
-							selectedValues[key] = nil
-						end
-						for _, child in ipairs(dropdownselect.ItemList:GetChildren()) do
-							if child:IsA("Frame") then
-								child:Destroy()
-							end
-						end
-						dropdown.Frame.SelectedText.Text = ""
+						dropdownselect.ItemList.CanvasSize = UDim2.new(0,0,0, dropdownselect.ItemList.UIListLayout.AbsoluteContentSize.Y + 5)
 					end
-					dropdownselect.ItemList.CanvasSize = UDim2.new(0,0,0,0)
-				end
-				function itemslist:Remove(t)
-					for _, child in ipairs(dropdownselect.ItemList:GetChildren()) do
-						if child:IsA("Frame") and child:FindFirstChild("TextLabel") then
-							if child.TextLabel.Text == t then
-								if Multi and selectedValues[t] then
+					function itemslist:Add(t)
+						local item = f("Frame", {
+							Parent = dropdownselect.ItemList,
+							BackgroundColor3 = Color3.fromRGB(35, 35, 35),
+							BackgroundTransparency = 0.9,
+							BorderColor3 = Color3.fromRGB(0,0,0),
+							BorderSizePixel = 0,
+							ClipsDescendants = true,
+							Size = UDim2.new(1, 0,0, 20),
+						}, {
+							f("UICorner", {CornerRadius = UDim.new(0, 4)}),
+							f("UIPadding", {PaddingLeft = UDim.new(0, 5)}),
+							f("Frame", {
+								Name = "Accent",
+								BorderSizePixel = 0,
+								BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Color Main'],
+								AnchorPoint = Vector2.new(0, 0.5),
+								Position = UDim2.new(0, 0, 0.5, 0),
+								Size = UDim2.new(0, 2, 0.6, 0),
+								BackgroundTransparency = 1
+							}, {
+								f("UICorner", {CornerRadius = UDim.new(1, 0)})
+							}),
+							f("Frame", {
+								Name = "Tint",
+								BorderSizePixel = 0,
+								BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Color Main'],
+								ClipsDescendants = true,
+								Size = UDim2.new(1, 0, 1, 0),
+								BackgroundTransparency = 1,
+								ZIndex = 0
+							}, {
+								f("UICorner", {CornerRadius = UDim.new(0, 4)}),
+								f("UIGradient", {
+									Rotation = 0,
+									Transparency = NumberSequence.new{
+										NumberSequenceKeypoint.new(0, 0.65),
+										NumberSequenceKeypoint.new(0.22, 0.9),
+										NumberSequenceKeypoint.new(0.4, 1),
+										NumberSequenceKeypoint.new(1, 1)
+									}
+								})
+							}),
+							f("TextLabel", {
+								BackgroundColor3 = Color3.fromRGB(255,255,255),
+								BackgroundTransparency = 1,
+								BorderColor3 = Color3.fromRGB(0,0,0),
+								BorderSizePixel = 0,
+								Size = UDim2.new(1, 0,1, 0),
+								Font = Enum.Font.Gotham,
+								Text = t,
+								TextColor3 = Color3.fromRGB(255,255,255),
+								TextSize = 11,
+								TextXAlignment = Enum.TextXAlignment.Left
+							})
+						})
+						local clickitem = b[1]().click(item)
+						clickitem.MouseButton1Click:Connect(function()
+							b[1]().jc(clickitem, item)
+							if Multi then
+								if selectedValues[t] then
 									selectedValues[t] = nil
+									b[1]().twSafe({
+										v = item,
+										t = 0.15,
+										s = "Linear",
+										d = "InOut",
+										g = {BackgroundColor3 = Color3.fromRGB(35, 35, 35), BackgroundTransparency = 0.9}
+									}):Play()
+									b[1]().twSafe({
+										v = item.Accent,
+										t = 0.15,
+										s = "Linear",
+										d = "InOut",
+										g = {BackgroundTransparency = 1}
+									}):Play()
+									b[1]().twSafe({
+										v = item.Tint,
+										t = 0.15,
+										s = "Linear",
+										d = "InOut",
+										g = {BackgroundTransparency = 1}
+									}):Play()
+									item.TextLabel.Text = t
 									local selectedList = {}
 									for i, v in pairs(selectedValues) do
 										table.insert(selectedList, i)
@@ -1809,203 +1926,89 @@ b = {
 									pcall(function()
 										Callback(selectedList)
 									end)
-								end
-
-								if not Multi and Value == t then
-									Value = ""
-									dropdown.Frame.SelectedText.Text = ""
+								else
+									b[1]().twSafe({
+										v = item,
+										t = 0.15,
+										s = "Linear",
+										d = "InOut",
+										g = {BackgroundColor3 = Color3.fromRGB(35, 35, 35), BackgroundTransparency = 0}
+									}):Play()
+									b[1]().twSafe({
+										v = item.Accent,
+										t = 0.15,
+										s = "Linear",
+										d = "InOut",
+										g = {BackgroundTransparency = 0}
+									}):Play()
+									b[1]().twSafe({
+										v = item.Tint,
+										t = 0.15,
+										s = "Linear",
+										d = "InOut",
+										g = {BackgroundTransparency = 0}
+									}):Play()
+									selectedValues[t] = true
+									item.TextLabel.Text = t
+									local selectedList = {}
+									for i, v in pairs(selectedValues) do
+										table.insert(selectedList, i)
+									end
+									dropdown.Frame.SelectedText.Text = table.concat(selectedList, ", ")
 									pcall(function()
-										Callback("")
+										Callback(selectedList)
 									end)
 								end
-
-								child:Destroy()
-								break
-							end
-						end
-					end
-					dropdownselect.ItemList.CanvasSize = UDim2.new(0,0,0, dropdownselect.ItemList.UIListLayout.AbsoluteContentSize.Y + 5)
-				end
-				function itemslist:Add(t)
-					local item = f("Frame", {
-						Parent = dropdownselect.ItemList,
-						BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Dropdown Item'],
-						BackgroundTransparency = 0.9,
-						BorderColor3 = Color3.fromRGB(0,0,0),
-						BorderSizePixel = 0,
-						Size = UDim2.new(1, 0,0, 20),
-					}, {
-						f("UICorner", {CornerRadius = UDim.new(0, 4)}),
-						f("UIPadding", {PaddingLeft = UDim.new(0, 5)}),
-						f("UIGradient", {Color = ColorSequence.new{ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1, Color3.fromRGB(170, 170, 170))}}),
-						f("TextLabel", {
-							BackgroundColor3 = Color3.fromRGB(255,255,255),
-							BackgroundTransparency = 1,
-							BorderColor3 = Color3.fromRGB(0,0,0),
-							BorderSizePixel = 0,
-							Size = UDim2.new(1, 0,1, 0),
-							Font = Enum.Font.Gotham,
-							Text = t,
-							TextColor3 = Color3.fromRGB(255,255,255),
-							TextSize = 11,
-							TextXAlignment = Enum.TextXAlignment.Left
-						})
-					})
-					local clickitem = b[1]().click(item)
-					clickitem.MouseButton1Click:Connect(function()
-						b[1]().jc(clickitem, item)
-						if Multi then
-							if selectedValues[t] then
-								selectedValues[t] = nil
-								b[1]().tw({
-									v = item,
-									t = 0.15,
-									s = "Linear",
-									d = "InOut",
-									g = {BackgroundColor3 = Color3.fromRGB(88, 88, 88), BackgroundTransparency = 0.9}
-								}):Play()
-								b[1]().tw({
-									v = item.TextLabel,
-									t = 0.15,
-									s = "Linear",
-									d = "InOut",
-									g = {TextColor3 = Color3.fromRGB(255 ,255 ,255)}
-								}):Play()
-								item.TextLabel.Text = t
-								local selectedList = {}
-								for i, v in pairs(selectedValues) do
-									table.insert(selectedList, i)
-								end
-								if #selectedList > 0 then
-									dropdown.Frame.SelectedText.Text = table.concat(selectedList, ", ")
-								else
-									dropdown.Frame.SelectedText.Text = ""
-								end
-								pcall(function()
-									Callback(selectedList)
-								end)
 							else
-								b[1]().tw({
+								for i,v in pairs(dropdownselect.ItemList:GetChildren()) do
+									if v:IsA("Frame") then
+										b[1]().twSafe({
+											v = v,
+											t = 0.15,
+											s = "Linear",
+											d = "InOut",
+											g = {BackgroundColor3 = Color3.fromRGB(35, 35, 35), BackgroundTransparency = 0.9}
+										}):Play()
+										if v:FindFirstChild("Accent") then
+											b[1]().twSafe({
+												v = v.Accent,
+												t = 0.15,
+												s = "Linear",
+												d = "InOut",
+												g = {BackgroundTransparency = 1}
+											}):Play()
+										end
+										if v:FindFirstChild("Tint") then
+											b[1]().twSafe({
+												v = v.Tint,
+												t = 0.15,
+												s = "Linear",
+												d = "InOut",
+												g = {BackgroundTransparency = 1}
+											}):Play()
+										end
+									end
+								end
+								b[1]().twSafe({
 									v = item,
 									t = 0.15,
 									s = "Linear",
 									d = "InOut",
-									g = {BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Color Main'], BackgroundTransparency = 0}
+									g = {BackgroundColor3 = Color3.fromRGB(35, 35, 35), BackgroundTransparency = 0}
 								}):Play()
-								b[1]().tw({
-									v = item.TextLabel,
+								b[1]().twSafe({
+									v = item.Accent,
 									t = 0.15,
 									s = "Linear",
 									d = "InOut",
-									g = {TextColor3 = Color3.fromRGB(0, 0, 0)}
+									g = {BackgroundTransparency = 0}
 								}):Play()
-								selectedValues[t] = true
-								item.TextLabel.Text = t
-								local selectedList = {}
-								for i, v in pairs(selectedValues) do
-									table.insert(selectedList, i)
-								end
-								dropdown.Frame.SelectedText.Text = table.concat(selectedList, ", ")
-								pcall(function()
-									Callback(selectedList)
-								end)
-							end
-						else
-							for i,v in pairs(dropdownselect.ItemList:GetChildren()) do
-								if v:IsA("Frame") then
-									b[1]().tw({
-										v = v,
-										t = 0.15,
-										s = "Linear",
-										d = "InOut",
-										g = {BackgroundColor3 = Color3.fromRGB(88, 88, 88), BackgroundTransparency = 0.9}
-									}):Play()
-									b[1]().tw({
-										v = v.TextLabel,
-										t = 0.15,
-										s = "Linear",
-										d = "InOut",
-										g = {TextColor3 = Color3.fromRGB(255 ,255 ,255)}
-									}):Play()
-								end
-							end
-							b[1]().tw({
-								v = item,
-								t = 0.15,
-								s = "Linear",
-								d = "InOut",
-								g = {BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Color Main'], BackgroundTransparency = 0}
-							}):Play()
-							b[1]().tw({
-								v = item.TextLabel,
-								t = 0.15,
-								s = "Linear",
-								d = "InOut",
-								g = {TextColor3 = Color3.fromRGB(0, 0, 0)}
-							}):Play()
-							item.TextLabel.Text = t
-							Value = t
-							selectedItem = item
-							dropdown.Frame.SelectedText.Text = t
-							pcall(function()
-								Callback(t)
-							end)
-						end
-					end)
-					local function isValueInTable(val, tbl)
-						if type(tbl) ~= "table" then
-							return false
-						end
-						for _, v in pairs(tbl) do
-							if v == val then
-								return true
-							end
-						end
-						return false
-					end
-					delay(0,function()
-						if Multi then
-							if isValueInTable(t, Value) then
-								b[1]().tw({
-									v = item,
+								b[1]().twSafe({
+									v = item.Tint,
 									t = 0.15,
 									s = "Linear",
 									d = "InOut",
-									g = {BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Color Main'], BackgroundTransparency = 0}
-								}):Play()
-								b[1]().tw({
-									v = item.TextLabel,
-									t = 0.15,
-									s = "Linear",
-									d = "InOut",
-									g = {TextColor3 = Color3.fromRGB(0, 0, 0)}
-								}):Play()
-								item.TextLabel.Text = t
-								selectedValues[t] = true
-								local selectedList = {}
-								for i, v in pairs(selectedValues) do
-									table.insert(selectedList, i)
-								end
-								dropdown.Frame.SelectedText.Text = table.concat(selectedList, ", ")
-								pcall(function()
-									Callback(selectedList)
-								end)
-							end
-						else
-							if t == Value then
-								b[1]().tw({
-									v = item,
-									t = 0.15,
-									s = "Linear",
-									d = "InOut",
-									g = {BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Color Main'], BackgroundTransparency = 0}
-								}):Play()
-								b[1]().tw({
-									v = item.TextLabel,
-									t = 0.15,
-									s = "Linear",
-									d = "InOut",
-									g = {TextColor3 = Color3.fromRGB(0, 0, 0)}
+									g = {BackgroundTransparency = 0}
 								}):Play()
 								item.TextLabel.Text = t
 								Value = t
@@ -2015,548 +2018,891 @@ b = {
 									Callback(t)
 								end)
 							end
+						end)
+						local function isValueInTable(val, tbl)
+							if type(tbl) ~= "table" then
+								return false
+							end
+							for _, v in pairs(tbl) do
+								if v == val then
+									return true
+								end
+							end
+							return false
 						end
+						delay(0,function()
+							if Multi then
+								if isValueInTable(t, Value) then
+									b[1]().twSafe({
+										v = item,
+										t = 0.15,
+										s = "Linear",
+										d = "InOut",
+										g = {BackgroundColor3 = Color3.fromRGB(35, 35, 35), BackgroundTransparency = 0}
+									}):Play()
+									b[1]().twSafe({
+										v = item.Accent,
+										t = 0.15,
+										s = "Linear",
+										d = "InOut",
+										g = {BackgroundTransparency = 0}
+									}):Play()
+									b[1]().twSafe({
+										v = item.Tint,
+										t = 0.15,
+										s = "Linear",
+										d = "InOut",
+										g = {BackgroundTransparency = 0}
+									}):Play()
+									item.TextLabel.Text = t
+									selectedValues[t] = true
+									local selectedList = {}
+									for i, v in pairs(selectedValues) do
+										table.insert(selectedList, i)
+									end
+									dropdown.Frame.SelectedText.Text = table.concat(selectedList, ", ")
+									pcall(function()
+										Callback(selectedList)
+									end)
+								end
+							else
+								if t == Value then
+									b[1]().twSafe({
+										v = item,
+										t = 0.15,
+										s = "Linear",
+										d = "InOut",
+										g = {BackgroundColor3 = Color3.fromRGB(35, 35, 35), BackgroundTransparency = 0}
+									}):Play()
+									b[1]().twSafe({
+										v = item.Accent,
+										t = 0.15,
+										s = "Linear",
+										d = "InOut",
+										g = {BackgroundTransparency = 0}
+									}):Play()
+									b[1]().twSafe({
+										v = item.Tint,
+										t = 0.15,
+										s = "Linear",
+										d = "InOut",
+										g = {BackgroundTransparency = 0}
+									}):Play()
+									item.TextLabel.Text = t
+									Value = t
+									selectedItem = item
+									dropdown.Frame.SelectedText.Text = t
+									pcall(function()
+										Callback(t)
+									end)
+								end
+							end
+							dps()
+						end)
+						dropdownselect.ItemList.CanvasSize = UDim2.new(0,0,0, dropdownselect.ItemList.UIListLayout.AbsoluteContentSize.Y + 5)
+					end
+					for i,v in ipairs(List) do
+						itemslist:Add(v)
+					end
+					dropdown.Frame.SelectedText:GetPropertyChangedSignal("Text"):Connect(function()
 						dps()
 					end)
-					dropdownselect.ItemList.CanvasSize = UDim2.new(0,0,0, dropdownselect.ItemList.UIListLayout.AbsoluteContentSize.Y + 5)
-				end
-				for i,v in ipairs(List) do
-					itemslist:Add(v)
-				end
-				dropdown.Frame.SelectedText:GetPropertyChangedSignal("Text"):Connect(function()
-					dps()
-				end)
-				dropdownselect.ItemList.UIListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-					dropdownselect.ItemList.CanvasSize = UDim2.new(0, 0, 0, dropdownselect.ItemList.UIListLayout.AbsoluteContentSize.Y + 5)
-				end)
-				function itemslist:SetTitle(newTitle)
-					par.TextDesc.TextLabel.Text = newTitle
-				end
-				function itemslist:SetDesc(newDesc)
-					local descLabel = par.TextDesc:FindFirstChild("Desc")
-					if descLabel then
-						descLabel.Text = newDesc
-					else
-						b[1]().desc(par.TextDesc, newDesc, op)
-					end
-				end
-				function itemslist:SetVisible(newVisible)
-					par.Visible = newVisible
-				end
-				function itemslist:SetList(newList, autoSelectValue)
-					local previousValue = Value
-					local previousSelected = {}
-					if Multi then
-						for k in pairs(selectedValues) do
-							previousSelected[k] = true
-						end
-					end
-					for _, child in ipairs(dropdownselect.ItemList:GetChildren()) do
-						if child:IsA("Frame") then
-							child:Destroy()
-						end
-					end
-					dropdownselect.ItemList.CanvasSize = UDim2.new(0,0,0,0)
-					if newList and type(newList) == "table" then
-						for _, v in ipairs(newList) do
-							self:Add(v)
-						end
-					end
-					if autoSelectValue then
-						task.defer(function()
-							self:SetValue(autoSelectValue)
-						end)
-					elseif Multi then
-						local stillValid = {}
-						local anyMissing = false
-						for k in pairs(previousSelected) do
-							local found = false
-							if newList then
-								for _, v in ipairs(newList) do
-									if v == k then found = true break end
-								end
-							end
-							if found then
-								table.insert(stillValid, k)
-							else
-								anyMissing = true
-							end
-						end
-						if #stillValid > 0 then
-							task.defer(function()
-								self:SetValue(stillValid)
-							end)
-						elseif anyMissing then
-							Value = {}
-							selectedValues = {}
-							dropdown.Frame.SelectedText.Text = ""
-						end
-					else
-						local stillValid = false
-						if previousValue and previousValue ~= "" and newList then
-							for _, v in ipairs(newList) do
-								if v == previousValue then stillValid = true break end
-							end
-						end
-						if stillValid then
-							task.defer(function()
-								self:SetValue(previousValue)
-							end)
-						else
-							Value = ""
-							selectedItem = nil
-							dropdown.Frame.SelectedText.Text = ""
-						end
-					end
-					dropdownselect.ItemList.CanvasSize = UDim2.new(0,0,0, dropdownselect.ItemList.UIListLayout.AbsoluteContentSize.Y + 5)
-					dps()
-				end
-				function itemslist:SetValue(newValue)
-					if Multi then
-						selectedValues = {}
-						if type(newValue) == "table" then
-							for _, v in ipairs(newValue) do
-								selectedValues[v] = true
-							end
-						end
-						for _, child in ipairs(dropdownselect.ItemList:GetChildren()) do
-							if child:IsA("Frame") and child:FindFirstChild("TextLabel") then
-								local txt = child.TextLabel.Text
-								if selectedValues[txt] then
-									b[1]().tw({v=child,t=0.15,s="Linear",d="InOut",g={BackgroundColor3=a.Theme[op.Theme or 'Dark']['Color Main'],BackgroundTransparency=0}}):Play()
-									b[1]().tw({v=child.TextLabel,t=0.15,s="Linear",d="InOut",g={TextColor3=Color3.fromRGB(0,0,0)}}):Play()
-								else
-									b[1]().tw({v=child,t=0.15,s="Linear",d="InOut",g={BackgroundColor3=Color3.fromRGB(88,88,88),BackgroundTransparency=0.9}}):Play()
-									b[1]().tw({v=child.TextLabel,t=0.15,s="Linear",d="InOut",g={TextColor3=Color3.fromRGB(255,255,255)}}):Play()
-								end
-							end
-						end
-						local sel = {}
-						for k in pairs(selectedValues) do table.insert(sel,k) end
-						dropdown.Frame.SelectedText.Text = table.concat(sel, ", ")
-						Value = sel
-						pcall(function() Callback(sel) end)
-					else
-						Value = newValue or ""
-						selectedItem = nil
-						for _, child in ipairs(dropdownselect.ItemList:GetChildren()) do
-							if child:IsA("Frame") and child:FindFirstChild("TextLabel") then
-								if child.TextLabel.Text == newValue then
-									b[1]().tw({v=child,t=0.15,s="Linear",d="InOut",g={BackgroundColor3=a.Theme[op.Theme or 'Dark']['Color Main'],BackgroundTransparency=0}}):Play()
-									b[1]().tw({v=child.TextLabel,t=0.15,s="Linear",d="InOut",g={TextColor3=Color3.fromRGB(0,0,0)}}):Play()
-									selectedItem = child
-								else
-									b[1]().tw({v=child,t=0.15,s="Linear",d="InOut",g={BackgroundColor3=Color3.fromRGB(88,88,88),BackgroundTransparency=0.9}}):Play()
-									b[1]().tw({v=child.TextLabel,t=0.15,s="Linear",d="InOut",g={TextColor3=Color3.fromRGB(255,255,255)}}):Play()
-								end
-							end
-						end
-						dropdown.Frame.SelectedText.Text = Value or ""
-						pcall(function() Callback(Value) end)
-					end
-					dps()
-				end
-				local Key = khgkgh.Key or khgkgh.Title
-				Func.ConfigSystem:Register(Key,
-					function()
-						if Multi then
-							local list = {}
-							for k, v in pairs(selectedValues) do
-								table.insert(list, k)
-							end
-							return list
-						else
-							return Value
-						end
-					end,
-					function(val)
-						itemslist:SetValue(val)
-					end
-				)
-				return itemslist
-			end
-			function Func:CreateLabel(khgkgh)
-				assert(khgkgh.Title, "Label - Missing Title")
-				local par = b[1]().background(Scroll, khgkgh.Title, khgkgh.Desc, true, op)
-				par.TextDesc.TextLabel.TextTransparency = 0
-				local NewSet = {}
-				function NewSet:SetTitle(newTitle)
-					par.TextDesc.TextLabel.Text = newTitle
-				end
-				function NewSet:SetDesc(newDesc)
-					local descLabel = par.TextDesc:FindFirstChild("Desc")
-					if descLabel then
-						descLabel.Text = newDesc
-					else
-						b[1]().desc(par.TextDesc, newDesc, op)
-					end
-				end
-				function NewSet:SetVisible(newVisible)
-					par.Visible = newVisible
-				end
-				return NewSet
-			end
-			function Func:CreateButton(khgkgh)
-				assert(khgkgh.Title, "Button - Missing Title")
-				local par, Callback = b[1]().background(Scroll, khgkgh.Title, khgkgh.Desc, false, op), khgkgh.Callback or function() end
-				par.TextDesc.TextLabel.TextTransparency = 0
-				local button = f("Frame", {
-					Parent = par,
-					AnchorPoint = Vector2.new(1, 0.5),
-					BackgroundTransparency = 1,
-					Position = UDim2.new(1, 0, 0.5, 0),
-					Size = UDim2.new(0, 100, 0.8, 0),
-					BorderSizePixel = 0
-				}, {
-					f("UIListLayout", {
-						HorizontalAlignment = Enum.HorizontalAlignment.Right,
-						SortOrder = Enum.SortOrder.LayoutOrder,
-						VerticalAlignment = Enum.VerticalAlignment.Center
-					}),
-					f("UIPadding", {PaddingRight = UDim.new(0,13)}),
-					f("ImageLabel", {
-						BackgroundTransparency = 1,
-						BorderSizePixel = 0,
-						Size = UDim2.new(0, 20,0, 20),
-						Image = "rbxassetid://14922213932"
-					})
-				})
-				local click = b[1]().click(par)
-				click.MouseButton1Click:Connect(function()
-					b[1]().jc(click, par)
-					b[1]().flash(par, "BackgroundTransparency", a.Theme[op.Theme or 'Dark']['Background Function Transparency Moved'], 0.1)
-					pcall(function()
-						Callback()
+					dropdownselect.ItemList.UIListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+						dropdownselect.ItemList.CanvasSize = UDim2.new(0, 0, 0, dropdownselect.ItemList.UIListLayout.AbsoluteContentSize.Y + 5)
 					end)
-				end)
-				local NewSet = {}
-				function NewSet:SetTitle(newTitle)
-					par.TextDesc.TextLabel.Text = newTitle
-				end
-				function NewSet:SetDesc(newDesc)
-					local descLabel = par.TextDesc:FindFirstChild("Desc")
-					if descLabel then
-						descLabel.Text = newDesc
-					else
-						b[1]().desc(par.TextDesc, newDesc, op)
+					function itemslist:SetTitle(newTitle)
+						par.TextDesc.TextLabel.Text = newTitle
 					end
+					function itemslist:SetDesc(newDesc)
+						local descLabel = par.TextDesc:FindFirstChild("Desc")
+						if descLabel then
+							descLabel.Text = newDesc
+						else
+							b[1]().desc(par.TextDesc, newDesc, op)
+						end
+					end
+					function itemslist:SetVisible(newVisible)
+						par.Visible = newVisible
+					end
+					function itemslist:SetList(newList, autoSelectValue)
+						local previousValue = Value
+						local previousSelected = {}
+						if Multi then
+							for k in pairs(selectedValues) do
+								previousSelected[k] = true
+							end
+						end
+						for _, child in ipairs(dropdownselect.ItemList:GetChildren()) do
+							if child:IsA("Frame") then
+								child:Destroy()
+							end
+						end
+						dropdownselect.ItemList.CanvasSize = UDim2.new(0,0,0,0)
+						if newList and type(newList) == "table" then
+							for _, v in ipairs(newList) do
+								self:Add(v)
+							end
+						end
+						if autoSelectValue then
+							task.defer(function()
+								self:SetValue(autoSelectValue)
+							end)
+						elseif Multi then
+							local stillValid = {}
+							local anyMissing = false
+							for k in pairs(previousSelected) do
+								local found = false
+								if newList then
+									for _, v in ipairs(newList) do
+										if v == k then found = true break end
+									end
+								end
+								if found then
+									table.insert(stillValid, k)
+								else
+									anyMissing = true
+								end
+							end
+							if #stillValid > 0 then
+								task.defer(function()
+									self:SetValue(stillValid)
+								end)
+							elseif anyMissing then
+								Value = {}
+								selectedValues = {}
+								dropdown.Frame.SelectedText.Text = ""
+							end
+						else
+							local stillValid = false
+							if previousValue and previousValue ~= "" and newList then
+								for _, v in ipairs(newList) do
+									if v == previousValue then stillValid = true break end
+								end
+							end
+							if stillValid then
+								task.defer(function()
+									self:SetValue(previousValue)
+								end)
+							else
+								Value = ""
+								selectedItem = nil
+								dropdown.Frame.SelectedText.Text = ""
+							end
+						end
+						dropdownselect.ItemList.CanvasSize = UDim2.new(0,0,0, dropdownselect.ItemList.UIListLayout.AbsoluteContentSize.Y + 5)
+						dps()
+					end
+					function itemslist:SetValue(newValue)
+						if Multi then
+							selectedValues = {}
+							if type(newValue) == "table" then
+								for _, v in ipairs(newValue) do
+									selectedValues[v] = true
+								end
+							end
+							for _, child in ipairs(dropdownselect.ItemList:GetChildren()) do
+								if child:IsA("Frame") and child:FindFirstChild("TextLabel") then
+									local txt = child.TextLabel.Text
+									if selectedValues[txt] then
+										b[1]().twSafe({v=child,t=0.15,s="Linear",d="InOut",g={BackgroundColor3=Color3.fromRGB(35, 35, 35),BackgroundTransparency=0}}):Play()
+										if child:FindFirstChild("Accent") then
+											b[1]().twSafe({v=child.Accent,t=0.15,s="Linear",d="InOut",g={BackgroundTransparency=0}}):Play()
+										end
+										if child:FindFirstChild("Tint") then
+											b[1]().twSafe({v=child.Tint,t=0.15,s="Linear",d="InOut",g={BackgroundTransparency=0}}):Play()
+										end
+									else
+										b[1]().twSafe({v=child,t=0.15,s="Linear",d="InOut",g={BackgroundColor3=Color3.fromRGB(35, 35, 35),BackgroundTransparency=0.9}}):Play()
+										if child:FindFirstChild("Accent") then
+											b[1]().twSafe({v=child.Accent,t=0.15,s="Linear",d="InOut",g={BackgroundTransparency=1}}):Play()
+										end
+										if child:FindFirstChild("Tint") then
+											b[1]().twSafe({v=child.Tint,t=0.15,s="Linear",d="InOut",g={BackgroundTransparency=1}}):Play()
+										end
+									end
+								end
+							end
+							local sel = {}
+							for k in pairs(selectedValues) do table.insert(sel,k) end
+							dropdown.Frame.SelectedText.Text = table.concat(sel, ", ")
+							Value = sel
+							pcall(function() Callback(sel) end)
+						else
+							Value = newValue or ""
+							selectedItem = nil
+							for _, child in ipairs(dropdownselect.ItemList:GetChildren()) do
+								if child:IsA("Frame") and child:FindFirstChild("TextLabel") then
+									if child.TextLabel.Text == newValue then
+										b[1]().twSafe({v=child,t=0.15,s="Linear",d="InOut",g={BackgroundColor3=Color3.fromRGB(35, 35, 35),BackgroundTransparency=0}}):Play()
+										if child:FindFirstChild("Accent") then
+											b[1]().twSafe({v=child.Accent,t=0.15,s="Linear",d="InOut",g={BackgroundTransparency=0}}):Play()
+										end
+										if child:FindFirstChild("Tint") then
+											b[1]().twSafe({v=child.Tint,t=0.15,s="Linear",d="InOut",g={BackgroundTransparency=0}}):Play()
+										end
+										selectedItem = child
+									else
+										b[1]().twSafe({v=child,t=0.15,s="Linear",d="InOut",g={BackgroundColor3=Color3.fromRGB(35, 35, 35),BackgroundTransparency=0.9}}):Play()
+										if child:FindFirstChild("Accent") then
+											b[1]().twSafe({v=child.Accent,t=0.15,s="Linear",d="InOut",g={BackgroundTransparency=1}}):Play()
+										end
+										if child:FindFirstChild("Tint") then
+											b[1]().twSafe({v=child.Tint,t=0.15,s="Linear",d="InOut",g={BackgroundTransparency=1}}):Play()
+										end
+									end
+								end
+							end
+							dropdown.Frame.SelectedText.Text = Value or ""
+							pcall(function() Callback(Value) end)
+						end
+						dps()
+					end
+					local Key = khgkgh.Key or khgkgh.Title
+					configSystemRef:Register(Key,
+						function()
+							if Multi then
+								local list = {}
+								for k, v in pairs(selectedValues) do
+									table.insert(list, k)
+								end
+								return list
+							else
+								return Value
+							end
+						end,
+						function(val)
+							itemslist:SetValue(val)
+						end
+					)
+					return itemslist
 				end
-				function NewSet:SetVisible(newVisible)
-					par.Visible = newVisible
+				
+				function api:CreateLabel(khgkgh)
+					assert(khgkgh.Title, "Label - Missing Title")
+					local par = b[1]().background(parentScroll, khgkgh.Title, khgkgh.Desc, true, op)
+					par.TextDesc.TextLabel.TextTransparency = 0
+					local NewSet = {}
+					function NewSet:SetTitle(newTitle)
+						par.TextDesc.TextLabel.Text = newTitle
+					end
+					function NewSet:SetDesc(newDesc)
+						local descLabel = par.TextDesc:FindFirstChild("Desc")
+						if descLabel then
+							descLabel.Text = newDesc
+						else
+							b[1]().desc(par.TextDesc, newDesc, op)
+						end
+					end
+					function NewSet:SetVisible(newVisible)
+						par.Visible = newVisible
+					end
+					return NewSet
 				end
-				return NewSet
-			end
-			function Func:CreateTextbox(khgkgh)
-				assert(khgkgh.Title, "TextBox - Missing Title")
-				local par, Callback, Placeholder, Value, ClearTextOnFocus = b[1]().background(Scroll, khgkgh.Title, khgkgh.Desc, false, op), khgkgh.Callback or function() end, khgkgh.Placeholder or "Paste Your Text", khgkgh.Value or "", khgkgh.ClearTextOnFocus or false
-				par.TextDesc.TextLabel.TextTransparency = 0
-				par.TextDesc.UIPadding.PaddingRight = UDim.new(0, 210)
-				local textbox = f("Frame", {
-					Parent = par,
-					AnchorPoint = Vector2.new(1, 0.5),
-					BackgroundTransparency = 1,
-					BorderSizePixel = 0,
-					Position = UDim2.new(1, 0,0.5, 0),
-					Size = UDim2.new(0, 200,0.8, 0)
-				}, {
-					f("UIPadding", {PaddingRight = UDim.new(0,13)}),
-					f("UIListLayout", {
-						HorizontalAlignment = Enum.HorizontalAlignment.Right,
-						SortOrder = Enum.SortOrder.LayoutOrder,
-						VerticalAlignment = Enum.VerticalAlignment.Center
-					}),
-					f("Frame", {
-						BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Textbox Color'],
-						BorderSizePixel = 0,
-						Size = UDim2.new(1, 0,0, 20)
+				
+				function api:CreateButton(khgkgh)
+					assert(khgkgh.Title, "Button - Missing Title")
+					local par, Callback = b[1]().background(parentScroll, khgkgh.Title, khgkgh.Desc, false, op), khgkgh.Callback or function() end
+					par.TextDesc.TextLabel.TextTransparency = 0
+					local button = f("Frame", {
+						Parent = par,
+						AnchorPoint = Vector2.new(1, 0.5),
+						BackgroundTransparency = 1,
+						Position = UDim2.new(1, 0, 0.5, 0),
+						Size = UDim2.new(0, 100, 0.8, 0),
+						BorderSizePixel = 0
 					}, {
-						f("UICorner", {CornerRadius = UDim.new(0,4)}),
-						f("Frame", {
-							AnchorPoint = Vector2.new(.5, 1),
-							BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Color Main'],
-							BorderSizePixel = 0,
-							Position = UDim2.new(.5, 0,1, 0),
-							Size = UDim2.new(0, 0,0, 1),
-							Name = "Line",
-							BackgroundTransparency = 0.9
+						f("UIListLayout", {
+							HorizontalAlignment = Enum.HorizontalAlignment.Right,
+							SortOrder = Enum.SortOrder.LayoutOrder,
+							VerticalAlignment = Enum.VerticalAlignment.Center
 						}),
-						f("Frame", {
+						f("UIPadding", {PaddingRight = UDim.new(0,13)}),
+						f("ImageLabel", {
 							BackgroundTransparency = 1,
 							BorderSizePixel = 0,
-							Size = UDim2.new(1, 0,1, 0),
-							Name = "ValueBox"
+							Size = UDim2.new(0, 20,0, 20),
+							Image = "rbxassetid://14922213932"
+						})
+					})
+					local click = b[1]().click(par)
+					click.MouseButton1Click:Connect(function()
+						b[1]().jc(click, par)
+						b[1]().flash(par, "BackgroundTransparency", a.Theme[op.Theme or 'Dark']['Background Function Transparency Moved'], 0.1)
+						pcall(function()
+							Callback()
+						end)
+					end)
+					local NewSet = {}
+					function NewSet:SetTitle(newTitle)
+						par.TextDesc.TextLabel.Text = newTitle
+					end
+					function NewSet:SetDesc(newDesc)
+						local descLabel = par.TextDesc:FindFirstChild("Desc")
+						if descLabel then
+							descLabel.Text = newDesc
+						else
+							b[1]().desc(par.TextDesc, newDesc, op)
+						end
+					end
+					function NewSet:SetVisible(newVisible)
+						par.Visible = newVisible
+					end
+					return NewSet
+				end
+				
+				function api:CreateTextbox(khgkgh)
+					assert(khgkgh.Title, "TextBox - Missing Title")
+					local par, Callback, Placeholder, Value, ClearTextOnFocus = b[1]().background(parentScroll, khgkgh.Title, khgkgh.Desc, false, op), khgkgh.Callback or function() end, khgkgh.Placeholder or "Paste Your Text", khgkgh.Value or "", khgkgh.ClearTextOnFocus or false
+					par.TextDesc.TextLabel.TextTransparency = 0
+					par.TextDesc.UIPadding.PaddingRight = UDim.new(0, 210)
+					local textbox = f("Frame", {
+						Parent = par,
+						AnchorPoint = Vector2.new(1, 0.5),
+						BackgroundTransparency = 1,
+						BorderSizePixel = 0,
+						Position = UDim2.new(1, 0,0.5, 0),
+						Size = UDim2.new(0, 200,0.8, 0)
+					}, {
+						f("UIPadding", {PaddingRight = UDim.new(0,13)}),
+						f("UIListLayout", {
+							HorizontalAlignment = Enum.HorizontalAlignment.Right,
+							SortOrder = Enum.SortOrder.LayoutOrder,
+							VerticalAlignment = Enum.VerticalAlignment.Center
+						}),
+						f("Frame", {
+							BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Textbox Color'],
+							BorderSizePixel = 0,
+							Size = UDim2.new(1, 0,0, 20)
 						}, {
-							f("TextBox", {
-								Active = true,
+							f("UICorner", {CornerRadius = UDim.new(0,4)}),
+							f("Frame", {
+								AnchorPoint = Vector2.new(.5, 1),
+								BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Color Main'],
+								BorderSizePixel = 0,
+								Position = UDim2.new(.5, 0,1, 0),
+								Size = UDim2.new(0, 0,0, 1),
+								Name = "Line",
+								BackgroundTransparency = 0.9
+							}),
+							f("Frame", {
 								BackgroundTransparency = 1,
 								BorderSizePixel = 0,
-								CursorPosition = -1,
 								Size = UDim2.new(1, 0,1, 0),
-								Font = Enum.Font.Gotham,
-								PlaceholderColor3 = Color3.fromRGB(178,178,178),
-								PlaceholderText = Placeholder,
-								Text = Value,
-								TextColor3 = Color3.fromRGB(255,255,255),
-								TextSize = 11,
-								TextXAlignment = Enum.TextXAlignment.Left,
-								TextTruncate = Enum.TextTruncate.AtEnd,
-								ClearTextOnFocus = ClearTextOnFocus
-							}),
-							f("UIPadding", {PaddingLeft = UDim.new(0,5)})
-						})
-					}),
-				})
-				textbox.Frame.ValueBox.TextBox.FocusLost:Connect(function()
-					if Value then
-						if #textbox.Frame.ValueBox.TextBox.Text > 0 then
-							pcall(Callback,textbox.Frame.ValueBox.TextBox.Text)
+								Name = "ValueBox"
+							}, {
+								f("TextBox", {
+									Active = true,
+									BackgroundTransparency = 1,
+									BorderSizePixel = 0,
+									CursorPosition = -1,
+									Size = UDim2.new(1, 0,1, 0),
+									Font = Enum.Font.Gotham,
+									PlaceholderColor3 = Color3.fromRGB(178,178,178),
+									PlaceholderText = Placeholder,
+									Text = Value,
+									TextColor3 = Color3.fromRGB(255,255,255),
+									TextSize = 11,
+									TextXAlignment = Enum.TextXAlignment.Left,
+									TextTruncate = Enum.TextTruncate.AtEnd,
+									ClearTextOnFocus = ClearTextOnFocus
+								}),
+								f("UIPadding", {PaddingLeft = UDim.new(0,5)})
+							})
+						}),
+					})
+					textbox.Frame.ValueBox.TextBox.FocusLost:Connect(function()
+						if Value then
+							if #textbox.Frame.ValueBox.TextBox.Text > 0 then
+								pcall(Callback,textbox.Frame.ValueBox.TextBox.Text)
+							end
+						end
+					end)
+					textbox.Frame.ValueBox.TextBox.Focused:Connect(function()
+						b[1]().tw({
+							v = textbox.Frame.Line,
+							t = 0.15,
+							s = "Linear",
+							d = "InOut",
+							g = {BackgroundTransparency = 0, Size = UDim2.new(1, 0, 0, 1)}
+						}):Play()
+					end)
+					textbox.Frame.ValueBox.TextBox.FocusLost:Connect(function()
+						b[1]().tw({
+							v = textbox.Frame.Line,
+							t = 0.15,
+							s = "Linear",
+							d = "InOut",
+							g = {BackgroundTransparency = 0.9, Size = UDim2.new(0, 0, 0, 1)}
+						}):Play()
+					end)
+					delay(0,function()
+						if Value then
+							if #textbox.Frame.ValueBox.TextBox.Text > 0 then
+								pcall(Callback,textbox.Frame.ValueBox.TextBox.Text)
+							end
+						end
+					end)
+					local NewSet = {}
+					function NewSet:SetTitle(newTitle)
+						par.TextDesc.TextLabel.Text = newTitle
+					end
+					function NewSet:SetDesc(newDesc)
+						local descLabel = par.TextDesc:FindFirstChild("Desc")
+						if descLabel then
+							descLabel.Text = newDesc
+						else
+							b[1]().desc(par.TextDesc, newDesc, op)
 						end
 					end
-				end)
-				textbox.Frame.ValueBox.TextBox.Focused:Connect(function()
-					b[1]().tw({
-						v = textbox.Frame.Line,
-						t = 0.15,
-						s = "Linear",
-						d = "InOut",
-						g = {BackgroundTransparency = 0, Size = UDim2.new(1, 0, 0, 1)}
-					}):Play()
-				end)
-				textbox.Frame.ValueBox.TextBox.FocusLost:Connect(function()
-					b[1]().tw({
-						v = textbox.Frame.Line,
-						t = 0.15,
-						s = "Linear",
-						d = "InOut",
-						g = {BackgroundTransparency = 0.9, Size = UDim2.new(0, 0, 0, 1)}
-					}):Play()
-				end)
-				delay(0,function()
-					if Value then
-						if #textbox.Frame.ValueBox.TextBox.Text > 0 then
-							pcall(Callback,textbox.Frame.ValueBox.TextBox.Text)
-						end
+					function NewSet:SetVisible(newVisible)
+						par.Visible = newVisible
 					end
-				end)
-				local NewSet = {}
-				function NewSet:SetTitle(newTitle)
-					par.TextDesc.TextLabel.Text = newTitle
-				end
-				function NewSet:SetDesc(newDesc)
-					local descLabel = par.TextDesc:FindFirstChild("Desc")
-					if descLabel then
-						descLabel.Text = newDesc
-					else
-						b[1]().desc(par.TextDesc, newDesc, op)
+					function NewSet:SetValue(newValue)
+						textbox.Frame.ValueBox.TextBox.Text = newValue
 					end
-				end
-				function NewSet:SetVisible(newVisible)
-					par.Visible = newVisible
-				end
-				function NewSet:SetValue(newValue)
-					textbox.Frame.ValueBox.TextBox.Text = newValue
-				end
 
-				local Key = khgkgh.Key or khgkgh.Title
-				Func.ConfigSystem:Register(Key,
-					function() return textbox.Frame.ValueBox.TextBox.Text end,
-					function(val)
-						textbox.Frame.ValueBox.TextBox.Text = val
-						pcall(function()
-							Callback(val)
-						end)
-					end
-				)
-				return NewSet
-			end
-			function Func:CreateSlider(khgkgh)
-				assert(khgkgh.Title, "Slider - Missing Title")
-				local par, Callback, Value, Min, Max, DecimalPlaces =
-					b[1]().background(Scroll, khgkgh.Title, khgkgh.Desc, true, op),
-				khgkgh.Callback or function() end,
-				khgkgh.Value or khgkgh.Max / 2,
-				khgkgh.Min or 0,
-				khgkgh.Max or 100,
-				khgkgh.DecimalPlaces or 0
-				par.TextDesc.TextLabel.TextTransparency = 0
-				par.TextDesc.UIPadding.PaddingRight = UDim.new(0, 210)
-				local slider = f("Frame", {
-					Parent = par,
-					AnchorPoint = Vector2.new(1, 0.5),
-					BackgroundColor3 = Color3.fromRGB(255,255,255),
-					BackgroundTransparency = 1,
-					BorderColor3 = Color3.fromRGB(0,0,0),
-					BorderSizePixel = 0,
-					Position = UDim2.new(1, 0,0.5, 0),
-					Size = UDim2.new(0, 200,0.8, 0),
-				}, {
-					f("UIPadding", {PaddingRight = UDim.new(0,13)}),
-					f("UIListLayout", {
-						Padding = UDim.new(0,5),
-						FillDirection = Enum.FillDirection.Horizontal,
-						HorizontalAlignment = Enum.HorizontalAlignment.Right,
-						SortOrder = Enum.SortOrder.LayoutOrder,
-						VerticalAlignment = Enum.VerticalAlignment.Center
-					}),
-					f("TextBox", {
-						Active = true,
+					local Key = khgkgh.Key or khgkgh.Title
+					configSystemRef:Register(Key,
+						function() return textbox.Frame.ValueBox.TextBox.Text end,
+						function(val)
+							textbox.Frame.ValueBox.TextBox.Text = val
+							pcall(function()
+								Callback(val)
+							end)
+						end
+					)
+					return NewSet
+				end
+				
+				function api:CreateSlider(khgkgh)
+					assert(khgkgh.Title, "Slider - Missing Title")
+					local par, Callback, Value, Min, Max, DecimalPlaces =
+						b[1]().background(parentScroll, khgkgh.Title, khgkgh.Desc, true, op),
+					khgkgh.Callback or function() end,
+					khgkgh.Value or khgkgh.Max / 2,
+					khgkgh.Min or 0,
+					khgkgh.Max or 100,
+					khgkgh.DecimalPlaces or 0
+					par.TextDesc.TextLabel.TextTransparency = 0
+					par.TextDesc.UIPadding.PaddingRight = UDim.new(0, 210)
+					local slider = f("Frame", {
+						Parent = par,
+						AnchorPoint = Vector2.new(1, 0.5),
 						BackgroundColor3 = Color3.fromRGB(255,255,255),
 						BackgroundTransparency = 1,
 						BorderColor3 = Color3.fromRGB(0,0,0),
 						BorderSizePixel = 0,
-						LayoutOrder = -1,
-						Size = UDim2.new(0, 30,0, 30),
-						Font = Enum.Font.GothamBold,
-						PlaceholderColor3 = Color3.fromRGB(178,178,178),
-						PlaceholderText = "",
-						Text = "80",
-						TextColor3 = Color3.fromRGB(255,255,255),
-						TextSize = 10,
-					}),
-					f("CanvasGroup", {
-						BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Slider Color'],
-						BorderColor3 = Color3.fromRGB(0,0,0),
-						BorderSizePixel = 0,
-						Size = UDim2.new(0, 150,0, 8),
-						Name = "Frame"
+						Position = UDim2.new(1, 0,0.5, 0),
+						Size = UDim2.new(0, 200,0.8, 0),
 					}, {
-						f("UICorner", {CornerRadius = UDim.new(1,0)}),
-						f("Frame", {
-							BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Color Main'],
+						f("UIPadding", {PaddingRight = UDim.new(0,13)}),
+						f("UIListLayout", {
+							Padding = UDim.new(0,5),
+							FillDirection = Enum.FillDirection.Horizontal,
+							HorizontalAlignment = Enum.HorizontalAlignment.Right,
+							SortOrder = Enum.SortOrder.LayoutOrder,
+							VerticalAlignment = Enum.VerticalAlignment.Center
+						}),
+						f("TextBox", {
+							Active = true,
+							BackgroundColor3 = Color3.fromRGB(255,255,255),
+							BackgroundTransparency = 1,
 							BorderColor3 = Color3.fromRGB(0,0,0),
 							BorderSizePixel = 0,
-							Size = UDim2.new(0.8, 0,1, 0)
+							LayoutOrder = -1,
+							Size = UDim2.new(0, 30,0, 30),
+							Font = Enum.Font.GothamBold,
+							PlaceholderColor3 = Color3.fromRGB(178,178,178),
+							PlaceholderText = "",
+							Text = "80",
+							TextColor3 = Color3.fromRGB(255,255,255),
+							TextSize = 10,
+						}),
+						f("CanvasGroup", {
+							BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Slider Color'],
+							BorderColor3 = Color3.fromRGB(0,0,0),
+							BorderSizePixel = 0,
+							Size = UDim2.new(0, 150,0, 8),
+							Name = "Frame"
 						}, {
 							f("UICorner", {CornerRadius = UDim.new(1,0)}),
-							f("UIPadding", {PaddingRight = UDim.new(0,1)}),
-							f("ImageLabel", {
-								AnchorPoint = Vector2.new(1, 0.5),
-								BackgroundColor3 = Color3.fromRGB(255,255,255),
-								BackgroundTransparency = 1,
+							f("Frame", {
+								BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Color Main'],
 								BorderColor3 = Color3.fromRGB(0,0,0),
 								BorderSizePixel = 0,
-								Position = UDim2.new(1, 0,0.5, 0),
-								Size = UDim2.new(0, 8,0, 8),
-								Image = "rbxassetid://117975105537462",
-							})
-						}),
+								Size = UDim2.new(0.8, 0,1, 0)
+							}, {
+								f("UICorner", {CornerRadius = UDim.new(1,0)}),
+								f("UIPadding", {PaddingRight = UDim.new(0,1)}),
+								f("ImageLabel", {
+									AnchorPoint = Vector2.new(1, 0.5),
+									BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+									BackgroundTransparency = 1,
+									BorderColor3 = Color3.fromRGB(0, 0, 0),
+									BorderSizePixel = 0,
+									Position = UDim2.new(1, 0,0.5, 0),
+									Size = UDim2.new(0, 8,0, 8),
+									Image = "rbxassetid://117975105537462",
+								})
+							}),
+						})
 					})
-				})
-				local click = b[1]().click(slider.Frame)
-				local function roundToDecimal(value, decimals)
-					local factor = 10 ^ decimals
-					return math.floor(value * factor + 0.5) / factor
-				end
-				local function updateSlider(value)
-					value = math.clamp(value, Min, Max)
-					value = roundToDecimal(value, DecimalPlaces)
-					Value = value
-					b[1]().tw({
-						v = slider.Frame.Frame,
-						t = 0.5,
-						s = "Exponential",
-						d = "Out",
-						g = {Size = UDim2.new((value - Min) / (Max - Min), 0, 1, 0)}
-					}):Play()
-					slider.TextBox.Text = tonumber(value)
-					pcall(function()
-						Callback(value)
+					local click = b[1]().click(slider.Frame)
+					local function roundToDecimal(value, decimals)
+						local factor = 10 ^ decimals
+						return math.floor(value * factor + 0.5) / factor
+					end
+					local function updateSlider(value)
+						value = math.clamp(value, Min, Max)
+						value = roundToDecimal(value, DecimalPlaces)
+						Value = value
+						b[1]().tw({
+							v = slider.Frame.Frame,
+							t = 0.5,
+							s = "Exponential",
+							d = "Out",
+							g = {Size = UDim2.new((value - Min) / (Max - Min), 0, 1, 0)}
+						}):Play()
+						slider.TextBox.Text = tonumber(value)
+						pcall(function()
+							Callback(value)
+						end)
+					end
+					delay(0.5,function()
+						updateSlider(Value or 0)
 					end)
-				end
-				delay(0.5,function()
-					updateSlider(Value or 0)
-				end)
-				slider.TextBox.FocusLost:Connect(function()
-					local value = tonumber(slider.TextBox.Text) or Min
-					updateSlider(value)
-				end)
-				local function move(input)
-					local sliderBar = slider.Frame
-					local relativeX = math.clamp((input.Position.X - sliderBar.AbsolutePosition.X) / sliderBar.AbsoluteSize.X, 0, 1)
-					local value = relativeX * (Max - Min) + Min
-					updateSlider(value)
-				end
-				local dragging = false
-				click.InputBegan:Connect(function(input)
-					if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-						dragging = true
-						move(input)
+					slider.TextBox.FocusLost:Connect(function()
+						local value = tonumber(slider.TextBox.Text) or Min
+						updateSlider(value)
+					end)
+					local function move(input)
+						local sliderBar = slider.Frame
+						local relativeX = math.clamp((input.Position.X - sliderBar.AbsolutePosition.X) / sliderBar.AbsoluteSize.X, 0, 1)
+						local value = relativeX * (Max - Min) + Min
+						updateSlider(value)
 					end
-				end)
-				click.InputEnded:Connect(function(input)
-					if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-						dragging = false
+					local dragging = false
+					click.InputBegan:Connect(function(input)
+						if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+							dragging = true
+							move(input)
+						end
+					end)
+					click.InputEnded:Connect(function(input)
+						if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+							dragging = false
+						end
+					end)
+					game:GetService("UserInputService").InputChanged:Connect(function(input)
+						if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+							move(input)
+						end
+					end)
+					local NewSet = {}
+					function NewSet:SetTitle(newTitle)
+						par.TextDesc.TextLabel.Text = newTitle
 					end
-				end)
-				game:GetService("UserInputService").InputChanged:Connect(function(input)
-					if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
-						move(input)
+					function NewSet:SetDesc(newDesc)
+						local descLabel = par.TextDesc:FindFirstChild("Desc")
+						if descLabel then
+							descLabel.Text = newDesc
+						else
+							b[1]().desc(par.TextDesc, newDesc, op)
+						end
 					end
-				end)
-				local NewSet = {}
-				function NewSet:SetTitle(newTitle)
-					par.TextDesc.TextLabel.Text = newTitle
-				end
-				function NewSet:SetDesc(newDesc)
-					local descLabel = par.TextDesc:FindFirstChild("Desc")
-					if descLabel then
-						descLabel.Text = newDesc
-					else
-						b[1]().desc(par.TextDesc, newDesc, op)
+					function NewSet:SetVisible(newVisible)
+						par.Visible = newVisible
 					end
-				end
-				function NewSet:SetVisible(newVisible)
-					par.Visible = newVisible
-				end
-				function NewSet:SetDecimalPlaces(newDecimalPlaces)
-					DecimalPlaces = newDecimalPlaces
-					updateSlider(Value)
-				end
-				function NewSet:SetValue(newValue)
-					updateSlider(newValue)
-				end
-				local Key = khgkgh.Key or khgkgh.Title
-				Func.ConfigSystem:Register(Key,
-					function() return Value end,
-					function(val)
-						Value = val
-						updateSlider(val)
+					function NewSet:SetDecimalPlaces(newDecimalPlaces)
+						DecimalPlaces = newDecimalPlaces
+						updateSlider(Value)
 					end
-				)
-				return NewSet
-			end
-			function Func:CreateSection(khgkgh)
-				assert(khgkgh.Title, "Section - Missing Title")
-				local section = f("Frame", {
-					Parent = Scroll,
-					BackgroundTransparency = 1,
-					Size = UDim2.new(0, 100,0, 20),
-					BorderSizePixel = 0
-				}, {
-					f("TextLabel", {
+					function NewSet:SetValue(newValue)
+						updateSlider(newValue)
+					end
+					local Key = khgkgh.Key or khgkgh.Title
+					configSystemRef:Register(Key,
+						function() return Value end,
+						function(val)
+							Value = val
+							updateSlider(val)
+						end
+					)
+					return NewSet
+				end
+				
+				function api:CreateSection(khgkgh)
+					assert(khgkgh.Title, "Section - Missing Title")
+					local section = f("Frame", {
+						Parent = parentScroll,
 						BackgroundTransparency = 1,
+						Size = UDim2.new(0, 100,0, 20),
+						BorderSizePixel = 0
+					}, {
+						f("TextLabel", {
+							BackgroundTransparency = 1,
+							BorderSizePixel = 0,
+							Size = UDim2.new(0, 200,1, 0),
+							Font = Enum.Font.Gotham,
+							Text = khgkgh.Title,
+							TextColor3 = a.Theme[op.Theme or 'Dark']['Text Color'],
+							TextSize = 14,
+							TextXAlignment = Enum.TextXAlignment.Left
+						}),
+						f("UIPadding", {
+							PaddingLeft = UDim.new(0,13),
+							PaddingRight = UDim.new(0,90)
+						})
+					})
+					local NewSet = {}
+					function NewSet:SetTitle(newTitle)
+						section.TextLabel.Text = newTitle
+					end
+					function NewSet:SetVisible(newVisible)
+						section.Visible = newVisible
+					end
+					return NewSet
+				end
+				
+				return api
+			end
+
+			local elementAPI = createElementAPI(Scroll, Func.ConfigSystem)
+			
+			for k, v in pairs(elementAPI) do
+				Func[k] = v
+			end
+
+			function Func:CreateFolder(khgkgh)
+				assert(khgkgh.Title, "Folder - Missing Title")
+				local isExpanded = khgkgh.Expanded ~= nil and khgkgh.Expanded or true
+				
+				local Folder = f("Frame", {
+					Parent = Scroll,
+					BorderSizePixel = 0,
+					BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Background Function'],
+					Size = UDim2.new(1, 0, 0, 36),
+					BorderColor3 = Color3.fromRGB(0, 0, 0),
+					BackgroundTransparency = a.Theme[op.Theme or 'Dark']['Background Function Transparency'],
+					ClipsDescendants = true,
+					Name = "Folder"
+				}, {
+					f("UICorner", {CornerRadius = UDim.new(0, 6)}),
+					f("Frame", {
+						Name = "FolderHeader",
 						BorderSizePixel = 0,
-						Size = UDim2.new(0, 200,1, 0),
-						Font = Enum.Font.Gotham,
-						Text = khgkgh.Title,
-						TextColor3 = a.Theme[op.Theme or 'Dark']['Text Color'],
-						TextSize = 14,
-						TextXAlignment = Enum.TextXAlignment.Left
+						BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+						BackgroundTransparency = 1,
+						Size = UDim2.new(1, 0, 0, 36),
+						Position = UDim2.new(0, 0, 0, 0),
+						BorderColor3 = Color3.fromRGB(0, 0, 0),
+					}, {
+						f("UIPadding", {PaddingLeft = UDim.new(0, 10), PaddingRight = UDim.new(0, 13)}),
+						f("UIListLayout", {
+							Padding = UDim.new(0, 8),
+							FillDirection = Enum.FillDirection.Horizontal,
+							VerticalAlignment = Enum.VerticalAlignment.Center,
+							HorizontalAlignment = Enum.HorizontalAlignment.Left,
+							SortOrder = Enum.SortOrder.LayoutOrder
+						}),
+						f("ImageLabel", {
+							Name = "ArrowIcon",
+							BorderSizePixel = 0,
+							BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+							Image = b[1]().gl(isExpanded and 134161790366779 or 104406213770080),
+							Size = UDim2.new(0, 16, 0, 16),
+							BackgroundTransparency = 1,
+							BorderColor3 = Color3.fromRGB(0, 0, 0),
+							ImageColor3 = a.Theme[op.Theme or 'Dark']['Text Color'],
+							ImageTransparency = 0.5,
+							ScaleType = Enum.ScaleType.Fit,
+							LayoutOrder = 1
+						}),
+						f("TextLabel", {
+							Name = "FolderTitle",
+							TextWrapped = false,
+							BorderSizePixel = 0,
+							TextXAlignment = Enum.TextXAlignment.Left,
+							BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+							TextSize = 12,
+							Font = Enum.Font.GothamMedium,
+							TextColor3 = a.Theme[op.Theme or 'Dark']['Text Color'],
+							BackgroundTransparency = 1,
+							AutomaticSize = Enum.AutomaticSize.X,
+							Size = UDim2.new(0, 0, 1, 0),
+							BorderColor3 = Color3.fromRGB(0, 0, 0),
+							Text = khgkgh.Title,
+							TextTransparency = 0.2,
+							LayoutOrder = 2
+						}),
 					}),
-					f("UIPadding", {
-						PaddingLeft = UDim.new(0,13),
-						PaddingRight = UDim.new(0,90)
+					f("Frame", {
+						Name = "FolderContent",
+						BorderSizePixel = 0,
+						BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+						BackgroundTransparency = 1,
+						Size = UDim2.new(1, 0, 0, 0),
+						Position = UDim2.new(0, 0, 0, 36),
+						BorderColor3 = Color3.fromRGB(0, 0, 0),
+						ClipsDescendants = true,
+					}, {
+						f("UIPadding", {
+							PaddingLeft = UDim.new(0, 28),
+							PaddingRight = UDim.new(0, 5),
+							PaddingBottom = UDim.new(0, 5),
+						}),
+						f("UIListLayout", {
+							Padding = UDim.new(0, 5),
+							SortOrder = Enum.SortOrder.LayoutOrder
+						}),
+					}),
+					f("TextButton", {
+						Name = "FolderClick",
+						BorderSizePixel = 0,
+						TextSize = 14,
+						TextColor3 = Color3.fromRGB(0, 0, 0),
+						BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+						FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal),
+						Size = UDim2.new(1, 0, 0, 36),
+						BackgroundTransparency = 1,
+						BorderColor3 = Color3.fromRGB(0, 0, 0),
+						Text = "",
+						ZIndex = 2,
+						Position = UDim2.new(0, 0, 0, 0)
 					})
 				})
+
+				local FolderHeader = Folder.FolderHeader
+				local FolderContent = Folder.FolderContent
+				local ArrowIcon = FolderHeader.ArrowIcon
+				local FolderClick = Folder.FolderClick
+
+				FolderHeader.MouseMoved:Connect(function()
+					b[1]().tw({
+						v = Folder,
+						t = 0.15,
+						s = "Linear",
+						d = "InOut",
+						g = {BackgroundTransparency = 						a.Theme[op.Theme or 'Dark']['Background Function Transparency Moved']}
+					}):Play()
+					b[1]().tw({
+						v = ArrowIcon,
+						t = 0.15,
+						s = "Linear",
+						d = "InOut",
+						g = {ImageTransparency = 0}
+					}):Play()
+					b[1]().tw({
+						v = FolderHeader.FolderTitle,
+						t = 0.15,
+						s = "Linear",
+						d = "InOut",
+						g = {TextTransparency = 0}
+					}):Play()
+				end)
+
+				FolderHeader.MouseLeave:Connect(function()
+					b[1]().tw({
+						v = Folder,
+						t = 0.15,
+						s = "Linear",
+						d = "InOut",
+						g = {BackgroundTransparency = a.Theme[op.Theme or 'Dark']['Background Function Transparency']}
+					}):Play()
+					b[1]().tw({
+						v = ArrowIcon,
+						t = 0.15,
+						s = "Linear",
+						d = "InOut",
+						g = {ImageTransparency = 0.5}
+					}):Play()
+					b[1]().tw({
+						v = FolderHeader.FolderTitle,
+						t = 0.15,
+						s = "Linear",
+						d = "InOut",
+						g = {TextTransparency = 0.2}
+					}):Play()
+				end)
+
+				local function updateFolderSize()
+					local contentHeight = FolderContent.UIListLayout.AbsoluteContentSize.Y + 5
+					if isExpanded then
+						b[1]().twSafe({
+							v = Folder,
+							t = 0.25,
+							s = "Quad",
+							d = "Out",
+							g = {Size = UDim2.new(1, 0, 0, 36 + contentHeight)}
+						}):Play()
+					else
+						b[1]().twSafe({
+							v = Folder,
+							t = 0.25,
+							s = "Quad",
+							d = "Out",
+							g = {Size = UDim2.new(1, 0, 0, 36)}
+						}):Play()
+					end
+				end
+
+				FolderContent.UIListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+					updateFolderSize()
+				end)
+
+				local function toggleFolder()
+					isExpanded = not isExpanded
+					ArrowIcon.Image = b[1]().gl(isExpanded and 134161790366779 or 104406213770080)
+					updateFolderSize()
+				end
+
+				FolderClick.MouseButton1Click:Connect(function()
+					b[1]().jc(FolderClick, FolderHeader)
+					toggleFolder()
+				end)
+
+				local folderElementAPI = createElementAPI(FolderContent, Func.ConfigSystem)
+
 				local NewSet = {}
+				for k, v in pairs(folderElementAPI) do
+					NewSet[k] = v
+				end
+
 				function NewSet:SetTitle(newTitle)
-					section.TextLabel.Text = newTitle
+					FolderHeader.FolderTitle.Text = newTitle
 				end
+
 				function NewSet:SetVisible(newVisible)
-					section.Visible = newVisible
+					Folder.Visible = newVisible
 				end
+
+				function NewSet:Toggle()
+					toggleFolder()
+				end
+
+				function NewSet:Expand()
+					if not isExpanded then
+						toggleFolder()
+					end
+				end
+
+				function NewSet:Collapse()
+					if isExpanded then
+						toggleFolder()
+					end
+				end
+
+				function NewSet:IsExpanded()
+					return isExpanded
+				end
+
+				task.defer(function()
+					updateFolderSize()
+				end)
+
 				return NewSet
 			end
+
 			Scroll.UIListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
 				Scroll.CanvasSize = UDim2.new(0, 0, 0, Scroll.UIListLayout.AbsoluteContentSize.Y + 10)
 			end)
@@ -2580,8 +2926,8 @@ b = {
 				g = {GroupTransparency = khgkgh}
 			}):Play()
 		end
-		local CloseUI = f("ImageButton", {
-			Name = "CloseUI",
+		local ToggleUI = f("ImageButton", {
+			Name = "ToggleUI",
 			Parent = fo.Parent,
 			Active = true,
 			AnchorPoint = Vector2.new(0.5, 0.5),
@@ -2597,27 +2943,27 @@ b = {
 				CornerRadius = UDim.new(0,6)
 			})
 		})
-		b[1]().init(CloseUI)
-		b[1]().lak(CloseUI)
+		b[1]().init(ToggleUI)
+		b[1]().lak(ToggleUI)
 		local function closeopenui()
 			isopen = not isopen
-			local g
+			local tween
 			if isopen then
-				if g then
-					g:Cancel()
+				if tween then
+					tween:Cancel()
 				end
 				for i = 1, 2 do
 					isfoui[i]:Destroy()
 				end
-				g = b[1]().tw({
+				tween = b[1]().tw({
 					v = fo,
 					t = 0.15,
 					s = "Linear",
 					d = "Out",
 					g = {GroupTransparency = 1}
 				})
-				g:Play()
-				g.Completed:Connect(function()
+				tween:Play()
+				tween.Completed:Connect(function()
 					fo.Visible = false
 				end)
 			else
@@ -2632,7 +2978,7 @@ b = {
 				}):Play()
 			end
 		end
-		CloseUI.MouseButton1Click:Connect(function()
+		ToggleUI.MouseButton1Click:Connect(function()
 			closeopenui()
 		end)
 		game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
@@ -2646,3 +2992,4 @@ b = {
 		return g
 	end,
 }
+
