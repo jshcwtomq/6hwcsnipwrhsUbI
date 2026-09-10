@@ -1195,6 +1195,109 @@ b = {
 			end)
 		end
 
+		-- Shared dropdown overlay: one blur-panel + one select-panel per
+		-- Window, reused by every Func:CreateDropdown across every tab
+		-- (mirrors the reference's single MoreBlur/DropdownSelect pair).
+		-- Parented to fo.Parent (the ScreenGui) rather than fo itself,
+		-- since fo is a CanvasGroup and would otherwise clip the panel
+		-- when it floats outside the window's own bounds.
+		local DropOverlay = f("Frame", {
+			Parent = fo.Parent,
+			BorderSizePixel = 0,
+			BackgroundColor3 = Color3.fromRGB(0, 0, 0),
+			BackgroundTransparency = 1,
+			Size = UDim2.new(1, 0, 1, 0),
+			BorderColor3 = Color3.fromRGB(0, 0, 0),
+			Visible = false,
+			Active = true,
+			Name = "DropOverlay",
+			ZIndex = 50
+		})
+
+		local DropOverlayClick = f("TextButton", {
+			Parent = DropOverlay,
+			BackgroundTransparency = 1,
+			BorderSizePixel = 0,
+			Size = UDim2.new(1, 0, 1, 0),
+			Text = "",
+			ZIndex = 50
+		})
+
+		local DropPanel = f("Frame", {
+			Parent = DropOverlay,
+			BorderSizePixel = 0,
+			BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Dropdown Select Background'],
+			Size = UDim2.new(0, 180, 0, 0),
+			ClipsDescendants = true,
+			BorderColor3 = Color3.fromRGB(0, 0, 0),
+			Name = "DropPanel",
+			ZIndex = 51
+		}, {
+			f("UICorner", {CornerRadius = UDim.new(0, 6)}),
+			f("UIStroke", {
+				Color = a.Theme[op.Theme or 'Quizzy']['Dropdown Select Stroke'],
+				Transparency = 0.3,
+				Thickness = 1
+			}),
+			f("UIPadding", {
+				PaddingTop = UDim.new(0, 6),
+				PaddingBottom = UDim.new(0, 6),
+				PaddingLeft = UDim.new(0, 5),
+				PaddingRight = UDim.new(0, 5)
+			}),
+			f("Frame", {
+				BorderSizePixel = 0,
+				BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Search'],
+				Size = UDim2.new(1, 0, 0, 22),
+				BorderColor3 = Color3.fromRGB(0, 0, 0),
+				Name = "SearchBar"
+			}, {
+				f("UICorner", {CornerRadius = UDim.new(0, 4)}),
+				f("UIPadding", {PaddingLeft = UDim.new(0, 8), PaddingRight = UDim.new(0, 8)}),
+				f("TextBox", {
+					BackgroundTransparency = 1,
+					BorderSizePixel = 0,
+					Size = UDim2.new(1, 0, 1, 0),
+					Font = Enum.Font.Gotham,
+					PlaceholderText = "search...",
+					Text = "",
+					TextColor3 = a.Theme[op.Theme or 'Quizzy']['Text Color'],
+					TextSize = 11,
+					TextXAlignment = Enum.TextXAlignment.Left,
+					ClearTextOnFocus = false,
+					Name = "Box"
+				})
+			}),
+			f("ScrollingFrame", {
+				Active = true,
+				BorderSizePixel = 0,
+				BackgroundTransparency = 1,
+				Position = UDim2.new(0, 0, 0, 28),
+				Size = UDim2.new(1, 0, 1, -28),
+				ScrollBarImageColor3 = a.Theme[op.Theme or 'Quizzy']['Color Main'],
+				ScrollBarThickness = 3,
+				BorderColor3 = Color3.fromRGB(0, 0, 0),
+				Name = "ItemList"
+			}, {
+				f("UIListLayout", {Padding = UDim.new(0, 3), SortOrder = Enum.SortOrder.LayoutOrder})
+			})
+		})
+
+		-- Only one dropdown panel is ever open at a time; each dropdown
+		-- registers close/populate callbacks here so the overlay can hand
+		-- control to whichever one is currently active.
+		local DropOverlayState = {activeClose = nil}
+
+		local function closeDropOverlay()
+			if DropOverlayState.activeClose then
+				local closeFn = DropOverlayState.activeClose
+				DropOverlayState.activeClose = nil
+				closeFn()
+			end
+		end
+
+		DropOverlayClick.MouseButton1Click:Connect(closeDropOverlay)
+
 		function g:CreateTab(gfjd)
 			assert(gfjd.Title, "Tab - Missing Title")
 
@@ -1766,12 +1869,13 @@ b = {
 				return NewSet
 			end
 
-				function Func:CreateDropdown(khgkgh)
+			function Func:CreateDropdown(khgkgh)
 				assert(khgkgh.Title, "Dropdown - Missing Title")
 				local List = khgkgh.List or {}
 				local Value = khgkgh.Value or ""
 				local Multi = khgkgh.Multi or false
 				local Callback = khgkgh.Callback or function() end
+
 				local function vd()
 					if type(Value) == "table" then
 						return table.concat(Value, ", ")
@@ -1779,500 +1883,300 @@ b = {
 						return Value
 					end
 				end
+
 				local par = b[1]().background(Scroll, khgkgh.Title, khgkgh.Desc, false, op)
 				local dropdown = f("Frame", {
 					Parent = par,
 					AnchorPoint = Vector2.new(1, 0.5),
-					BackgroundColor3 = Color3.fromRGB(255,255,255),
+					BackgroundColor3 = Color3.fromRGB(255, 255, 255),
 					BackgroundTransparency = 1,
-					BorderColor3 = Color3.fromRGB(0,0,0),
+					BorderColor3 = Color3.fromRGB(0, 0, 0),
 					BorderSizePixel = 0,
-					Position = UDim2.new(1, 0,0.5, 0),
+					Position = UDim2.new(1, 0, 0.5, 0),
 					Size = UDim2.new(0, 100, 1, 0)
 				}, {
 					f("UIPadding", {PaddingRight = UDim.new(0, 13)}),
 					f("Frame", {
+						Name = "Frame",
 						AnchorPoint = Vector2.new(1, 0.5),
 						BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Dropdown Color'],
-						BorderColor3 = Color3.fromRGB(0,0,0),
+						BorderColor3 = Color3.fromRGB(0, 0, 0),
 						BorderSizePixel = 0,
-						Size = UDim2.new(1, 0,0, 20),
+						Size = UDim2.new(1, 0, 0, 20),
 						Position = UDim2.new(1, 0, 0.5, 0)
 					}, {
-						f("UICorner", {CornerRadius = UDim.new(0,4)}),
-						f("UIPadding", {PaddingLeft = UDim.new(0,5)}),
+						f("UICorner", {CornerRadius = UDim.new(0, 4)}),
+						f("UIPadding", {PaddingLeft = UDim.new(0, 5)}),
 						f("ImageLabel", {
+							Name = "Chevron",
 							AnchorPoint = Vector2.new(1, 0),
-							BackgroundColor3 = Color3.fromRGB(255, 255, 255),
 							BackgroundTransparency = 1,
-							BorderColor3 = Color3.fromRGB(0,0,0),
 							BorderSizePixel = 0,
-							Position = UDim2.new(1, 0,0, 0),
-							Size = UDim2.new(0, 20,0, 20),
+							Position = UDim2.new(1, 0, 0, 0),
+							Size = UDim2.new(0, 20, 0, 20),
 							Image = "rbxassetid://14928415132"
 						}),
 						f("TextLabel", {
-							BackgroundColor3 = Color3.fromRGB(255, 255, 255),
 							BackgroundTransparency = 1,
-							BorderColor3 = Color3.fromRGB(0,0,0),
 							BorderSizePixel = 0,
-							Size = UDim2.new(0.75, 0,1, 0),
+							Size = UDim2.new(0.75, 0, 1, 0),
 							Font = Enum.Font.Gotham,
 							Text = vd(),
-							TextColor3 = Color3.fromRGB(255,255,255),
+							TextColor3 = Color3.fromRGB(255, 255, 255),
 							TextSize = 10,
 							TextXAlignment = Enum.TextXAlignment.Left,
 							Name = "SelectedText"
 						})
 					})
 				})
-				local dropdownselect = f("Frame", {
-					Parent = fo.Parent,
-					BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Dropdown Select Background'],
-					BorderColor3 = Color3.fromRGB(0,0,0),
-					BorderSizePixel = 0,
-					Position = UDim2.new(0, 0,0, 0),
-					Size = UDim2.new(0, 150,0, 0),
-					ClipsDescendants = true,
-				}, {
-					f("UICorner", {CornerRadius = UDim.new(0, 4)}),
-					f("UIPadding", {PaddingBottom = UDim.new(0, 5), PaddingTop = UDim.new(0, 5), PaddingRight = UDim.new(0, 3)}),
-					f("UIStroke", {Color = a.Theme[op.Theme or 'Quizzy']['Dropdown Select Stroke'], Transparency = 1}),
-					f("Frame", {
-						BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Search'],
-						BorderSizePixel = 0,
-						Size = UDim2.new(1, -3, 0, 18),
-						Position = UDim2.new(0, 0, 0, 0),
-						Name = "SearchBar"
-					}, {
-						f("UICorner", {CornerRadius = UDim.new(0, 4)}),
-						f("UIPadding", {PaddingLeft = UDim.new(0, 6), PaddingRight = UDim.new(0, 6)}),
-						f("TextBox", {
-							TextColor3 = a.Theme[op.Theme or 'Quizzy']['Text Color'],
-							BorderSizePixel = 0,
-							TextXAlignment = Enum.TextXAlignment.Left,
-							TextSize = 10,
-							Font = Enum.Font.Gotham,
-							BackgroundTransparency = 1,
-							PlaceholderText = "search...",
-							Size = UDim2.new(1, 0, 1, 0),
-							Text = "",
-							ClearTextOnFocus = false,
-							Name = "Box"
-						})
-					}),
-					f("ScrollingFrame", {
-						Active = true,
-						BackgroundColor3 = Color3.fromRGB(255,255,255),
-						BackgroundTransparency = 1,
-						BorderColor3 = Color3.fromRGB(0,0,0),
-						BorderSizePixel = 0,
-						Size = UDim2.new(1, 0,1, -21),
-						Position = UDim2.new(0, 0, 0, 21),
-						ClipsDescendants = true,
-						AutomaticCanvasSize = Enum.AutomaticSize.None,
-						BottomImage = "rbxasset://textures/ui/Scroll/scroll-bottom.png",
-						CanvasPosition = Vector2.new(0, 0),
-						ElasticBehavior = Enum.ElasticBehavior.WhenScrollable,
-						HorizontalScrollBarInset = Enum.ScrollBarInset.None,
-						MidImage = "rbxasset://textures/ui/Scroll/scroll-middle.png",
-						ScrollBarImageColor3 = a.Theme[op.Theme or 'Quizzy']['Color Main'],
-						ScrollBarImageTransparency = 0,
-						ScrollBarThickness = 3,
-						ScrollingDirection = Enum.ScrollingDirection.XY,
-						TopImage = "rbxasset://textures/ui/Scroll/scroll-top.png",
-						VerticalScrollBarInset = Enum.ScrollBarInset.None,
-						VerticalScrollBarPosition = Enum.VerticalScrollBarPosition.Right,
-						Name = "ItemList"
-					}, {
-						f("UIListLayout", {Padding = UDim.new(0,3), SortOrder = Enum.SortOrder.LayoutOrder}),
-						f("UIPadding", {PaddingLeft = UDim.new(0,3), PaddingRight = UDim.new(0,7)})
-					})
-				})
 
-				-- Filters this dropdown's own item list only (never touches other
-				-- dropdowns or the page-level search) 閳ワ拷 combines with the item
-				-- highlight/select tweens below rather than replacing them.
-				dropdownselect.SearchBar.Box:GetPropertyChangedSignal("Text"):Connect(function()
-					local q = string.lower(dropdownselect.SearchBar.Box.Text)
-					for _, child in ipairs(dropdownselect.ItemList:GetChildren()) do
-						if child:IsA("Frame") and child:FindFirstChild("TextLabel") then
-							if q == "" or string.find(string.lower(child.TextLabel.Text), q, 1, true) then
-								child.Visible = true
-							else
-								child.Visible = false
-							end
-						end
-					end
-					dropdownselect.ItemList.CanvasSize = UDim2.new(0,0,0, dropdownselect.ItemList.UIListLayout.AbsoluteContentSize.Y + 5)
-				end)
-				dropdownselect.Position = UDim2.new(0, dropdown.Frame.AbsolutePosition.X - dropdownselect.Parent.AbsolutePosition.X + dropdown.Frame.Size.X.Offset - 150, 0, dropdown.Frame.AbsolutePosition.Y - dropdownselect.Parent.AbsolutePosition.Y + dropdown.Frame.Size.Y.Offset - 20)
-				local isopen = false
 				local click = b[1]().click(par)
-				local function opendropdown()
-					local screenGui = fo.Parent.Parent
-					local viewportSize = workspace.CurrentCamera.ViewportSize
-					local targetX = dropdown.Frame.AbsolutePosition.X - dropdownselect.Parent.AbsolutePosition.X + dropdown.Frame.Size.X.Offset - 80
-					local targetY = dropdown.Frame.AbsolutePosition.Y - dropdownselect.Parent.AbsolutePosition.Y + dropdown.Frame.Size.Y.Offset - 20
-					if targetX < 0 then targetX = 0 end
-					if targetX + 150 > viewportSize.X then targetX = viewportSize.X - 150 end
-					if targetY < 0 then targetY = 0 end
-					if targetY + 200 > viewportSize.Y then targetY = viewportSize.Y - 200 end
-					dropdownselect.Position = UDim2.new(0, targetX, 0, targetY)
-					if dropdownselect.ItemList.UIListLayout.AbsoluteContentSize.Y + 13 + 21 < 141 then
-						b[1]().tw({
-							v = dropdownselect,
-							t = 0.15,
-							s = "Exponential",
-							d = "InOut",
-							g = {Size = UDim2.new(0, 150,0, dropdownselect.ItemList.UIListLayout.AbsoluteContentSize.Y + 13 + 21)}
-						}):Play()
-						b[1]().tw({
-							v = dropdownselect.UIStroke,
-							t = 0.15,
-							s = "Exponential",
-							d = "InOut",
-							g = {Transparency = 0}
-						}):Play()
-					else
-						b[1]().tw({
-							v = dropdownselect.UIStroke,
-							t = 0.15,
-							s = "Exponential",
-							d = "InOut",
-							g = {Transparency = 0}
-						}):Play()
-						b[1]().tw({
-							v = dropdownselect,
-							t = 0.15,
-							s = "Exponential",
-							d = "InOut",
-							g = {Size = UDim2.new(0, 150,0, 141), Position = UDim2.new(0, targetX, 0, targetY)}
-						}):Play()
-					end
-				end
-				local function closedropdown()
-					b[1]().tw({
-						v = dropdownselect,
-						t = 0.15,
-						s = "Exponential",
-						d = "InOut",
-						g = {Size = UDim2.new(0, 150,0, 0)}
-					}):Play()
-					b[1]().tw({
-						v = dropdownselect.UIStroke,
-						t = 0.15,
-						s = "Exponential",
-						d = "InOut",
-						g = {Transparency = 1}
-					}):Play()
-					if dropdownselect.SearchBar.Box.Text ~= "" then
-						dropdownselect.SearchBar.Box.Text = ""
-					end
-				end
-				Services.UserInputService.InputBegan:Connect(function(A)
-					if not isopen then return end
-					if A.UserInputType == Enum.UserInputType.MouseButton1 or A.UserInputType == Enum.UserInputType.Touch then
-						local B, C = dropdownselect.AbsolutePosition, dropdownselect.AbsoluteSize
-						local M = LocalPlayer:GetMouse()
-						if M.X < B.X or M.X > B.X + C.X or M.Y < (B.Y - 20 - 1) or M.Y > B.Y + C.Y then
-							isopen = false
-							closedropdown()
-						end
-					end
-				end)
-				click.MouseButton1Click:Connect(function()
-					b[1]().jc(click, par)
-					isopen = not isopen
-					if not isopen then
-						closedropdown()
-					else
-						opendropdown()
-					end
-				end)
+				local isOpen = false
+				local itemButtons = {}
+				local selectedValues = {}
+
 				local function dps()
 					local newWidth = dropdown.Frame.SelectedText.TextBounds.X + 50
 					if newWidth > 150 then
 						newWidth = 150
 					end
-					local g = b[1]().tw({
+					b[1]().tw({
 						v = dropdown,
 						t = 0.15,
 						s = "Back",
 						d = "InOut",
 						g = {Size = UDim2.new(0, newWidth, 1, 0)}
-					})
-					g:Play()
-					g.Completed:Wait()
-					dropdown.Frame.SelectedText.TextTruncate = Enum.TextTruncate.AtEnd
+					}):Play()
 				end
-				local itemslist = {}
-				local selectedValues = {}
-				local selectedItem
-				function itemslist:Clear()
-					if not Multi then
-						for _, child in ipairs(dropdownselect.ItemList:GetChildren()) do
-							if child:IsA("Frame") then
-								child:Destroy()
+
+				-- Visually highlights whichever item(s) match the current
+				-- Value/selectedValues, tweening color + text color together.
+				local function refreshItemVisuals()
+					for text, item in pairs(itemButtons) do
+						local isSelected
+						if Multi then
+							isSelected = selectedValues[text] == true
+						else
+							isSelected = (Value == text)
+						end
+
+						local bgColor = isSelected and a.Theme[op.Theme or 'Quizzy']['Color Main'] or a.Theme[op.Theme or 'Quizzy']['Dropdown Item']
+						local textColor = isSelected and Color3.fromRGB(0, 0, 0) or a.Theme[op.Theme or 'Quizzy']['Text Color']
+
+						b[1]().tw({
+							v = item,
+							t = 0.15,
+							s = "Linear",
+							d = "InOut",
+							g = {BackgroundColor3 = bgColor, BackgroundTransparency = isSelected and 0 or 0.9}
+						}):Play()
+						b[1]().tw({
+							v = item.TextLabel,
+							t = 0.15,
+							s = "Linear",
+							d = "InOut",
+							g = {TextColor3 = textColor}
+						}):Play()
+					end
+				end
+
+				local function commitValue()
+					dropdown.Frame.SelectedText.Text = vd()
+					pcall(function()
+						Callback(Value)
+					end)
+					dps()
+				end
+
+				local function selectItem(text)
+					if Multi then
+						if selectedValues[text] then
+							selectedValues[text] = nil
+						else
+							selectedValues[text] = true
+						end
+						local list = {}
+						for _, v in ipairs(List) do
+							if selectedValues[v] then
+								table.insert(list, v)
 							end
 						end
-						selectedItem = nil
-						Value = ""
-						dropdown.Frame.SelectedText.Text = ""
+						Value = list
 					else
-						for key in pairs(selectedValues) do
-							selectedValues[key] = nil
-						end
-						for _, child in ipairs(dropdownselect.ItemList:GetChildren()) do
-							if child:IsA("Frame") then
-								child:Destroy()
-							end
-						end
-						dropdown.Frame.SelectedText.Text = ""
+						Value = text
 					end
-					dropdownselect.ItemList.CanvasSize = UDim2.new(0,0,0,0)
+					refreshItemVisuals()
+					commitValue()
 				end
-				function itemslist:Remove(t)
-					for _, child in ipairs(dropdownselect.ItemList:GetChildren()) do
-						if child:IsA("Frame") and child:FindFirstChild("TextLabel") then
-							if child.TextLabel.Text == t then
-								if Multi and selectedValues[t] then
-									selectedValues[t] = nil
-									local selectedList = {}
-									for i, v in pairs(selectedValues) do
-										table.insert(selectedList, i)
-									end
-									if #selectedList > 0 then
-										dropdown.Frame.SelectedText.Text = table.concat(selectedList, ", ")
-									else
-										dropdown.Frame.SelectedText.Text = ""
-									end
-									pcall(function()
-										Callback(selectedList)
-									end)
-								end
-								
-								if not Multi and Value == t then
-									Value = ""
-									dropdown.Frame.SelectedText.Text = ""
-									pcall(function()
-										Callback("")
-									end)
-								end
-								
-								child:Destroy()
-								break
-							end
+
+				-- Closing tweens the shared DropPanel back to zero height and
+				-- clears this dropdown's registration as the active one so a
+				-- click elsewhere (or another dropdown opening) can't
+				-- re-trigger this one's close callback.
+				local function closeThisDropdown()
+					isOpen = false
+					b[1]().tw({
+						v = DropPanel,
+						t = 0.15,
+						s = "Exponential",
+						d = "InOut",
+						g = {Size = UDim2.new(0, 180, 0, 0)}
+					}):Play()
+					b[1]().tw({
+						v = DropOverlay,
+						t = 0.15,
+						s = "Linear",
+						d = "Out",
+						g = {BackgroundTransparency = 1}
+					}):Play()
+					delay(0.15, function()
+						if not isOpen then
+							DropOverlay.Visible = false
+						end
+					end)
+					if DropPanel.SearchBar.Box.Text ~= "" then
+						DropPanel.SearchBar.Box.Text = ""
+					end
+				end
+
+				-- Rebuilds the shared panel's item list for this dropdown,
+				-- then positions + expands the panel next to this dropdown's
+				-- row, clamped to stay on-screen (same clamping approach as
+				-- the reference implementation).
+				local function populatePanel()
+					for _, child in ipairs(DropPanel.ItemList:GetChildren()) do
+						if child:IsA("Frame") then
+							child:Destroy()
 						end
 					end
-					dropdownselect.ItemList.CanvasSize = UDim2.new(0,0,0, dropdownselect.ItemList.UIListLayout.AbsoluteContentSize.Y + 5)
-				end
-				function itemslist:Add(t)
-					local item = f("Frame", {
-						Parent = dropdownselect.ItemList,
-						BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Dropdown Item'],
-						BackgroundTransparency = 0.9,
-						BorderColor3 = Color3.fromRGB(0,0,0),
-						BorderSizePixel = 0,
-						Size = UDim2.new(1, 0,0, 20),
-					}, {
-						f("UICorner", {CornerRadius = UDim.new(0, 4)}),
-						f("UIPadding", {PaddingLeft = UDim.new(0, 5)}),
-						f("UIGradient", {Color = ColorSequence.new{ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1, Color3.fromRGB(170, 170, 170))}}),
-						f("TextLabel", {
-							BackgroundColor3 = Color3.fromRGB(255,255,255),
-							BackgroundTransparency = 1,
-							BorderColor3 = Color3.fromRGB(0,0,0),
+					itemButtons = {}
+
+					for _, text in ipairs(List) do
+						local item = f("Frame", {
+							Parent = DropPanel.ItemList,
+							BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Dropdown Item'],
+							BackgroundTransparency = 0.9,
 							BorderSizePixel = 0,
-							Size = UDim2.new(1, 0,1, 0),
-							Font = Enum.Font.Gotham,
-							Text = t,
-							TextColor3 = Color3.fromRGB(255,255,255),
-							TextSize = 11,
-							TextXAlignment = Enum.TextXAlignment.Left
+							Size = UDim2.new(1, 0, 0, 22),
+							BorderColor3 = Color3.fromRGB(0, 0, 0)
+						}, {
+							f("UICorner", {CornerRadius = UDim.new(0, 4)}),
+							f("UIPadding", {PaddingLeft = UDim.new(0, 6)}),
+							f("TextLabel", {
+								BackgroundTransparency = 1,
+								BorderSizePixel = 0,
+								Size = UDim2.new(1, 0, 1, 0),
+								Font = Enum.Font.Gotham,
+								Text = text,
+								TextColor3 = a.Theme[op.Theme or 'Quizzy']['Text Color'],
+								TextSize = 12,
+								TextXAlignment = Enum.TextXAlignment.Left
+							})
 						})
-					})
-					local clickitem = b[1]().click(item)
-					clickitem.MouseButton1Click:Connect(function()
-						b[1]().jc(clickitem, item)
-						if Multi then
-							if selectedValues[t] then
-								selectedValues[t] = nil
-								b[1]().tw({
-									v = item,
-									t = 0.15,
-									s = "Linear",
-									d = "InOut",
-									g = {BackgroundColor3 = Color3.fromRGB(88, 88, 88), BackgroundTransparency = 0.9}
-								}):Play()
-								b[1]().tw({
-									v = item.TextLabel,
-									t = 0.15,
-									s = "Linear",
-									d = "InOut",
-									g = {TextColor3 = Color3.fromRGB(255 ,255 ,255)}
-								}):Play()
-								item.TextLabel.Text = t
-								local selectedList = {}
-								for i, v in pairs(selectedValues) do
-									table.insert(selectedList, i)
-								end
-								if #selectedList > 0 then
-									dropdown.Frame.SelectedText.Text = table.concat(selectedList, ", ")
-								else
-									dropdown.Frame.SelectedText.Text = ""
-								end
-								pcall(function()
-									Callback(selectedList)
-								end)
-							else
-								b[1]().tw({
-									v = item,
-									t = 0.15,
-									s = "Linear",
-									d = "InOut",
-									g = {BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Color Main'], BackgroundTransparency = 0}
-								}):Play()
-								b[1]().tw({
-									v = item.TextLabel,
-									t = 0.15,
-									s = "Linear",
-									d = "InOut",
-									g = {TextColor3 = Color3.fromRGB(0, 0, 0)}
-								}):Play()
-								selectedValues[t] = true
-								item.TextLabel.Text = t
-								local selectedList = {}
-								for i, v in pairs(selectedValues) do
-									table.insert(selectedList, i)
-								end
-								dropdown.Frame.SelectedText.Text = table.concat(selectedList, ", ")
-								pcall(function()
-									Callback(selectedList)
-								end)
+
+						local itemClick = b[1]().click(item)
+						itemClick.MouseButton1Click:Connect(function()
+							b[1]().jc(itemClick, item)
+							selectItem(text)
+							if not Multi then
+								closeThisDropdown()
 							end
-						else
-							for i,v in pairs(dropdownselect.ItemList:GetChildren()) do
-								if v:IsA("Frame") then
-									b[1]().tw({
-										v = v,
-										t = 0.15,
-										s = "Linear",
-										d = "InOut",
-										g = {BackgroundColor3 = Color3.fromRGB(88, 88, 88), BackgroundTransparency = 0.9}
-									}):Play()
-									b[1]().tw({
-										v = v.TextLabel,
-										t = 0.15,
-										s = "Linear",
-										d = "InOut",
-										g = {TextColor3 = Color3.fromRGB(255 ,255 ,255)}
-									}):Play()
-								end
-							end
-							b[1]().tw({
-								v = item,
-								t = 0.15,
-								s = "Linear",
-								d = "InOut",
-								g = {BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Color Main'], BackgroundTransparency = 0}
-							}):Play()
-							b[1]().tw({
-								v = item.TextLabel,
-								t = 0.15,
-								s = "Linear",
-								d = "InOut",
-								g = {TextColor3 = Color3.fromRGB(0, 0, 0)}
-							}):Play()
-							item.TextLabel.Text = t
-							Value = t
-							selectedItem = item
-							dropdown.Frame.SelectedText.Text = t
-							pcall(function()
-								Callback(t)
-							end)
-						end
-					end)
-					local function isValueInTable(val, tbl)
-						if type(tbl) ~= "table" then
-							return false
-						end
-						for _, v in pairs(tbl) do
-							if v == val then
-								return true
-							end
-						end
-						return false
+						end)
+
+						itemButtons[text] = item
 					end
-					delay(0,function()
-						if Multi then
-							if isValueInTable(t, Value) then
-								b[1]().tw({
-									v = item,
-									t = 0.15,
-									s = "Linear",
-									d = "InOut",
-									g = {BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Color Main'], BackgroundTransparency = 0}
-								}):Play()
-								b[1]().tw({
-									v = item.TextLabel,
-									t = 0.15,
-									s = "Linear",
-									d = "InOut",
-									g = {TextColor3 = Color3.fromRGB(0, 0, 0)}
-								}):Play()
-								item.TextLabel.Text = t
-								selectedValues[t] = true
-								local selectedList = {}
-								for i, v in pairs(selectedValues) do
-									table.insert(selectedList, i)
-								end
-								dropdown.Frame.SelectedText.Text = table.concat(selectedList, ", ")
-								pcall(function()
-									Callback(selectedList)
-								end)
-							end
-						else
-							if t == Value then
-								b[1]().tw({
-									v = item,
-									t = 0.15,
-									s = "Linear",
-									d = "InOut",
-									g = {BackgroundColor3 = a.Theme[op.Theme or 'Quizzy']['Color Main'], BackgroundTransparency = 0}
-								}):Play()
-								b[1]().tw({
-									v = item.TextLabel,
-									t = 0.15,
-									s = "Linear",
-									d = "InOut",
-									g = {TextColor3 = Color3.fromRGB(0, 0, 0)}
-								}):Play()
-								item.TextLabel.Text = t
-								Value = t
-								selectedItem = item
-								dropdown.Frame.SelectedText.Text = t
-								pcall(function()
-									Callback(t)
-								end)
-							end
-						end
-						dps()
-					end)
-					dropdownselect.ItemList.CanvasSize = UDim2.new(0,0,0, dropdownselect.ItemList.UIListLayout.AbsoluteContentSize.Y + 5)
+
+					refreshItemVisuals()
+					DropPanel.ItemList.CanvasSize = UDim2.new(0, 0, 0, DropPanel.ItemList.UIListLayout.AbsoluteContentSize.Y + 5)
 				end
-				for i,v in ipairs(List) do
-					itemslist:Add(v)
+
+				local function openThisDropdown()
+					closeDropOverlay()
+
+					populatePanel()
+
+					local viewportSize = workspace.CurrentCamera.ViewportSize
+					local anchorPos = dropdown.AbsolutePosition
+					local anchorSize = dropdown.AbsoluteSize
+					local overlayPos = DropOverlay.AbsolutePosition
+
+					local targetX = anchorPos.X - overlayPos.X + anchorSize.X - 180
+					local targetY = anchorPos.Y - overlayPos.Y + anchorSize.Y + 4
+
+					if targetX < 4 then targetX = 4 end
+					if targetX + 180 > viewportSize.X then targetX = viewportSize.X - 184 end
+					if targetY < 0 then targetY = 0 end
+
+					local contentH = DropPanel.ItemList.UIListLayout.AbsoluteContentSize.Y + 28 + 12
+					local targetH = math.min(contentH, 200)
+
+					if targetY + targetH > viewportSize.Y then
+						-- Not enough room below: open upward from the row instead.
+						targetY = anchorPos.Y - overlayPos.Y - targetH - 4
+						if targetY < 0 then targetY = 0 end
+					end
+
+					DropPanel.Position = UDim2.new(0, targetX, 0, targetY)
+					DropOverlay.Visible = true
+					isOpen = true
+					DropOverlayState.activeClose = closeThisDropdown
+
+					b[1]().tw({
+						v = DropOverlay,
+						t = 0.15,
+						s = "Linear",
+						d = "Out",
+						g = {BackgroundTransparency = 0.6}
+					}):Play()
+					b[1]().tw({
+						v = DropPanel,
+						t = 0.2,
+						s = "Exponential",
+						d = "Out",
+						g = {Size = UDim2.new(0, 180, 0, targetH)}
+					}):Play()
+					b[1]().tw({
+						v = dropdown.Frame.Chevron,
+						t = 0.2,
+						s = "Exponential",
+						d = "Out",
+						g = {Rotation = 180}
+					}):Play()
 				end
+
+				click.MouseButton1Click:Connect(function()
+					b[1]().jc(click, par)
+					if isOpen then
+						closeThisDropdown()
+					else
+						openThisDropdown()
+					end
+				end)
+
+				-- Filters the shared panel's own item list; only relevant
+				-- while this dropdown is the one currently driving the panel.
+				DropPanel.SearchBar.Box:GetPropertyChangedSignal("Text"):Connect(function()
+					if not isOpen then return end
+					local q = string.lower(DropPanel.SearchBar.Box.Text)
+					for text, item in pairs(itemButtons) do
+						item.Visible = (q == "" or string.find(string.lower(text), q, 1, true) ~= nil)
+					end
+				end)
+
 				dropdown.Frame.SelectedText:GetPropertyChangedSignal("Text"):Connect(function()
 					dps()
 				end)
-				dropdownselect.ItemList.UIListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-					dropdownselect.ItemList.CanvasSize = UDim2.new(0, 0, 0, dropdownselect.ItemList.UIListLayout.AbsoluteContentSize.Y + 5)
+
+				delay(0.5, function()
+					dps()
 				end)
+
+				local itemslist = {}
+
 				function itemslist:SetTitle(newTitle)
 					par.TextDesc.TextLabel.Text = newTitle
 				end
+
 				function itemslist:SetDesc(newDesc)
 					local descLabel = par.TextDesc:FindFirstChild("Desc")
 					if descLabel then
@@ -2281,13 +2185,14 @@ b = {
 						b[1]().desc(par.TextDesc, newDesc, op)
 					end
 				end
+
 				function itemslist:SetVisible(newVisible)
 					par.Visible = newVisible
 				end
+
 				function itemslist:SetList(newList, autoSelectValue)
 					-- Preserve the current selection across a refresh instead of
-					-- always wiping it 閳ワ拷 fixes the selected item (e.g. a player
-					-- name) disappearing every time the list auto-refreshes.
+					-- always wiping it.
 					local previousValue = Value
 					local previousSelected = {}
 					if Multi then
@@ -2296,134 +2201,76 @@ b = {
 						end
 					end
 
-					for _, child in ipairs(dropdownselect.ItemList:GetChildren()) do
-						if child:IsA("Frame") then
-							child:Destroy()
-						end
-					end
-					dropdownselect.ItemList.CanvasSize = UDim2.new(0,0,0,0)
-
-					if newList and type(newList) == "table" then
-						for _, v in ipairs(newList) do
-							self:Add(v)
-						end
-					end
+					List = newList or {}
 
 					if autoSelectValue then
-						task.defer(function()
-							self:SetValue(autoSelectValue)
-						end)
-					elseif Multi then
-						-- Re-apply only the selections that still exist in newList
-						local stillValid = {}
-						local anyMissing = false
-						for k in pairs(previousSelected) do
-							local found = false
-							if newList then
-								for _, v in ipairs(newList) do
-									if v == k then found = true break end
-								end
-							end
-							if found then
-								table.insert(stillValid, k)
-							else
-								anyMissing = true
-							end
-						end
-						if #stillValid > 0 then
-							task.defer(function()
-								self:SetValue(stillValid)
-							end)
-						elseif anyMissing then
-							Value = {}
+						Value = autoSelectValue
+						if Multi and type(autoSelectValue) == "table" then
 							selectedValues = {}
-							dropdown.Frame.SelectedText.Text = ""
-						end
-					else
-						local stillValid = false
-						if previousValue and previousValue ~= "" and newList then
-							for _, v in ipairs(newList) do
-								if v == previousValue then stillValid = true break end
-							end
-						end
-						if stillValid then
-							task.defer(function()
-								self:SetValue(previousValue)
-							end)
-						else
-							Value = ""
-							selectedItem = nil
-							dropdown.Frame.SelectedText.Text = ""
-						end
-					end
-
-					dropdownselect.ItemList.CanvasSize = UDim2.new(0,0,0, dropdownselect.ItemList.UIListLayout.AbsoluteContentSize.Y + 5)
-					dps()
-				end
-				function itemslist:SetValue(newValue)
-					if Multi then
-						selectedValues = {}
-						if type(newValue) == "table" then
-							for _, v in ipairs(newValue) do
+							for _, v in ipairs(autoSelectValue) do
 								selectedValues[v] = true
 							end
 						end
-						for _, child in ipairs(dropdownselect.ItemList:GetChildren()) do
-							if child:IsA("Frame") and child:FindFirstChild("TextLabel") then
-								local txt = child.TextLabel.Text
-								if selectedValues[txt] then
-									b[1]().tw({v=child,t=0.15,s="Linear",d="InOut",g={BackgroundColor3=a.Theme[op.Theme or 'Quizzy']['Color Main'],BackgroundTransparency=0}}):Play()
-									b[1]().tw({v=child.TextLabel,t=0.15,s="Linear",d="InOut",g={TextColor3=Color3.fromRGB(0,0,0)}}):Play()
-								else
-									b[1]().tw({v=child,t=0.15,s="Linear",d="InOut",g={BackgroundColor3=Color3.fromRGB(88,88,88),BackgroundTransparency=0.9}}):Play()
-									b[1]().tw({v=child.TextLabel,t=0.15,s="Linear",d="InOut",g={TextColor3=Color3.fromRGB(255,255,255)}}):Play()
+					elseif Multi then
+						local stillValid = {}
+						selectedValues = {}
+						for k in pairs(previousSelected) do
+							for _, v in ipairs(List) do
+								if v == k then
+									table.insert(stillValid, k)
+									selectedValues[k] = true
+									break
 								end
 							end
 						end
-						local sel = {}
-						for k in pairs(selectedValues) do table.insert(sel,k) end
-						dropdown.Frame.SelectedText.Text = table.concat(sel, ", ")
-						Value = sel
-						pcall(function() Callback(sel) end)
+						Value = stillValid
+					else
+						local stillValid = false
+						if previousValue and previousValue ~= "" then
+							for _, v in ipairs(List) do
+								if v == previousValue then stillValid = true break end
+							end
+						end
+						Value = stillValid and previousValue or ""
+					end
+
+					if isOpen then
+						populatePanel()
+					end
+					commitValue()
+				end
+
+				function itemslist:SetValue(newValue)
+					if Multi then
+						selectedValues = {}
+						local list = {}
+						if type(newValue) == "table" then
+							for _, v in ipairs(newValue) do
+								selectedValues[v] = true
+								table.insert(list, v)
+							end
+						end
+						Value = list
 					else
 						Value = newValue or ""
-						selectedItem = nil
-						for _, child in ipairs(dropdownselect.ItemList:GetChildren()) do
-							if child:IsA("Frame") and child:FindFirstChild("TextLabel") then
-								if child.TextLabel.Text == newValue then
-									b[1]().tw({v=child,t=0.15,s="Linear",d="InOut",g={BackgroundColor3=a.Theme[op.Theme or 'Quizzy']['Color Main'],BackgroundTransparency=0}}):Play()
-									b[1]().tw({v=child.TextLabel,t=0.15,s="Linear",d="InOut",g={TextColor3=Color3.fromRGB(0,0,0)}}):Play()
-									selectedItem = child
-								else
-									b[1]().tw({v=child,t=0.15,s="Linear",d="InOut",g={BackgroundColor3=Color3.fromRGB(88,88,88),BackgroundTransparency=0.9}}):Play()
-									b[1]().tw({v=child.TextLabel,t=0.15,s="Linear",d="InOut",g={TextColor3=Color3.fromRGB(255,255,255)}}):Play()
-								end
-							end
-						end
-						dropdown.Frame.SelectedText.Text = Value or ""
-						pcall(function() Callback(Value) end)
 					end
-					dps()
+					refreshItemVisuals()
+					commitValue()
 				end
+
 				local Key = khgkgh.Key or khgkgh.Title
 				Func.ConfigSystem:Register(Key,
-					function() 
-						if Multi then
-							local list = {}
-							for k, v in pairs(selectedValues) do
-								table.insert(list, k)
-							end
-							return list
-						else
-							return Value
-						end
+					function()
+						return Value
 					end,
 					function(val)
 						itemslist:SetValue(val)
 					end
 				)
+
 				return itemslist
 			end
+
 
 
 			function Func:CreateLabel(khgkgh)
