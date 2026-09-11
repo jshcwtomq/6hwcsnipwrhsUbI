@@ -1623,19 +1623,26 @@ b = {
 						Name = "SearchBar"
 					}, {
 						f("UICorner", {CornerRadius = UDim.new(0, 4)}),
-						f("UIPadding", {PaddingLeft = UDim.new(0, 6), PaddingRight = UDim.new(0, 18)}),
-						f("TextBox", {
-							TextColor3 = a.Theme[op.Theme or 'Dark']['Text Color'],
-							BorderSizePixel = 0,
-							TextXAlignment = Enum.TextXAlignment.Left,
-							TextSize = 10,
-							Font = Enum.Font.Gotham,
+						f("Frame", {
 							BackgroundTransparency = 1,
-							PlaceholderText = "search...",
-							Size = UDim2.new(1, 0, 1, 0),
-							Text = "",
-							ClearTextOnFocus = false,
-							Name = "Box"
+							BorderSizePixel = 0,
+							Size = UDim2.new(1, -22, 1, 0),
+							Position = UDim2.new(0, 6, 0, 0),
+							Name = "TextArea"
+						}, {
+							f("TextBox", {
+								TextColor3 = a.Theme[op.Theme or 'Dark']['Text Color'],
+								BorderSizePixel = 0,
+								TextXAlignment = Enum.TextXAlignment.Left,
+								TextSize = 10,
+								Font = Enum.Font.Gotham,
+								BackgroundTransparency = 1,
+								PlaceholderText = "search...",
+								Size = UDim2.new(1, 0, 1, 0),
+								Text = "",
+								ClearTextOnFocus = false,
+								Name = "Box"
+							})
 						}),
 						f("ImageLabel", {
 							BorderSizePixel = 0,
@@ -1645,7 +1652,7 @@ b = {
 							Size = UDim2.new(0, 10, 0, 10),
 							BorderColor3 = Color3.fromRGB(0, 0, 0),
 							BackgroundTransparency = 1,
-							Position = UDim2.new(1, 0, 0.5, 0)
+							Position = UDim2.new(1, -6, 0.5, 0)
 						})
 					}),
 					f("ScrollingFrame", {
@@ -1676,8 +1683,8 @@ b = {
 						f("UIPadding", {PaddingLeft = UDim.new(0,3), PaddingRight = UDim.new(0,7)})
 					})
 				})
-				dropdownselect.SearchBar.Box:GetPropertyChangedSignal("Text"):Connect(function()
-					local q = string.lower(dropdownselect.SearchBar.Box.Text)
+				dropdownselect.SearchBar.TextArea.Box:GetPropertyChangedSignal("Text"):Connect(function()
+					local q = string.lower(dropdownselect.SearchBar.TextArea.Box.Text)
 					for _, child in ipairs(dropdownselect.ItemList:GetChildren()) do
 						if child:IsA("Frame") and child:FindFirstChild("TextLabel") then
 							if q == "" or string.find(string.lower(child.TextLabel.Text), q, 1, true) then
@@ -1749,8 +1756,8 @@ b = {
 						d = "InOut",
 						g = {Transparency = 1}
 					}):Play()
-					if dropdownselect.SearchBar.Box.Text ~= "" then
-						dropdownselect.SearchBar.Box.Text = ""
+					if dropdownselect.SearchBar.TextArea.Box.Text ~= "" then
+						dropdownselect.SearchBar.TextArea.Box.Text = ""
 					end
 				end
 				Services.UserInputService.InputBegan:Connect(function(A)
@@ -1861,7 +1868,6 @@ b = {
 						Size = UDim2.new(1, 0,0, 20),
 					}, {
 						f("UICorner", {CornerRadius = UDim.new(0, 4)}),
-						f("UIPadding", {PaddingLeft = UDim.new(0, 10)}),
 						f("Frame", {
 							Name = "Accent",
 							BorderSizePixel = 0,
