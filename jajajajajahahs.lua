@@ -757,6 +757,7 @@ b = {
 	CreateWindow = function(self, op)
 		local f, g, CloseUI, patab, of, scl, KeyCloseUI, isopen = self[1]().n, {}, nil, nil, false ,nil, op.Keybind or Enum.KeyCode.LeftControl, false
 		local currentSelectedTab = nil
+		local SubtitleLabel = nil
 		assert(op.Title, "Window - Missing Title")
 		assert(op.Icon, "Window - Missing Icon")
 		local fo = f("CanvasGroup", {
@@ -821,7 +822,9 @@ b = {
 						BorderColor3 = Color3.fromRGB(0, 0, 0),
 						Text = op.Subtitle or "",
 						LayoutOrder = 2
-					})
+					}, nil, function(a)
+						SubtitleLabel = a
+					end)
 				}),
 				f("ImageLabel", {
 					BorderSizePixel = 0,
@@ -938,6 +941,17 @@ b = {
 				ZIndex = 2
 			})
 		})
+		if SubtitleLabel then
+			task.spawn(function()
+				local MarketplaceService = game:GetService("MarketplaceService")
+				local ok, info = pcall(function()
+					return MarketplaceService:GetProductInfo(game.GameId, Enum.InfoType.Universe)
+				end)
+				if ok and info and info.Name and SubtitleLabel and SubtitleLabel.Parent then
+					SubtitleLabel.Text = info.Name
+				end
+			end)
+		end
 		local isfoui = b[1]().init(fo)
 		local isResizing = false
 		local hasAdjustedAnchor = false
@@ -1599,7 +1613,7 @@ b = {
 					ClipsDescendants = true,
 				}, {
 					f("UICorner", {CornerRadius = UDim.new(0, 4)}),
-					f("UIPadding", {PaddingBottom = UDim.new(0, 5), PaddingTop = UDim.new(0, 5), PaddingRight = UDim.new(0, 3)}),
+					f("UIPadding", {PaddingBottom = UDim.new(0, 5), PaddingTop = UDim.new(0, 5), PaddingLeft = UDim.new(0, 3), PaddingRight = UDim.new(0, 3)}),
 					f("UIStroke", {Color = a.Theme[op.Theme or 'Dark']['Dropdown Select Stroke'], Transparency = 1}),
 					f("Frame", {
 						BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Search'],
@@ -1609,19 +1623,36 @@ b = {
 						Name = "SearchBar"
 					}, {
 						f("UICorner", {CornerRadius = UDim.new(0, 4)}),
-						f("UIPadding", {PaddingLeft = UDim.new(0, 6), PaddingRight = UDim.new(0, 6)}),
-						f("TextBox", {
-							TextColor3 = a.Theme[op.Theme or 'Dark']['Text Color'],
-							BorderSizePixel = 0,
-							TextXAlignment = Enum.TextXAlignment.Left,
-							TextSize = 10,
-							Font = Enum.Font.Gotham,
+						f("Frame", {
 							BackgroundTransparency = 1,
-							PlaceholderText = "search...",
-							Size = UDim2.new(1, 0, 1, 0),
-							Text = "",
-							ClearTextOnFocus = false,
-							Name = "Box"
+							BorderSizePixel = 0,
+							Size = UDim2.new(1, -22, 1, 0),
+							Position = UDim2.new(0, 6, 0, 0),
+							Name = "TextArea"
+						}, {
+							f("TextBox", {
+								TextColor3 = a.Theme[op.Theme or 'Dark']['Text Color'],
+								BorderSizePixel = 0,
+								TextXAlignment = Enum.TextXAlignment.Left,
+								TextSize = 10,
+								Font = Enum.Font.Gotham,
+								BackgroundTransparency = 1,
+								PlaceholderText = "search...",
+								Size = UDim2.new(1, 0, 1, 0),
+								Text = "",
+								ClearTextOnFocus = false,
+								Name = "Box"
+							})
+						}),
+						f("ImageLabel", {
+							BorderSizePixel = 0,
+							BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+							AnchorPoint = Vector2.new(1, 0.5),
+							Image = "rbxassetid://15197354452",
+							Size = UDim2.new(0, 10, 0, 10),
+							BorderColor3 = Color3.fromRGB(0, 0, 0),
+							BackgroundTransparency = 1,
+							Position = UDim2.new(1, -6, 0.5, 0)
 						})
 					}),
 					f("ScrollingFrame", {
@@ -1652,8 +1683,8 @@ b = {
 						f("UIPadding", {PaddingLeft = UDim.new(0,3), PaddingRight = UDim.new(0,7)})
 					})
 				})
-				dropdownselect.SearchBar.Box:GetPropertyChangedSignal("Text"):Connect(function()
-					local q = string.lower(dropdownselect.SearchBar.Box.Text)
+				dropdownselect.SearchBar.TextArea.Box:GetPropertyChangedSignal("Text"):Connect(function()
+					local q = string.lower(dropdownselect.SearchBar.TextArea.Box.Text)
 					for _, child in ipairs(dropdownselect.ItemList:GetChildren()) do
 						if child:IsA("Frame") and child:FindFirstChild("TextLabel") then
 							if q == "" or string.find(string.lower(child.TextLabel.Text), q, 1, true) then
@@ -1725,8 +1756,8 @@ b = {
 						d = "InOut",
 						g = {Transparency = 1}
 					}):Play()
-					if dropdownselect.SearchBar.Box.Text ~= "" then
-						dropdownselect.SearchBar.Box.Text = ""
+					if dropdownselect.SearchBar.TextArea.Box.Text ~= "" then
+						dropdownselect.SearchBar.TextArea.Box.Text = ""
 					end
 				end
 				Services.UserInputService.InputBegan:Connect(function(A)
@@ -1837,7 +1868,6 @@ b = {
 						Size = UDim2.new(1, 0,0, 20),
 					}, {
 						f("UICorner", {CornerRadius = UDim.new(0, 4)}),
-						f("UIPadding", {PaddingLeft = UDim.new(0, 5)}),
 						f("Frame", {
 							Name = "Accent",
 							BorderSizePixel = 0,
@@ -1862,9 +1892,9 @@ b = {
 							f("UIGradient", {
 								Rotation = 0,
 								Transparency = NumberSequence.new{
-									NumberSequenceKeypoint.new(0, 0.65),
-									NumberSequenceKeypoint.new(0.22, 0.9),
-									NumberSequenceKeypoint.new(0.4, 1),
+									NumberSequenceKeypoint.new(0, 0.55),
+									NumberSequenceKeypoint.new(0.12, 0.85),
+									NumberSequenceKeypoint.new(0.22, 1),
 									NumberSequenceKeypoint.new(1, 1)
 								}
 							})
@@ -1874,7 +1904,9 @@ b = {
 							BackgroundTransparency = 1,
 							BorderColor3 = Color3.fromRGB(0,0,0),
 							BorderSizePixel = 0,
-							Size = UDim2.new(1, 0,1, 0),
+							AnchorPoint = Vector2.new(0, 0.5),
+							Position = UDim2.new(0, 6, 0.5, 0),
+							Size = UDim2.new(1, -6, 1, 0),
 							Font = Enum.Font.Gotham,
 							Text = t,
 							TextColor3 = Color3.fromRGB(255,255,255),
