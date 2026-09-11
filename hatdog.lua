@@ -1613,7 +1613,7 @@ b = {
 					ClipsDescendants = true,
 				}, {
 					f("UICorner", {CornerRadius = UDim.new(0, 4)}),
-					f("UIPadding", {PaddingBottom = UDim.new(0, 5), PaddingTop = UDim.new(0, 5), PaddingRight = UDim.new(0, 3)}),
+					f("UIPadding", {PaddingBottom = UDim.new(0, 5), PaddingTop = UDim.new(0, 5), PaddingLeft = UDim.new(0, 3), PaddingRight = UDim.new(0, 3)}),
 					f("UIStroke", {Color = a.Theme[op.Theme or 'Dark']['Dropdown Select Stroke'], Transparency = 1}),
 					f("Frame", {
 						BackgroundColor3 = a.Theme[op.Theme or 'Dark']['Search'],
